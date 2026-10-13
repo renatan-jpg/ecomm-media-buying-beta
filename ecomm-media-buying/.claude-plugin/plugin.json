@@ -1,0 +1,7 @@
+{
+  "name": "ecomm-media-buying",
+  "version": "2.0.0",
+  "description": "Daily media buying for ecommerce advertisers on Realize: reviews every running campaign against your CPA goal, recommends raise / hold / cut / pause from the Decision Cube, applies what you approve, and builds your test campaigns.",
+  "author": { "name": "Renata N" },
+  "keywords": ["realize", "media buying", "ecommerce", "cpa", "campaigns"]
+}

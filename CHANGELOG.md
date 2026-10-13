@@ -1,0 +1,24 @@
+# Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
+
+## v2.0.0 — 2026-10-13
+- Packaging: the skill ships as a plugin (`ecomm-media-buying`) with one agent, `media-buyer`, and its own Realize connection; installed from a private marketplace with auto-update, or from a zip. Run it as the session's agent (`claude --agent media-buyer`) or as a worker from any session.
+- Scope and stop: the accounts to manage are listed at onboarding in `config/scope.md`; nothing outside that list is ever read or changed. "Stop" asks: pause the suggestions / change the accounts / stop entirely.
+- Modes at onboarding: Manual or Semi-auto; Auto is offered 28 days after onboarding.
+- Daily schedule created at onboarding (desktop scheduled task; catch-up run after a missed day); checklist for the client's side; Remote Control suggested for Manual.
+- Campaign groups: one named group per test family, names `<group key> - <variable> - <platform>`, kept in config and shown as headings; Realize's automatic per-campaign group explained; no group budgets, never the budget allocator.
+- Growth (beta): weekly creative-test offer on the first run of the week; publisher split (Yahoo & AOL / Non-Yahoo × desktop / mobile) when a creative test has winners, Mail two weeks later; after the account's good week: display (300×250 and 300×600 first), then a tier-1 predictive audience once 100 purchases in 30 days are reached.
+- Client requests (beta): conversion file reconciliation (needs campaign ids or UTM names) with an optional file-as-source mode; new country / market / product as a wave of the launch plan; CPA goal change with a dry run before any write; client-instructed actions logged as such.
+- Data pulled: + last-30-day account total (predictive eligibility); + ad-level report for the winning ads.
+
+## v1.7 — 2026-10-13
+- Opening budget rule: standard creative-test anchor $700 → $500 (5× at a $100 goal); the multiple is now kept between 2.5× and 8× (was 4–8×), so a $40–60 goal opens at 8× and a $400 goal at 2.5× ($1,000). Other surface anchors unchanged. Day-4 first verdict noted for openings below 3.5×.
+
+## v1.6 — 2026-10-08
+- Exceptional start: raise on the morning after 2 full days when ≥5×G spent, ROAS 150%+ since launch, each day 110%+ (the only raise path on day 2; grid raises from day 3).
+- Utilization gate back, at 70% of the daily budget spent yesterday.
+- Zone E line 67% → 75%; panels D and E one step stricter; raise waits 2/3/5 days; cut above the top level −25%.
+- Approval flow: one "Approve all / Pick one by one / Skip today" question, then 4-campaign boxes in PAUSE → CUT → RAISE order with a net line; holds as one FYI line; no filler rows.
+- First-two-weeks calendar in Step 2a and a timing paragraph in the install note.
+
+## v1.5 — 2026-09-30
+- Daily runs; four-code cube (R/H/W/X) with exit and warning chains; per-campaign tick boxes in plain language; budget levels as CPA multiples; cut table; 4–8× opening rule; Semi-auto mode; tracking emphasis and freeze guardrail; "skip media plan building".

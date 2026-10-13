@@ -1,0 +1,8 @@
+{
+  "name": "ecomm-media-buying-alpha",
+  "owner": { "name": "Renata N" },
+  "plugins": [
+    { "name": "ecomm-media-buying", "source": "./ecomm-media-buying",
+      "description": "Daily media buying for ecommerce advertisers on Realize: review, raise / hold / cut / pause, approved execution, test builds." }
+  ]
+}
