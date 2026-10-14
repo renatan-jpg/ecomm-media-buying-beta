@@ -14,7 +14,7 @@ campaigns. One agent, `media-buyer`, runs it.
 2. In a terminal, add the plugin source with the address and the access
    token you received, then install the plugin:
    ```
-   claude plugin marketplace add https://github.com/<owner>/<repo>
+   claude plugin marketplace add https://github.com/renatan-jpg/ecomm-media-buying-alpha
    claude plugin install ecomm-media-buying@ecomm-media-buying-alpha
    ```
    If git asks for a username and password, type your name as the username
