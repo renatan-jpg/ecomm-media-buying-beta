@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.1)
+# Ecomm media buying — install note (v2.0.2)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -68,6 +68,28 @@ ten-elevenths of it), raised on the normal rules from its third, and paused
 on the normal
 rules from its fifth. Cuts come later, once a campaign has a track record.
 
+## If you see more sales than Realize does
+
+Realize only reports the purchases its own tracking saw. If your shop
+shows more, send the media buyer your sales export and it will reconcile
+the two and, if you choose, run on your numbers from then on — this is a
+feature of the media buyer, not of Realize. The file needs four things:
+
+1. one row per purchase with its date and time (or counts per campaign per
+   day);
+2. the campaign on every row — the Realize campaign id, or the campaign
+   name your tracking link writes into `utm_campaign`;
+3. the time zone the times are in;
+4. the period: through yesterday, every campaign it manages, in one CSV or
+   XLSX.
+
+Purchases are counted on the day of purchase in your account's time zone.
+A file with only dates and totals cannot be matched to campaigns, so it
+will ask you to add the campaign to your tracking link first. If you choose
+"use my file from now on", a fresh file covering every day through
+yesterday is needed before each run; a missing day means that day's review
+waits.
+
 ## Stopping
 
 Say "stop" at any time. You will be asked whether to pause the daily
@@ -78,6 +100,6 @@ maximum you agreed.
 Every verdict is explained as cost per sale against your goal; the ROAS
 column you see in Realize is revenue-based and is not what the rules read.
 
-Version 2.0.1 — the Decision Cube and the launch plan are the settled part;
+Version 2.0.2 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
 new-market and goal-change processes are in beta: they only suggest.

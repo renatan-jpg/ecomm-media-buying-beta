@@ -1,5 +1,9 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.2 — 2026-10-14
+- Conversion file: the install note now has its own section ("If you see more sales than Realize does") with the four things to send — purchases with date and time, the campaign id or UTM campaign name on every row, the time zone, the period through yesterday — and says this is the media buyer's feature, not Realize's.
+- The file's times are converted from the file's time zone (asked once, stored as `conversion_file_tz`) to the account's, and each purchase is counted on its day of purchase in the account's time zone; the reconciliation says when the offset moves a day.
+
 ## v2.0.1 — 2026-10-14
 - Network in scope: give a network id at setup and choose "all accounts in the network" or only some; campaigns are listed through the network and always judged and changed through their own advertiser account; one goal / mode / maximum for the network or per account; the media plan asks which account it is for.
 - The cube speaks CPA, not ROAS: zones are shares of your goal (deep winner ≤ 2/3, winner to 10/11, at goal to 20/17, over goal to 4/3, blowout above), stored per account as zone lines; every threshold, card and digest line is a cost per sale against the goal. Same lines as before, same verdicts.

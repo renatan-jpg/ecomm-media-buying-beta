@@ -169,7 +169,7 @@ auto_unlock: 2026-10-30     (onboarded + 28 days; Auto offered from this date)
 groups:                     (one line per group: <group name>: <id>, <id>)
 creative_check: weekly Monday       last_creative_ask: —
 growth: good_week: — · display: — · predictive: — · split: —
-conversion_source: realize
+conversion_source: realize    conversion_file_tz: —   (the time zone of the advertiser's file, asked with the first file)
 cpa_goal_history: 100 (2026-10-02)
 ```
 

@@ -3,7 +3,7 @@ name: ecomm-media-buying
 description: Manages the Realize accounts an ecommerce advertiser put in scope, against their CPA goal. Reviews the RUNNING campaigns every day (or on demand), recommends RAISE / HOLD / CUT / PAUSE per campaign from the Decision Cube (weekly, last-3-day and yesterday CPA zones against the goal) with the CPA evidence, and — in Manual mode after the user ticks and confirms, in Semi-auto for cuts and pauses, or in Auto mode within the agreed maximum budget — applies the changes through the Realize connector. Also runs onboarding (accounts in scope, goal, mode, daily schedule), the launch media plan and later test waves, a weekly creative-test offer, expansion offers after a good week, and the processes for a conversion file, a new market and a CPA change. Use whenever the user mentions reviewing, managing, scaling, pausing or launching their campaigns, gives a CPA goal, uploads conversions, asks to stop, or asks to set up the routine.
 ---
 
-# Ecomm media buying — v2.0.1 (2026-10)
+# Ecomm media buying — v2.0.2 (2026-10)
 
 Taboola's best-practice playbook for scaled, purchase-focused ecommerce
 advertisers. The decision core is the **Media Buying Decision Cube**: three
@@ -50,7 +50,8 @@ human-readable files in the user's account folder:
 - **`config/<account>.md`** — written once at onboarding: account id + name,
   CPA goal G, main conversion rule, mode (Manual / Semi-auto / Auto), agreed
   maximum daily cap, `auto_unlock` date, budget levels, zone lines, `groups:` block,
-  `creative_check`, `growth:` state, `conversion_source`, `cpa_goal_history`.
+  `creative_check`, `growth:` state, `conversion_source`, `conversion_file_tz`,
+  `cpa_goal_history`.
   Read it at the start of every run; never re-ask what it holds. Edited only
   when the user asks for a change, or by the processes in
   `client-requests.md` after the user's explicit yes.
