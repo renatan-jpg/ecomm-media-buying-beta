@@ -1,14 +1,15 @@
 ---
 name: ecomm-media-buying
-description: Manages the Realize accounts an ecommerce advertiser put in scope, against their CPA goal. Reviews the RUNNING campaigns every day (or on demand), recommends RAISE / HOLD / CUT / PAUSE per campaign from the Decision Cube (weekly, last-3-day and yesterday ROAS zones) with the CPA evidence, and — in Manual mode after the user ticks and confirms, in Semi-auto for cuts and pauses, or in Auto mode within the agreed maximum budget — applies the changes through the Realize connector. Also runs onboarding (accounts in scope, goal, mode, daily schedule), the launch media plan and later test waves, a weekly creative-test offer, expansion offers after a good week, and the processes for a conversion file, a new market and a CPA change. Use whenever the user mentions reviewing, managing, scaling, pausing or launching their campaigns, gives a CPA goal, uploads conversions, asks to stop, or asks to set up the routine.
+description: Manages the Realize accounts an ecommerce advertiser put in scope, against their CPA goal. Reviews the RUNNING campaigns every day (or on demand), recommends RAISE / HOLD / CUT / PAUSE per campaign from the Decision Cube (weekly, last-3-day and yesterday CPA zones against the goal) with the CPA evidence, and — in Manual mode after the user ticks and confirms, in Semi-auto for cuts and pauses, or in Auto mode within the agreed maximum budget — applies the changes through the Realize connector. Also runs onboarding (accounts in scope, goal, mode, daily schedule), the launch media plan and later test waves, a weekly creative-test offer, expansion offers after a good week, and the processes for a conversion file, a new market and a CPA change. Use whenever the user mentions reviewing, managing, scaling, pausing or launching their campaigns, gives a CPA goal, uploads conversions, asks to stop, or asks to set up the routine.
 ---
 
-# Ecomm media buying — v2.0.0 (2026-10)
+# Ecomm media buying — v2.0.1 (2026-10)
 
 Taboola's best-practice playbook for scaled, purchase-focused ecommerce
 advertisers. The decision core is the **Media Buying Decision Cube**: three
-trailing readings (last 7 days, last 3 days, yesterday) each map to a
-performance zone, and the three zones select one cell of a fixed grid. The
+trailing readings (last 7 days, last 3 days, yesterday) each map to a CPA
+zone against the advertiser's goal, and the three zones select one cell of a
+fixed grid. The
 skill and the cube must always return the same verdict for the same inputs.
 
 **Nothing in the account is ever changed except (a) in Manual mode after the
@@ -41,13 +42,14 @@ for the accounts in scope; the rules live here, never in the agent.
 The skill keeps no hidden state. Everything it "remembers" lives in
 human-readable files in the user's account folder:
 
-- **`config/scope.md`** — the accounts in scope (ids and names), `status`
-  (active / paused since / stopped), the daily `schedule`, the onboarding
-  `checklist`. Read first on every run; the only list of accounts the skill
-  may ever touch.
+- **`config/scope.md`** — the accounts in scope (ids and names) or, when the
+  advertiser gave a network and chose "all accounts", the `network:` whose
+  advertiser accounts are all in scope; `status` (active / paused since /
+  stopped), the daily `schedule`, the onboarding `checklist`. Read first on
+  every run; the only list of accounts the skill may ever touch.
 - **`config/<account>.md`** — written once at onboarding: account id + name,
   CPA goal G, main conversion rule, mode (Manual / Semi-auto / Auto), agreed
-  maximum daily cap, `auto_unlock` date, budget levels, `groups:` block,
+  maximum daily cap, `auto_unlock` date, budget levels, zone lines, `groups:` block,
   `creative_check`, `growth:` state, `conversion_source`, `cpa_goal_history`.
   Read it at the start of every run; never re-ask what it holds. Edited only
   when the user asks for a change, or by the processes in
@@ -79,10 +81,26 @@ from Realize each run.
 ## Step 1 — Pull the data (Realize connector)
 
 1. Read `config/scope.md` first: only accounts listed there, and only while
-   `status: active`. Then `config/<account>.md`. Use its `account_id` string
-   (never a raw number), goal G and main conversion rule.
-2. `list_campaigns` — page through ALL pages (page_size 10). Keep only
-   **running** campaigns: `is_active` true and status RUNNING (not paused,
+   `status: active`. With a `network:` line carrying an id, the accounts in
+   scope are every advertiser account under that network, refreshed each
+   run from the connector (the `advertiser_id`s returned by
+   `list_campaigns` on the network id, or `search_accounts`); an account
+   that appears under the network without a `config/<account>.md` is listed
+   in the digest as "new under the network — not managed until its purchase
+   event is confirmed", offered onboarding steps 1–2 once, and then takes
+   goal, mode and maximum from the `network_defaults:` line in `scope.md`
+   (or is asked steps 3–5 when that line says `per account`). Then
+   `config/<account>.md`. Use its `account_id` string (never a raw number),
+   goal G and main conversion rule. If `zone_lines:` is missing (a config
+   written before v2.0.1), compute the four lines from `cpa_goal` and write
+   them to the config before judging anything. **G and the main rule are the advertiser's answers from config**:
+   a missing one is asked for and the run waits — it is never estimated
+   from the account's results or filled with an example number.
+2. `list_campaigns` — page through ALL pages (page_size 10). With a network
+   in scope, call it once with the network account id (it returns every
+   campaign in the network, each with its `advertiser_id`); if the connector
+   returns nothing for the network id, call it per advertiser account
+   instead. Keep only **running** campaigns: `is_active` true and status RUNNING (not paused,
    terminated, pending, frozen, expired). Count the skipped ones. Per kept
    campaign record `id`, `name`, `advertiser_id` (its OWNING account — needed
    for any read/write on it), `daily_cap`, `daily_ad_delivery_model`,
@@ -91,8 +109,9 @@ from Realize each run.
    config; list every other running campaign under "out of scope" in the
    digest and never judge it against G.
 3. `get_campaign_breakdown_report` with `page_size` 100, paging on the
-   summary-line `Total` until every kept campaign has a row — **full days
-   only**, dates in the account's time zone: **L7D** = today−7…today−1 ·
+   summary-line `Total` until every kept campaign has a row (with a network
+   in scope: on the network id when it returns per-campaign rows, otherwise
+   once per advertiser account) — **full days only**, dates in the account's time zone: **L7D** = today−7…today−1 ·
    **L3D** = today−3…today−1 · **Yesterday** = today−1 · **Day −2** = today−2 ·
    **Day −3** = today−3 · **Lifetime** = the earliest start date among the kept
    campaigns…today−1 (one call gives every campaign its since-launch totals).
@@ -115,24 +134,31 @@ Retry a timed-out report once with identical arguments (reports are cached).
 
 ## Step 2 — The Decision Cube
 
-**ROAS% = G ÷ CPA × 100** (100% = at goal; higher = beating goal). Use ROAS%
-language everywhere. Every window's ROAS maps to a **zone**:
+Every reading is the **CPA on the main conversion rule, against the goal
+G**. Realize's own ROAS column is revenue-based and is never used or quoted;
+the skill speaks only in CPA against the goal. Each window's CPA maps to a
+**zone** by its share of the goal:
 
-| Zone | ROAS | Meaning | CPA at G=$100 |
+| Zone | CPA as a share of G | Meaning | At G=$100 |
 |---|---|---|---|
-| **A** | ≥ 150% | deep winner | ≤ $66.67 |
-| **B** | 110–150% | winner | $66.68–90.90 |
-| **C** | 85–110% | at goal | $90.91–117.64 |
-| **D** | 75–85% | over goal | $117.65–133.33 |
-| **E** | < 75% | blowout | > $133.33 |
+| **A** | ≤ 2/3 (66.7%) | deep winner | ≤ $66.66 |
+| **B** | 2/3 – 10/11 (66.7–90.9%) | winner | $66.67–90.90 |
+| **C** | 10/11 – 20/17 (90.9–117.6%) | at goal | $90.91–117.64 |
+| **D** | 20/17 – 4/3 (117.6–133.3%) | over goal | $117.65–133.33 |
+| **E** | > 4/3 (133.3%) | blowout | ≥ $133.34 |
 
-Zone boundaries are inclusive at the bottom (ROAS exactly 110% is B, exactly
-85% is C, exactly 75% is D). **A day with zero conversions on real spend
-(spend ≥ 2×G) is zone E.** A window with zero conversions on thin spend
-(< 2×G) has no zone; the campaign gets HOLD with the note "thin day — no
-reading" and is re-checked tomorrow. On cards, show ROAS with one decimal
-whenever it is within 0.5 points of a zone line (109.9%, not 110%), so a card
-never reads "110%, zone C".
+The four zone lines are the exact fractions G × 2/3, 10/11, 20/17 and 4/3,
+computed once at onboarding and stored in config to four decimals as
+`zone_lines:` (at $100: 66.6667, 90.9091, 117.6471, 133.3333), so every
+advertiser has their own cube in their own currency. A CPA at or under a
+line is in the better zone; the lines almost never fall on a cent, so at
+$100 the cent values read $66.66 A · $66.67 B · $90.90 B · $90.91 C ·
+$117.64 C · $117.65 D · $133.33 D · $133.34 E. The fractions decide, never
+a rounded figure. **A day with zero conversions on real spend (spend ≥ 2×G) is zone E.** A
+window with zero conversions on thin spend (< 2×G) has no zone; the campaign
+gets HOLD with the note "thin day — no reading" and is re-checked tomorrow.
+On cards, show a CPA to the cent whenever it is within 1% of a zone line
+($90.95, not $91), so a card never reads "$91, zone C".
 
 **Young campaigns:** until a campaign has 7 full days, its **since-launch**
 numbers stand in for L7D (and for L3D while it has fewer than 3 full days).
@@ -154,19 +180,21 @@ approximation — say which was used.
    judged on the campaign's numbers **since launch, through yesterday**
    (Lifetime window). **PAUSE** if any of:
    - zero conversions after spend ≥ 3×G;
-   - lifetime ROAS below 30% after spend ≥ 5×G;
-   - lifetime ROAS below 50% after spend ≥ 10×G.
+   - lifetime CPA above 10/3 of the goal (3.33× — $333.33 at $100) after
+     spend ≥ 5×G;
+   - lifetime CPA above 2× the goal after spend ≥ 10×G.
    Each is one question, asked on the morning after that spend level is
    crossed. A young campaign that trips none of these goes on to the grid.
 3. **EXCEPTIONAL START** — the one exception to the entry rule below. On
    the morning after the campaign's **2nd full day**, if since launch it has
-   spent **≥ 5×G**, runs at **ROAS ≥ 150%** (CPA at or under two-thirds of
-   G) and **each of the two days on its own is ≥ 110%** → **RAISE** one
+   spent **≥ 5×G**, runs at a since-launch **CPA at or under two-thirds of
+   G** (zone A) and **each of the two days on its own is in zone A or B**
+   (CPA at or under 10/11 of G) → **RAISE** one
    level that morning, waiving the 7×G spend floor and the 10-conversion
    volume gate. It counts as a raise for the waiting gate. It is the **only**
    way to a raise on that morning: the grid's raise cells apply from the
    morning after the 3rd full day (holds, watches and exit signals are
-   recorded from day 2 as usual — a 110–150% campaign on day 2 waits one more
+   recorded from day 2 as usual — a zone-B campaign on day 2 waits one more
    day). A strong first day carrying a weak second day does not qualify.
 4. **NO SIGNAL** — fewer than **2 full days** since activation, or spend in
    the reading window (L7D, or since launch when younger than 7 days) below
@@ -176,23 +204,30 @@ approximation — say which was used.
    cube verdict on the morning of day 3 — day 4 when the opening is below
    3.5×G, because 7×G then takes three days — or its first raise a day
    earlier through rule 3 (which needs 5×G in two days, so in practice an
-   opening of 3×G or more).
+   opening of 3×G or more). When no live campaign passes this floor, say it
+   with the amount, never as a multiple alone: "None of the live campaigns
+   meets the minimum for a check — at least 7× your goal ($<7×G>) spent in
+   the last 7 days (since launch for a campaign younger than 7 days).
+   <campaign>: $<spent> of $<7×G> · <campaign>: … Nothing to decide today;
+   I'll check again tomorrow." The floor is read against the goal the
+   advertiser gave at onboarding, never against a goal inferred from the
+   account.
 
 **The first two weeks on the calendar** (opening budget $500, goal $100;
 "day N" = the morning after N full days):
 
 | Morning after | What can happen | Condition |
 |---|---|---|
-| Day 1 | PAUSE (quick-pause) | no sales after $300, or ROAS under 30% after $500 |
-| Day 2 | RAISE (exceptional start) | $500+ spent, ROAS 150%+, each day 110%+ |
-| Day 2 | PAUSE (quick-pause) | ROAS under 30% after $500, under 50% after $1,000 |
+| Day 1 | PAUSE (quick-pause) | no sales after $300, or over $333.33 per sale after $500 |
+| Day 2 | RAISE (exceptional start) | $500+ spent, at or under $66.66 per sale since launch and no day over $90.90 |
+| Day 2 | PAUSE (quick-pause) | over $333.33 per sale after $500, over $200 after $1,000 |
 | Day 2 | first grid reading | hold / watch / exit signal recorded, no raise |
 | Day 3 | RAISE (grid) | raise cell and every raise gate passes |
-| Day 4 | 2nd raise after an exceptional start | still 150%+ (2-day wait) |
+| Day 4 | 2nd raise after an exceptional start | still at or under $66.66 per sale (2-day wait) |
 | Day 5 | PAUSE (exit chain) | exit signal on days 2 and 5, watch or exit on days 3–4 |
-| Day 5 / Day 7 | 2nd raise at 130–150% / 110–130% | 3-day / 5-day wait |
+| Day 5 / Day 7 | 2nd raise at $66.67–76.92 / $76.93–90.90 per sale | 3-day / 5-day wait |
 | ~Day 9 | earliest CUT | track record first (cap ≥10×G after two raises), then four watch/exit runs |
-| Through day 14 | quick-pause keeps watching | ROAS under 50% after $1,000 since launch |
+| Through day 14 | quick-pause keeps watching | over $200 per sale after $1,000 since launch |
 
 Nothing in the first two weeks is decided on one day's numbers except the
 quick-pause, which only reads since-launch totals.
@@ -204,7 +239,7 @@ the column.** Read the cell code, then apply 2c. Rows are L3D A→E top to
 bottom; columns are yesterday A→E left to right. Four codes: **R** raise ·
 **H** hold · **W** warning · **X** exit signal.
 
-Panel **A** (L7D ≥ 150%)
+Panel **A** (L7D zone A — CPA at or under 2/3 of the goal)
 
 | L3D ↓ / Yesterday → | A | B | C | D | E |
 |---|---|---|---|---|---|
@@ -214,7 +249,7 @@ Panel **A** (L7D ≥ 150%)
 | **D** | H | H | H | H | W |
 | **E** | H | H | H | W | W |
 
-Panel **B** (L7D 110–150%)
+Panel **B** (L7D zone B — CPA between 2/3 and 10/11 of the goal)
 
 | L3D ↓ / Yesterday → | A | B | C | D | E |
 |---|---|---|---|---|---|
@@ -224,7 +259,7 @@ Panel **B** (L7D 110–150%)
 | **D** | H | H | H | W | W |
 | **E** | H | H | W | W | X |
 
-Panel **C** (L7D 85–110%)
+Panel **C** (L7D zone C — at goal, between 10/11 and 20/17)
 
 | L3D ↓ / Yesterday → | A | B | C | D | E |
 |---|---|---|---|---|---|
@@ -234,7 +269,7 @@ Panel **C** (L7D 85–110%)
 | **D** | H | H | H | W | X |
 | **E** | H | H | W | X | X |
 
-Panel **D** (L7D 75–85%)
+Panel **D** (L7D zone D — CPA between 20/17 and 4/3 of the goal)
 
 | L3D ↓ / Yesterday → | A | B | C | D | E |
 |---|---|---|---|---|---|
@@ -244,7 +279,7 @@ Panel **D** (L7D 75–85%)
 | **D** | H | W | X | X | X |
 | **E** | W | X | X | X | X |
 
-Panel **E** (L7D < 75%)
+Panel **E** (L7D zone E — CPA above 4/3 of the goal)
 
 | L3D ↓ / Yesterday → | A | B | C | D | E |
 |---|---|---|---|---|---|
@@ -268,8 +303,9 @@ the chains below are read from the last three digests.
 - **R — RAISE** → the next level above the cap (levels below), if
   every raise gate passes. Any failure → **HOLD — raise gate failed**, listing
   every gate that fired, re-check tomorrow.
-  - *Clean-3 gate:* none of the last 3 full days (Day −1, −2, −3) below 93%
-    ROAS, and none a zero-conversion day on real spend.
+  - *Clean-3 gate:* none of the last 3 full days (Day −1, −2, −3) with a
+    CPA above 100/93 of the goal (107.53% — at $100, $107.52 passes and
+    $107.53 fails), and none a zero-conversion day on real spend.
   - *Volume gate:* at least 10 conversions in L7D (since launch when younger)
     — below that the zones are unreliable.
   - *Utilization gate:* yesterday's spend at least **70% of the daily
@@ -277,7 +313,8 @@ the chains below are read from the last three digests.
     change nothing, and a campaign that cannot spend its budget is not a
     proven winner yet.
   - *Waiting gate* (days since the campaign's last raise): **2 days** in
-    panel A; in panel B, **3 days** if L7D ROAS ≥ 130%, otherwise **5 days**.
+    panel A; in panel B, **3 days** if the L7D CPA is at or under 10/13 of
+    the goal ($76.92 at $100), otherwise **5 days**.
     Deep winners climb one level every other day for as long as they keep
     qualifying; that is how they scale fast — never by a bigger jump.
   - *Ceiling:* if the cap is at the top level (100×G), at the agreed maximum
@@ -335,8 +372,8 @@ not sit on a level.
   cap already equals it, or the next level would exceed it, the verdict is
   **SCALE HORIZONTALLY** — "at your agreed maximum; open a new campaign with
   the proven ads" — never a raise, never a cap clamped to the maximum. One
-  level per raise, at every ROAS level — a deep winner is raised again
-  sooner, not higher.
+  level per raise, in every zone — a deep winner is raised again sooner,
+  not higher.
 - **CUT** → one size, from this table (a cap between rows uses the row below
   it):
 
@@ -359,7 +396,11 @@ not sit on a level.
 ## Step 3 — The review (both modes)
 
 Header:
-> **Account review · <weekday date> · N running campaigns (M non-running skipped) · goal $G · main event: <rule>**
+> **Account review · <account name> · <weekday date> · N running campaigns (M non-running skipped) · goal $G · main event: <rule>**
+
+With a network in scope: one review per advertiser account, in this order,
+in one message, closed by one network line (accounts reviewed, campaigns,
+net daily budget change).
 
 Sections, most urgent first: **ACTION** (PAUSE → CUT → SCALE HORIZONTALLY →
 RAISE), **HOLDS**, **NO SIGNAL / TOO EARLY**. The ACTION order is global and
@@ -369,33 +410,33 @@ the id ("11111111 · LP1 creative test"); HOLDS and the digest list campaigns
 under their **group** heading from the config `groups:` block ("Other" for
 campaigns in no group). Every card: line 1 =
 **verdict + magnitude**; line 2 = evidence **L7D / L3D / yesterday CPA with
-ROAS% and zone, the cell, and lifetime CPA**; then the reasons.
+its zone, the cell, and lifetime CPA**; then the reasons.
 
 ```
 ACTION
 1. ☑ 12345678 — RAISE daily cap $3,000 → $4,000 (+33%)
-      L7D $77 (ROAS 130%, B) · L3D $79 (127%, B) · yesterday $74 (135%, B) → cell R · lifetime $81 · goal $100
+      L7D $77 (B) · L3D $79 (B) · yesterday $74 (B) → cell R · lifetime $81 · goal $100
       Winner week, both recent layers winning, all raise gates green; next raise possible in 3 days.
 2. ☑ 23456789 — PAUSE (exit chain confirmed: X on Thu, W Fri, X Sat, X today)
-      L7D $148 (ROAS 68%, E) · L3D $140 (71%, E) · yesterday $165 (61%, E) → cell X · lifetime $128 · goal $100
+      L7D $148 (E) · L3D $140 (E) · yesterday $165 (E) → cell X · lifetime $128 · goal $100
       Over goal on every reading for four runs in a row; no track record, so no cut.
 3. ☑ 34567890 — CUT daily cap $3,000 → $2,000 (−33%) (warning chain: W, W, X, W)
-      L7D $131 (ROAS 76%, D) · L3D $125 (80%, D) · yesterday $128 (78%, D) → cell W · lifetime $96 · goal $100
+      L7D $131 (D) · L3D $125 (D) · yesterday $128 (D) → cell W · lifetime $96 · goal $100
       Four warning runs in a row on a campaign with a track record; pauses if an exit chain confirms.
 4. ☑ 56789012 — PAUSE (quick-pause · day 3)
-      Since launch: $1,050 spent (10.5× goal), 4 conversions → lifetime $263 (ROAS 38%) · goal $100
-      Under 50% ROAS after 10× goal in its first 14 days.
+      Since launch: $1,050 spent (10.5× goal), 4 conversions → lifetime $263 (2.6× goal) · goal $100
+      More than twice the goal per sale after 10× goal spent, in its first 14 days.
    Net today: stops $2,800/day (2 pauses $1,800 + 1 cut $1,000), adds $1,000/day (1 raise) → daily budget −$1,800.
 
 HOLDS (a hold is a decision too)
 5. ☑ 45678901 — HOLD · cell H · on hold since Tue 22 Sep
-      L7D $109 (ROAS 92%, C) · L3D $106 (94%, C) · yesterday $99 (101%, C) → cell H · lifetime $104 · goal $100
+      L7D $109 (C) · L3D $106 (C) · yesterday $99 (C) → cell H · lifetime $104 · goal $100
       At goal on every layer — nothing to do until a layer moves.
 6. ☑ 67890123 — HOLD · exit signal (day 1 of chain)
-      L7D $135 (ROAS 74%, E) · L3D $160 (63%, E) · yesterday $180 (56%, E) → cell X · lifetime $97 · goal $100
+      L7D $135 (E) · L3D $160 (E) · yesterday $180 (E) → cell X · lifetime $97 · goal $100
       Pauses on the 4th consecutive run if the signals persist; a clean day clears it.
 
-NO SIGNAL — 2 campaigns below 7× goal in weekly spend, 1 with fewer than 2 full days (listed)
+NO SIGNAL — 2 campaigns below 7× goal ($700) in weekly spend, 1 with fewer than 2 full days (each listed with spent / needed)
 ```
 
 **Manual mode:** every item is pre-ticked; a ticked HOLD is recorded as agreed
@@ -437,8 +478,8 @@ inside it; a day with a single action is asked as one yes/no question
 label is `<campaign id> · <group> — <verdict and magnitude>`; its description is the
 evidence **in plain words, no shorthand**: the three CPAs against the goal,
 one sentence of reason, and one clause saying what leaving it unticked means.
-No cell codes, zone letters, ROAS percentages, gate names or chain codes in
-the boxes — those belong to the digest. For example:
+No cell codes, zone letters, gate names or chain codes in the boxes — those
+belong to the digest. For example:
 `Last 7 days $62 · last 3 days $58 · yesterday $60 · goal $100. Well under
 goal on every reading; last raised 5 days ago. Unticked: stays at $3,000 a
 day.` or `Last 7 days $160 · last 3 days $175 · yesterday $190 · goal $100.
@@ -520,7 +561,21 @@ builds happen only after the advertiser agrees to a plan table, exactly as in
 
 ## Guardrails
 
-- No config → run onboarding first. Never guess G.
+- No config → run onboarding first. G, the main conversion rule, the mode
+  and the maximum cap are the advertiser's answers in config: a missing one
+  is asked for and the run waits. The skill never estimates a goal from the
+  account's results and never runs a review on an example number.
+- **Data source.** The Realize connector is the only source of account
+  data. When it cannot answer (not signed in, a tool missing, an empty
+  report), say what it returned and what the advertiser can do; nothing
+  is filled in from elsewhere.
+- **Account folder.** Config and digests are written in the folder the
+  session runs in. A folder that holds `.claude-plugin/plugin.json`,
+  `agents/media-buyer.md` or `skills/ecomm-media-buying/SKILL.md` — or a
+  sub-folder `ecomm-media-buying/` holding any of them — is the plugin
+  itself (or the folder it was unpacked into): write nothing there; say "This is the plugin's own folder —
+  make a folder for your account, open it in the Claude app and say 'set
+  up' there." Onboarding's first line names the folder in use.
 - **Tracking freeze.** Before any CUT, PAUSE or quick-pause, compare the
   account's total conversions yesterday (main rule, all managed campaigns)
   with its average over the previous 7 days. If yesterday is below 50% of
@@ -545,9 +600,10 @@ builds happen only after the advertiser agrees to a plan table, exactly as in
   approval.
 - Stay inside this account. Never carry data, goals or conclusions between
   accounts or users.
-- **Scope.** Only accounts in `config/scope.md`. A request about any other
-  account → "That account isn't in scope. Say 'add account <id>' and I'll
-  onboard it." — and no connector call on it.
+- **Scope.** Only accounts in `config/scope.md` — or, with a `network:`
+  line carrying an id, every advertiser account under that network. A request about any
+  other account → "That account isn't in scope. Say 'add account <id>' and
+  I'll onboard it." — and no connector call on it.
 - **Stop.** "Stop", "pause the suggestions", "don't send", "hold off", in any
   wording, at any moment: execute nothing from an open approval, then ask one
   single-choice question — (1) "Pause the daily suggestions — keep everything,

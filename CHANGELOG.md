@@ -1,5 +1,12 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.1 — 2026-10-14
+- Network in scope: give a network id at setup and choose "all accounts in the network" or only some; campaigns are listed through the network and always judged and changed through their own advertiser account; one goal / mode / maximum for the network or per account; the media plan asks which account it is for.
+- The cube speaks CPA, not ROAS: zones are shares of your goal (deep winner ≤ 2/3, winner to 10/11, at goal to 20/17, over goal to 4/3, blowout above), stored per account as zone lines; every threshold, card and digest line is a cost per sale against the goal. Same lines as before, same verdicts.
+- The goal, the purchase event, the mode and the maximum are only ever the advertiser's answers; a missing one is asked for, never estimated or filled with an example. "No signal" now states the amount needed ("at least 7× your goal, $700, in the last 7 days") and each campaign's spent / needed.
+- Account folder: setup names the folder it will write in; the plugin's own folder is refused.
+- The agent reads the Realize connector only; it no longer loads other skills.
+
 ## v2.0.0 — 2026-10-13
 - Packaging: the skill ships as a plugin (`ecomm-media-buying`) with one agent, `media-buyer`, and its own Realize connection; installed from a private marketplace with auto-update, or from a zip. Run it as the session's agent (`claude --agent media-buyer`) or as a worker from any session.
 - Scope and stop: the accounts to manage are listed at onboarding in `config/scope.md`; nothing outside that list is ever read or changed. "Stop" asks: pause the suggestions / change the accounts / stop entirely.

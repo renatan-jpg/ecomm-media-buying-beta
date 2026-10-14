@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.0)
+# Ecomm media buying — install note (v2.0.1)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -24,18 +24,24 @@ campaigns. One agent, `media-buyer`, runs it.
    arrive by themselves after that. (Received a zip instead? In a terminal,
    run `claude --plugin-dir /path/to/ecomm-media-buying --agent media-buyer`
    for each session; a zip does not update itself.)
-3. Make a folder for your account (it will hold the settings and the daily
-   digests). Inside it, create a file `.claude/settings.json` containing
+3. Make an empty folder for your account, for example `Acme media buying`
+   in your home folder — it will hold the settings and the daily digests,
+   and the media buyer writes only there. Inside it, create a file
+   `.claude/settings.json` containing
    `{ "agent": "ecomm-media-buying:media-buyer" }` — this makes every Claude
-   session opened in that folder your media buyer. Then open the folder in
-   the Claude desktop app. (In a terminal you can instead run
-   `claude --agent media-buyer` in that folder.)
+   session opened in that folder your media buyer. Then open that folder in
+   the Claude desktop app (Open folder). The first thing the setup says is
+   which folder it will use; if you opened the wrong one, it tells you. (In
+   a terminal you can instead run `claude --agent media-buyer` in that
+   folder.)
 4. Say **"set up"**. When asked, sign in to Realize once (`/mcp`).
 
 ## What the setup asks
 
-The Realize account ids to manage (it will never touch any other), your main
-purchase event, your CPA goal, the mode — **Manual** (you tick what runs) or
+The Realize account ids to manage — or your network id, in which case it
+asks whether to run on every account under the network or only some (it
+will never touch any other) — your main purchase event, your CPA goal (the
+number you give is the only goal it ever uses), the mode — **Manual** (you tick what runs) or
 **Semi-auto** (cuts and pauses run by themselves, raises wait for your tick);
 Auto becomes available after four weeks — the maximum daily budget it may
 ever set, the run time, and whether to build your first test campaigns now.
@@ -56,8 +62,10 @@ in your folder, one sub-folder per account.
 ## Timing on a new campaign
 
 A new campaign is paused from its first morning if it is clearly failing,
-raised from its second morning only if it is exceptional (ROAS 150%+ on both
-days), raised on the normal rules from its third, and paused on the normal
+raised from its second morning only if it is exceptional (at or under
+two-thirds of your goal per sale since launch, and no day over
+ten-elevenths of it), raised on the normal rules from its third, and paused
+on the normal
 rules from its fifth. Cuts come later, once a campaign has a track record.
 
 ## Stopping
@@ -67,6 +75,9 @@ suggestions, change the accounts in scope, or stop entirely. Nothing is ever
 changed in your account without your yes in Manual mode, and never above the
 maximum you agreed.
 
-Version 2.0.0 — the Decision Cube and the launch plan are the settled part;
+Every verdict is explained as cost per sale against your goal; the ROAS
+column you see in Realize is revenue-based and is not what the rules read.
+
+Version 2.0.1 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
 new-market and goal-change processes are in beta: they only suggest.

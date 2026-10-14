@@ -7,6 +7,9 @@ setup — never narrate field names, pacing or allocation settings to the user.
 
 ## Interview
 
+0. **Which account?** Only when more than one account is in scope (or a
+   network): "Which advertiser account is this plan for?" — one plan, one
+   account; its goal, currency and conversion rule apply.
 1. **How many landing pages will you test — 1, 2 or 3?** Each LP is one
    creative angle. Recommend 3. The plan supports at most 3 LPs per wave: if
    the user names more, ask them to pick the 3 strongest and park the rest for

@@ -7,17 +7,44 @@ plan offered — built if they accept (`media-plan.md`), skipped if they say
 usually do). Ask the questions one at a time. Everything answered here is
 never re-asked. Steps 1–7 run once per account; steps 0 and 8 once per folder.
 
-0. **Accounts in scope.** "Which Realize account ids should I manage? I'll
-   work on those and nothing else." Resolve each with `search_accounts`,
-   confirm name + id, and write them to `config/scope.md` (format below). An
-   account not on that list is never read or changed later; "add account
-   <id>" extends the list and runs steps 1–7 for it.
+First line, before any question: "I'll keep your settings and daily digests
+in <absolute path of this folder>." If that folder is the plugin itself
+or the folder it was unpacked into (it holds `.claude-plugin/plugin.json`,
+`agents/media-buyer.md` or `skills/ecomm-media-buying/SKILL.md`, or a
+sub-folder `ecomm-media-buying/` holding any of them), stop there: "This is the plugin's own
+folder — make a folder for your account, open it in the Claude app and say
+'set up' there." Nothing is written in the plugin folder.
+
+0. **Accounts in scope.** "Which Realize account ids should I manage — or
+   your network id, if you want every account under it? I'll work on those
+   and nothing else." Resolve each id with `search_accounts` and confirm
+   name + id.
+   - **Advertiser account ids** → write them to `config/scope.md` (format
+     below). An account not on that list is never read or changed later;
+     "add account <id>" extends the list and runs steps 1–7 for it.
+   - **A network id** (`type` NETWORK) → list its advertiser accounts with
+     their running campaign counts (`list_campaigns` on the network id,
+     grouped by `advertiser_id`; or `search_accounts`), then ask one
+     single-choice question: "I'm seeing network <name> (<id>) with <N> live
+     campaigns across <M> accounts: <account — n campaigns, …>. Shall I run
+     on all live campaigns in this network, or only on certain accounts?" —
+     options "All accounts in the network" / "Only some — I'll name them".
+     All → `network: <id> — <name> (all advertiser accounts)` in
+     `scope.md`; the account list is refreshed from the network on every run,
+     and an account that appears later is offered steps 1–2 once before it
+     is managed. Some → the named accounts, as above. Campaigns are always
+     read, judged and changed through their own advertiser account id; the
+     network id is only used to list.
 1. **Account.** From step 0, per account: `account_id` (string) and name.
-   Note `currency`, `time_zone_name` and `type`. The account must be
-   an advertiser account (type PARTNER): a NETWORK account can list its child
-   campaigns but cannot manage them. If the user gives a network, list its
-   child advertiser accounts and onboard each one separately — one config per
-   account.
+   Note `currency`, `time_zone_name` and `type` (PARTNER = advertiser
+   account; every managed account is one). With a network in scope, steps
+   1–2 run per account and steps 3–5 are asked **once** for the network and
+   written into every account's config — "one goal, one mode and one maximum
+   for the whole network, or different per account?" decides; an account
+   that needs its own values gets them in its own config. Record the answer
+   in `scope.md` as `network_defaults: goal <G> · mode <mode> · max <cap>`
+   or `network_defaults: per account`; an account that appears under the
+   network later takes the defaults, or is asked steps 3–5.
 2. **Main conversion event.** `get_conversion_rules` on the account. One
    purchase rule → confirm it. Several → list them and ask which is the main
    purchase event; all CPA math runs on that rule. No purchase rule → stop:
@@ -32,8 +59,16 @@ never re-asked. Steps 1–7 run once per account; steps 0 and 8 once per folder.
    channel. A clear mismatch → fix tracking first; the routine starts after.
 3. **CPA goal (G).** The number the user manages to, in account currency.
    The rules are all relative to G, so ask them to give the number they truly
-   optimize for — not an aspiration. CPA goal only (ROAS goals are not
-   supported in this version). Then compute the **15 budget levels** from G
+   optimize for — not an aspiration. CPA goal only (a revenue-based ROAS
+   goal is not supported in this version). The goal is the advertiser's
+   number: never propose one from the account's results, never start with an
+   example. Then compute the **four zone lines** (the exact fractions G ×
+   2/3, 10/11, 20/17, 4/3 — at $100: 66.6667, 90.9091, 117.6471, 133.3333),
+   store them to four decimals as `zone_lines:` and say them in plain words,
+   rounded: "about $67 per sale or less is a deep winner, up to about $91 a
+   winner, up to about $118 at goal, up to about $133 over goal, above that
+   a blowout — every verdict reads your campaigns against these lines."
+   Then compute the **15 budget levels** from G
    (3, 5, 7.5, 10, 12.5, 15, 20, 25, 30, 40, 50, 60, 70, 80, 100 × G, rounded
    to the nearest 50 below 1,000 and the nearest 100 above; for yen-, rupee-
    or similar-scale currencies round to the currency's natural step), show
@@ -66,7 +101,9 @@ never re-asked. Steps 1–7 run once per account; steps 0 and 8 once per folder.
 7. **Launch plan — offer it, with a clear skip.** Say: "Want me to build
    your first test campaigns now, or skip media plan building and go straight
    to the daily raise / hold / cut / pause review of what's already running?"
-   - No running campaigns, or a new product → go to `media-plan.md` now.
+   - No running campaigns, or a new product → go to `media-plan.md` now
+     (with a network in scope, first ask which advertiser account the plan
+     is for).
    - Running campaigns and the user says **"skip media plan building"** (or
      declines in any words) → write `media_plan: skipped` in config, say
      "Got it — I'll manage the campaigns you already have, starting with the
@@ -108,7 +145,7 @@ never re-asked. Steps 1–7 run once per account; steps 0 and 8 once per folder.
    > digest, then the growth check if due. Report the digest summary.
    Without the tool (plain Claude Code), hand the same sentence for their own
    scheduler plus the command `claude --agent media-buyer` to run in this
-   folder. Record `schedule:` in `scope.md`.
+   folder. Record `schedule:` and `folder: <absolute path>` in `scope.md`.
    **Cloud runs (an option the skill never sets up; to be tested):** for
    Semi-auto or Auto, Anthropic's scheduled cloud sessions can run the
    routine while the machine is off, if the Realize connector is added as a
@@ -122,6 +159,7 @@ Write `config/<account>.md`:
 account_id: <string>        account_name: <name>
 currency: USD               time_zone: <tz>
 cpa_goal: 100               main_conversion_rule: <id> — <name>
+zone_lines: 66.6667, 90.9091, 117.6471, 133.3333   (G × 2/3, 10/11, 20/17, 4/3, four decimals)
 mode: manual                max_daily_cap: 10000      (mode: manual | semi-auto | auto)
 run_time: daily 11:00 <account time zone>
 levels: 300, 500, 750, 1000, 1250, 1500, 2000, 2500, 3000, 4000, 5000, 6000, 7000, 8000, 10000
@@ -139,6 +177,9 @@ cpa_goal_history: 100 (2026-10-02)
 
 ```
 accounts: 1234567 — Acme (onboarded 2026-10-02); 2345678 — Acme CA (onboarded 2026-10-02)
+network: 7654321 — Acme Network (all advertiser accounts, refreshed each run)   (this line only when a network is in scope)
+network_defaults: goal 100 · mode manual · max 10000   (or: per account; only with a network)
+folder: /Users/<name>/Acme media buying
 status: active                      (active | paused since YYYY-MM-DD | stopped YYYY-MM-DD)
 schedule: daily 11:00 Europe/London — desktop task ecomm-media-buying-daily
 checklist: app ✓ realize-signin ✓ keep-awake ✓ auto-update ✓ remote-control suggested

@@ -74,7 +74,7 @@ approval.
    verdicts that would change ("3 holds become raises, 1 raise becomes a
    hold, no new pauses"). In an unattended run, write the dry run to the
    digest and wait.
-4. **On an explicit yes**: write `cpa_goal` and `levels`, append
+4. **On an explicit yes**: write `cpa_goal`, `zone_lines` and `levels`, append
    `cpa_goal_history: 100 → 120 (2026-10-20)`; re-derive the last three runs'
    cell codes at the new goal from the CPAs stored in those digests and write
    them into today's digest under "codes re-derived at the new goal" (chains
