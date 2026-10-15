@@ -1,5 +1,8 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.9 — 2026-10-15
+- Install note: the access token is stored once with git's credential helper before adding the plugin source (Claude Code never prompts for a password), with a one-line check; the source and the plugin can then be added from inside a Claude session.
+
 ## v2.0.8 — 2026-10-15
 - Self-check: a plain Claude session that finds the skill without the media-buyer agent does one thing only — writes the agent line into the folder's settings and asks the user to reopen the folder. "check setup" prints a fixed seven-line status (agent, rulebook version, Realize connection, folder, scope, daily task, mode) with OK or the fix on each line; the install note makes it step 5.
 

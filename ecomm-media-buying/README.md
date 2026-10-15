@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.8)
+# Ecomm media buying — install note (v2.0.9)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -11,18 +11,28 @@ campaigns. One agent, `media-buyer`, runs it.
 1. Install the Claude desktop app and sign in. The daily run needs the
    desktop app; Claude Code in a terminal works for everything except the
    automatic schedule.
-2. In a terminal, add the plugin source with the address and the access
-   token you received, then install the plugin:
+2. Store the access token you received, once. The plugin lives in a
+   private source; Claude never asks for a password, it uses what your
+   computer has stored, so this step comes first. In the Terminal (Mac) or
+   Git Bash (Windows) paste this line with your token in place of TOKEN:
+   ```
+   printf 'protocol=https\nhost=github.com\nusername=renatan-jpg\npassword=TOKEN\n' | git credential approve
+   ```
+   Check it: this prints one line and no error.
+   ```
+   git ls-remote https://github.com/renatan-jpg/ecomm-media-buying-alpha
+   ```
+   Then add the source and install the plugin, either in the same terminal:
    ```
    claude plugin marketplace add https://github.com/renatan-jpg/ecomm-media-buying-alpha
    claude plugin install ecomm-media-buying@ecomm-media-buying-alpha
    ```
-   If git asks for a username and password, type your name as the username
-   and the access token as the password; it is remembered after the first
-   time. Then inside Claude: `/plugin` → Marketplaces →
-   ecomm-media-buying-alpha → Enable auto-update. New versions of the rules
-   arrive by themselves after that. (Received a zip instead? In a terminal,
-   run `claude --plugin-dir /path/to/ecomm-media-buying --agent media-buyer`
+   or inside any Claude session, as `/plugin marketplace add` and
+   `/plugin install` with the same address and name. Then inside Claude:
+   `/plugin` → Marketplaces → ecomm-media-buying-alpha → Enable auto-update.
+   New versions of the rules arrive by themselves after that, using the
+   same stored token. (Received a zip instead? In a terminal, run
+   `claude --plugin-dir /path/to/ecomm-media-buying --agent media-buyer`
    for each session; a zip does not update itself.)
 3. Make an empty folder for your account, for example `Acme media buying`
    in your home folder — it will hold the settings and the daily digests,
@@ -127,6 +137,6 @@ maximum you agreed.
 Every verdict is explained as cost per sale against your goal; the ROAS
 column you see in Realize is revenue-based and is not what the rules read.
 
-Version 2.0.8 — the Decision Cube and the launch plan are the settled part;
+Version 2.0.9 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
 new-market and goal-change processes are in beta: they only suggest.
