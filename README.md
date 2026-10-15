@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.11)
+# Ecomm media buying — install note (v2.0.12)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -152,6 +152,6 @@ maximum you agreed.
 Every verdict is explained as cost per sale against your goal; the ROAS
 column you see in Realize is revenue-based and is not what the rules read.
 
-Version 2.0.11 — the Decision Cube and the launch plan are the settled part;
+Version 2.0.12 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
 new-market and goal-change processes are in beta: they only suggest.

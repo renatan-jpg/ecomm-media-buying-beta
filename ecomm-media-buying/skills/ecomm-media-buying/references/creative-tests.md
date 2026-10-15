@@ -80,9 +80,11 @@ about an ad is advisory and pauses nothing.
   > "<angle> has 2 winning titles and 3 winning thumbnails. Shall I open a
   > winners campaign — those titles × those thumbnails, same platforms as the
   > tests — at $<opening> a day?"
-  Opening budget: the **proven** anchor in `opening-budgets.md` ($1,000 ÷ G,
-  kept between 2.5× and 8× the goal, nearest 50). Group "<angle> winners",
-  names `<angle> winners - <platform>`. Built paused as in `media-plan.md`,
+  Opening budget: exactly as a new test campaign — the standard rule in
+  `opening-budgets.md` (2.5× to 8× the goal by the goal's size: 8× under
+  about $60, 5× at $100, 2.5× at $400, nearest 50). One **new campaign group
+  per angle**, "<angle> winners", never shared with the tests or another
+  angle; names `<angle> winners - <platform>`. Built paused as in `media-plan.md`,
   with `create_native_item` for every title × thumbnail pair; the test
   campaigns keep running. Yes → build; no → `winners: … campaign declined
   <date>`, offered again only when the set of winners grows. One side only

@@ -1,5 +1,8 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.12 — 2026-10-15
+- Winners campaign opens like any new test campaign (2.5–8× the goal by the goal's size), in its own campaign group per angle ("<angle> winners").
+
 ## v2.0.11 — 2026-10-15
 - Creative tests (beta): daily verdict per ad inside title and thumbnail tests — losing (no sales after 3×G, over 2×G per sale after 5×G, 5+ sales in zone D/E, or starved 14 days), winning (5+ sales in zone A/B; deep 10+ in zone A), otherwise not determined. Losing ads are paused per a new `creative_mode` (Manual tick / Semi-auto by the run); the last active ad is never paused; under 3 active ads the run asks for variants. Tests are recognised from the build or detected from the ads (1 title × N thumbnails / 1 thumbnail × N titles) and confirmed once; "treat <id> as a title test" declares one. Winning components are recorded per angle; with 2+ winning titles and 2+ winning thumbnails a winners campaign is offered (proven anchor, 2.5–8× the goal). The agent may now pause an ad and nothing else on it.
 
