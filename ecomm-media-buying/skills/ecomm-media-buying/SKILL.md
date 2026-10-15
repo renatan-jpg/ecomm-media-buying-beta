@@ -3,7 +3,7 @@ name: ecomm-media-buying
 description: Manages the Realize accounts an ecommerce advertiser put in scope, against their CPA goal. Reviews the RUNNING campaigns every day (or on demand), recommends RAISE / HOLD / CUT / PAUSE per campaign from the Decision Cube (weekly, last-3-day and yesterday CPA zones against the goal) with the CPA evidence, and — in Manual mode after the user ticks and confirms, or in Semi-auto for cuts and pauses (Auto is not available in the alpha) — applies the changes through the Realize connector. Also runs onboarding (accounts in scope, goal, mode, daily schedule), the launch media plan and later test waves, a weekly creative-test offer, expansion offers after a good week, and the processes for a conversion file, a new market and a CPA change. Use whenever the user mentions reviewing, managing, scaling, pausing or launching their campaigns, gives a CPA goal, uploads conversions, asks to stop, or asks to set up the routine.
 ---
 
-# Ecomm media buying — v2.0.6 (2026-10)
+# Ecomm media buying — v2.0.7 (2026-10)
 
 Taboola's best-practice playbook for scaled, purchase-focused ecommerce
 advertisers. The decision core is the **Media Buying Decision Cube**: three
@@ -579,8 +579,11 @@ builds happen only after the advertiser agrees to a plan table, exactly as in
   and the maximum cap are the advertiser's answers in config: a missing one
   is asked for and the run waits. The skill never estimates a goal from the
   account's results and never runs a review on an example number.
-- **Data source.** The Realize connector is the only source of account
-  data. When it cannot answer (not signed in, a tool missing, an empty
+- **Data source.** This plugin's own Realize connection (tools prefixed
+  `mcp__plugin_ecomm-media-buying_realize-mcp__`) is the only source of
+  account data; another Realize connection that happens to be installed is
+  never used — if the plugin's tools are missing, stop and ask for the
+  sign-in. When it cannot answer (not signed in, a tool missing, an empty
   report), say what it returned and what the advertiser can do; nothing
   is filled in from elsewhere. WebFetch is used only to list a Google Drive
   folder or image link the advertiser pasted for thumbnails

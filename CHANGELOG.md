@@ -1,5 +1,9 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.7 — 2026-10-15
+- The daily task is verified after creation (listed back by id) before setup records it; if it could not be created, the settings say "NOT CREATED" and the next session retries.
+- Only the plugin's own Realize connection is used; if its tools are missing the run stops and asks for the sign-in instead of using another connection.
+
 ## v2.0.6 — 2026-10-15
 - Small goals (under $50): the budget ladder starts at 5× the goal instead of 3× (14 levels, e.g. $100 … $2,000 at a $20 goal); the opening budget stays 8× the goal for these.
 

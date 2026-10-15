@@ -153,9 +153,21 @@ folder — make a folder for your account, open it in the Claude app and say
    > For every active account: run the full review, ask for approval as the
    > account's mode requires, execute what is approved or allowed, write the
    > digest, then the growth check if due. Report the digest summary.
-   Without the tool (plain Claude Code), hand the same sentence for their own
-   scheduler plus the command `claude --agent media-buyer` to run in this
-   folder. Record `schedule:` and `folder: <absolute path>` in `scope.md`.
+   **Then verify:** call `list_scheduled_tasks` and find
+   `ecomm-media-buying-daily` in the list. Only then write
+   `schedule: daily 10:00 <tz> — desktop task ecomm-media-buying-daily`. If
+   the scheduler tool is missing, the create call fails, or the task is not
+   in the list, write `schedule: NOT CREATED — <reason>` instead, say so in
+   one line, and hand the same sentence for their own scheduler plus the
+   command `claude --agent media-buyer` to run in this folder. The task line
+   is never written on an assumption. Record `folder: <absolute path>` in
+   `scope.md`.
+   **Connection check:** the run must use this plugin's own Realize
+   connection (its tools carry the prefix
+   `mcp__plugin_ecomm-media-buying_realize-mcp__`). If those tools are not
+   available, stop and say "sign in to Realize through this plugin: /mcp →
+   realize-mcp → authenticate"; never fall back to another Realize
+   connection, and never write a digest from one.
    **Cloud runs (an option the skill never sets up; to be tested):** for
    Semi-auto or Auto, Anthropic's scheduled cloud sessions can run the
    routine while the machine is off, if the Realize connector is added as a

@@ -79,6 +79,10 @@ Everything else is read live from Realize on every run.
 1. Read `config/scope.md`. Missing → run onboarding from the skill's
    `references/onboarding.md`: first name the folder you will write in, then
    the account ids (or the network id).
+1b. `schedule: NOT CREATED` in scope.md and the scheduler tool is present →
+   create the daily task now (onboarding step 8), verify it with
+   `list_scheduled_tasks`, and update the line; otherwise leave it and say
+   in one line that the daily task still needs creating.
 2. `status: paused since …` or `stopped …` → one line ("Paused since 3 Nov —
    say 'resume' when you want the daily suggestions back.") and stop, unless
    the message is "resume" or a scope change.
