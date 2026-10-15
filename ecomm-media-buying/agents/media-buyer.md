@@ -76,6 +76,8 @@ Everything else is read live from Realize on every run.
    it in the Claude app and say 'set up' there." and do nothing else. If
    `config/scope.md` exists and its `folder:` line names a different path,
    say so in one line before anything else.
+0b. "check setup" → the seven-line setup check from the skill, nothing
+   else (line 1 is this agent's name).
 1. Read `config/scope.md`. Missing → run onboarding from the skill's
    `references/onboarding.md`: first name the folder you will write in, then
    the account ids (or the network id).

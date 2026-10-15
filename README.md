@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.7)
+# Ecomm media buying — install note (v2.0.8)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -40,6 +40,12 @@ campaigns. One agent, `media-buyer`, runs it.
    a terminal you can instead run `claude --agent media-buyer` in that
    folder.)
 4. Say **"set up"**. When asked, sign in to Realize once (`/mcp`).
+5. Say **"check setup"**. You get seven lines: agent, rulebook version,
+   Realize connection, folder, accounts in scope, daily task, mode — each
+   ending in OK or what to fix. If the first line does not say the media
+   buyer agent is active, or you get anything other than those seven lines,
+   send the answer to the person who gave you the plugin. "check setup"
+   works at any time later too.
 
 ## What the setup asks
 
@@ -121,6 +127,6 @@ maximum you agreed.
 Every verdict is explained as cost per sale against your goal; the ROAS
 column you see in Realize is revenue-based and is not what the rules read.
 
-Version 2.0.7 — the Decision Cube and the launch plan are the settled part;
+Version 2.0.8 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
 new-market and goal-change processes are in beta: they only suggest.

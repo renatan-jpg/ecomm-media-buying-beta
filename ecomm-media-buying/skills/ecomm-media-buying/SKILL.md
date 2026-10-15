@@ -3,7 +3,7 @@ name: ecomm-media-buying
 description: Manages the Realize accounts an ecommerce advertiser put in scope, against their CPA goal. Reviews the RUNNING campaigns every day (or on demand), recommends RAISE / HOLD / CUT / PAUSE per campaign from the Decision Cube (weekly, last-3-day and yesterday CPA zones against the goal) with the CPA evidence, and — in Manual mode after the user ticks and confirms, or in Semi-auto for cuts and pauses (Auto is not available in the alpha) — applies the changes through the Realize connector. Also runs onboarding (accounts in scope, goal, mode, daily schedule), the launch media plan and later test waves, a weekly creative-test offer, expansion offers after a good week, and the processes for a conversion file, a new market and a CPA change. Use whenever the user mentions reviewing, managing, scaling, pausing or launching their campaigns, gives a CPA goal, uploads conversions, asks to stop, or asks to set up the routine.
 ---
 
-# Ecomm media buying — v2.0.7 (2026-10)
+# Ecomm media buying — v2.0.8 (2026-10)
 
 Taboola's best-practice playbook for scaled, purchase-focused ecommerce
 advertisers. The decision core is the **Media Buying Decision Cube**: three
@@ -22,6 +22,36 @@ anything else.**
 Every verdict rests on the conversions Realize reports for the main
 conversion rule. If that tracking is wrong, the skill will scale and pause
 the wrong campaigns with full confidence — see the tracking guardrail.
+
+## This skill runs only as the media-buyer agent
+
+You are the media-buyer agent when your instructions contain the section
+"Rails that never move" from `agents/media-buyer.md`. If they do not, this
+is a plain Claude session that found the skill, and none of the rails
+(scope, no shell, the plugin's own Realize connection) are in force. Then do
+exactly this and nothing else: if the folder is not the plugin's own folder
+(Guardrails, "Account folder"), write or update `.claude/settings.json` here
+so that it contains `"agent": "ecomm-media-buying:media-buyer"` (keep any
+other keys), and say: "I've set this folder to open as your media buyer.
+Close this session, open the folder again, and say 'set up'." Read no
+account, write no config, run no review.
+
+**Setup check.** Whenever the user says **"check setup"** (any time, any
+mode), answer with exactly these seven lines and nothing else, each ending
+in OK or the fix:
+1. Media buyer agent: active — `ecomm-media-buying:media-buyer`
+2. Rulebook: v<version from this file's header>
+3. Realize: the plugin's connection, signed in (`search_accounts` answers)
+   — or NOT signed in → /mcp → realize-mcp → authenticate
+4. Folder: <absolute path> — an account folder, not the plugin's
+5. Scope: <accounts or network> · status <active | paused | stopped> — or
+   not set up yet → say "set up"
+6. Daily task: `ecomm-media-buying-daily` at <time> — present in the task
+   list (`list_scheduled_tasks`), or NOT CREATED → <reason>
+7. Mode: <Manual | Semi-auto> per account
+A plain session cannot print line 1; if the user sees anything other than
+these seven lines, the setup is wrong and they should send the answer to
+whoever gave them the plugin.
 
 ## Files in this skill
 
@@ -84,6 +114,8 @@ from Realize each run.
 - **Single question** — "should I pause campaign X?" → same rules, one card,
   the user's stated goal if it differs from config. A single question is
   advisory: it never executes anything, in either mode.
+- **Setup check** — "check setup" → the seven-line status above, nothing
+  else.
 
 ## Step 1 — Pull the data (Realize connector)
 

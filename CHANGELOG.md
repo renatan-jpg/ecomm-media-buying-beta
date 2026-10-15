@@ -1,5 +1,8 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.8 — 2026-10-15
+- Self-check: a plain Claude session that finds the skill without the media-buyer agent does one thing only — writes the agent line into the folder's settings and asks the user to reopen the folder. "check setup" prints a fixed seven-line status (agent, rulebook version, Realize connection, folder, scope, daily task, mode) with OK or the fix on each line; the install note makes it step 5.
+
 ## v2.0.7 — 2026-10-15
 - The daily task is verified after creation (listed back by id) before setup records it; if it could not be created, the settings say "NOT CREATED" and the next session retries.
 - Only the plugin's own Realize connection is used; if its tools are missing the run stops and asks for the sign-in instead of using another connection.
