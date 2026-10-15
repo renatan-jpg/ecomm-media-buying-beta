@@ -1,5 +1,9 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.3 — 2026-10-15
+- Daily run at 10:00 in the account's time zone (was 11:00), confirmed at setup. A run the machine missed is skipped, with a one-line note, and the next morning reviews; no same-day catch-up review.
+- Install note and onboarding explain Claude's own permission prompt ("Yes, and don't ask again") in plain words and separate it from the media buyer's Manual / Semi-auto mode; nobody needs Claude's "Auto" permission setting.
+
 ## v2.0.2 — 2026-10-14
 - Conversion file: the install note now has its own section ("If you see more sales than Realize does") with the four things to send — purchases with date and time, the campaign id or UTM campaign name on every row, the time zone, the period through yesterday — and says this is the media buyer's feature, not Realize's.
 - The file's times are converted from the file's time zone (asked once, stored as `conversion_file_tz`) to the account's, and each purchase is counted on its day of purchase in the account's time zone; the reconciliation says when the offset moves a day.

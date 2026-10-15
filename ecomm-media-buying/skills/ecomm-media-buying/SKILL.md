@@ -3,7 +3,7 @@ name: ecomm-media-buying
 description: Manages the Realize accounts an ecommerce advertiser put in scope, against their CPA goal. Reviews the RUNNING campaigns every day (or on demand), recommends RAISE / HOLD / CUT / PAUSE per campaign from the Decision Cube (weekly, last-3-day and yesterday CPA zones against the goal) with the CPA evidence, and — in Manual mode after the user ticks and confirms, in Semi-auto for cuts and pauses, or in Auto mode within the agreed maximum budget — applies the changes through the Realize connector. Also runs onboarding (accounts in scope, goal, mode, daily schedule), the launch media plan and later test waves, a weekly creative-test offer, expansion offers after a good week, and the processes for a conversion file, a new market and a CPA change. Use whenever the user mentions reviewing, managing, scaling, pausing or launching their campaigns, gives a CPA goal, uploads conversions, asks to stop, or asks to set up the routine.
 ---
 
-# Ecomm media buying — v2.0.2 (2026-10)
+# Ecomm media buying — v2.0.3 (2026-10)
 
 Taboola's best-practice playbook for scaled, purchase-focused ecommerce
 advertisers. The decision core is the **Media Buying Decision Cube**: three
@@ -70,9 +70,14 @@ from Realize each run.
 
 ## Run types
 
-- **Full run** — the scheduled daily review (11:00 in the account's time
+- **Full run** — the scheduled daily review (10:00 in the account's time
   zone, once yesterday's data is complete), and any time the user says
   "review my account / campaigns". Every running campaign gets a verdict.
+  A scheduled run that starts more than 3 hours after its time (the
+  machine was off; the app is catching up) is **skipped**: write one line
+  to `digests/<account_id>/YYYY-MM-DD-skipped.md` ("run missed; next
+  review tomorrow 10:00"), say it, and stop. The next morning's run reviews
+  as usual; the chains treat the gap as one missing run (Guardrails).
 - **Re-check** — every HOLD is looked at again on the next full run, i.e.
   tomorrow. Held campaigns show in the digest with "on hold since …".
 - **Single question** — "should I pause campaign X?" → same rules, one card,

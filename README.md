@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.2)
+# Ecomm media buying — install note (v2.0.3)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -49,15 +49,25 @@ It then creates the daily task.
 
 ## Every day
 
-The review runs at the time you chose, on this computer, while the Claude
-app is open and the computer is awake (turn the app's keep-awake setting on).
-A missed day gets one catch-up run; nothing is ever decided on one day's
-numbers. In Manual mode the run waits for your ticks — Remote Control lets
-you answer from your phone. When Claude asks for permission the first time,
-allow it to write files in your folder (every mode) and, if you chose
-Semi-auto, to use the plugin's campaign tools; otherwise an unattended run
-waits on that prompt and nothing happens. Every run is written to `digests/`
-in your folder, one sub-folder per account.
+The review runs every morning at 10:00 in your account's time zone (or the
+hour you chose), on this computer, while the Claude app is open and the
+computer is awake (turn the app's keep-awake setting on). If the computer
+was off at that hour, that day is skipped and the next morning's run
+reviews as usual; nothing is ever decided on one day's numbers. In Manual
+mode the run waits for your ticks — Remote Control lets you answer from
+your phone. Every run is written to `digests/` in your folder, one
+sub-folder per account.
+
+**Claude's own permission prompt.** The first time the media buyer writes a
+file in your folder, creates the daily task, or changes a campaign, Claude
+itself asks you — a box with choices like "Yes", "Yes, and don't ask again"
+and "No". Pick the "don't ask again" option, once, while you are at the
+keyboard: an unattended run cannot answer that box, so without it the run
+waits and nothing happens, not even the digest. This prompt is Claude's
+permission system, not the media buyer's mode: the Manual / Semi-auto
+choice you make at setup decides whether you approve budget changes before
+they happen, and you never need to switch Claude to its own "Auto"
+permission setting.
 
 ## Timing on a new campaign
 
@@ -100,6 +110,6 @@ maximum you agreed.
 Every verdict is explained as cost per sale against your goal; the ROAS
 column you see in Realize is revenue-based and is not what the rules read.
 
-Version 2.0.2 — the Decision Cube and the launch plan are the settled part;
+Version 2.0.3 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
 new-market and goal-change processes are in beta: they only suggest.
