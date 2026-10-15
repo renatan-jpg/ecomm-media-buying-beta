@@ -74,14 +74,15 @@ folder — make a folder for your account, open it in the Claude app and say
    or similar-scale currencies round to the currency's natural step), show
    them to the user as amounts ("your budget levels: $300, $500, $750 …"), and
    store them in config as `levels: <15 amounts>`.
-4. **Mode.** Offer two for now, then ask:
-   - **Manual** — every run ends with the recommendations as tick boxes; only
-     what the user ticks is executed, after a final preview. Recommended to
-     start.
-   - **Semi-auto** — the run applies cuts and pauses itself and reports
-     them; raises still come as tick boxes for the user. The usual next step
-     after a few weeks: the downside is handled daily, the upside stays in
-     the user's hands.
+4. **Mode.** Ask one single-choice question, in exactly these words:
+   - **Manual (recommended to start)** — "You'll get our recommendations;
+     only what you tick is applied in Realize."
+   - **Semi-auto** — "We handle the cuts (decreasing a campaign's daily
+     budget) and the pauses; you approve the campaign budget raises by
+     ticking them."
+   (Manual: every run ends with the recommendations as tick boxes and a
+   final preview. Semi-auto: the run applies cuts and pauses itself and
+   reports them; raises still come as tick boxes.)
    **Auto** (the run would also execute raises) is **not available in the
    alpha**: it is not offered, not mentioned unless the user asks, and never
    switched on. If the user asks for it: "Auto isn't available in the alpha

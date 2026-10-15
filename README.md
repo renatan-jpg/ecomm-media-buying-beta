@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.4)
+# Ecomm media buying — install note (v2.0.5)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -28,8 +28,13 @@ campaigns. One agent, `media-buyer`, runs it.
    in your home folder — it will hold the settings and the daily digests,
    and the media buyer writes only there. Inside it, create a file
    `.claude/settings.json` containing
-   `{ "agent": "ecomm-media-buying:media-buyer" }` — this makes every Claude
-   session opened in that folder your media buyer. Then open that folder in
+   ```
+   { "agent": "ecomm-media-buying:media-buyer",
+     "permissions": { "allow": [ "WebFetch(domain:drive.google.com)" ] } }
+   ```
+   — the first line makes every Claude session opened in that folder your
+   media buyer; the second lets it read a Google Drive folder you share for
+   thumbnails without asking each time. Then open that folder in
    the Claude desktop app (Open folder). The first thing the setup says is
    which folder it will use; if you opened the wrong one, it tells you. (In
    a terminal you can instead run `claude --agent media-buyer` in that
@@ -41,11 +46,17 @@ campaigns. One agent, `media-buyer`, runs it.
 The Realize account ids to manage — or your network id, in which case it
 asks whether to run on every account under the network or only some (it
 will never touch any other) — your main purchase event, your CPA goal (the
-number you give is the only goal it ever uses), the mode — **Manual** (you tick what runs) or
-**Semi-auto** (cuts and pauses run by themselves, raises wait for your tick);
-a fully automatic mode is not available in the alpha — the maximum daily budget it may
-ever set, the run time, and whether to build your first test campaigns now.
-It then creates the daily task.
+number you give is the only goal it ever uses), the mode — **Manual**: you
+get the recommendations and only what you tick is applied in Realize; or
+**Semi-auto**: it handles the cuts (decreasing a campaign's daily budget)
+and the pauses, and you approve the budget raises by ticking them; a fully
+automatic mode is not available in the alpha — the maximum daily budget it
+may ever set, the run time, and whether to build your first test campaigns
+now. It then creates the daily task.
+
+For test campaigns it needs your titles and landing pages in the chat, and
+the thumbnails as public image links or a Google Drive folder shared as
+"anyone with the link" (one sub-folder per angle works well).
 
 ## Every day
 
@@ -110,6 +121,6 @@ maximum you agreed.
 Every verdict is explained as cost per sale against your goal; the ROAS
 column you see in Realize is revenue-based and is not what the rules read.
 
-Version 2.0.4 — the Decision Cube and the launch plan are the settled part;
+Version 2.0.5 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
 new-market and goal-change processes are in beta: they only suggest.

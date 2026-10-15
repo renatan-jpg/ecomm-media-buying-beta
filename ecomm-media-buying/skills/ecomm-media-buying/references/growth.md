@@ -20,7 +20,9 @@ a new landing page or angle", "Not this week", "Stop asking weekly".
   message still runs the flow).
 - Yes → at most three questions: which angle (one of the landing pages from
   the launch digest, or a new URL); what is new (titles, thumbnails, both);
-  the titles and the thumbnail URLs (publicly hosted, as in the launch plan).
+  the titles and the thumbnails (public image URLs, or a Google Drive
+  folder or file shared as "anyone with the link" — `media-plan.md`
+  interview step 7, "Google Drive").
   Then the plan table and the build as in `media-plan.md`: titles only → a
   **title test** (1 thumbnail × the new titles); thumbnails only → a
   **thumbnail test** (1 title × the new thumbnails); both → both tests. One
