@@ -1,5 +1,8 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.6 — 2026-10-15
+- Small goals (under $50): the budget ladder starts at 5× the goal instead of 3× (14 levels, e.g. $100 … $2,000 at a $20 goal); the opening budget stays 8× the goal for these.
+
 ## v2.0.5 — 2026-10-15
 - Thumbnails from Google Drive: a folder or image shared as "anyone with the link" is accepted for the launch plan and the weekly creative test; sub-folders are angles, the ratio is read from the file name, the list is confirmed before building. The agent gets web access for those Drive links only; the install note pre-allows that domain in the folder settings.
 - Mode question reworded: Manual — "You'll get our recommendations; only what you tick is applied in Realize"; Semi-auto — "We handle the cuts (decreasing a campaign's daily budget) and the pauses; you approve the budget raises by ticking them."

@@ -3,7 +3,9 @@
 Use when the user asks "what budget should my first <surface> campaign open
 with?" Each surface has a **dollar anchor** (its opening amount at a $100
 goal, the "e.g." column). For any other goal: **opening multiple = anchor ÷
-G, kept between 2.5× and 8× the goal**, rounded to the nearest 50 (the 2.5–8×
+G, kept between 2.5× and 8× the goal**, rounded to the nearest 50 (so every
+goal under $62.50, and every small goal under $50 whose ladder starts at 5×,
+opens at 8×G; the 2.5–8×
 rule in `media-plan.md`). These are opening budgets for a first campaign on
 that surface; scaling afterwards follows the normal raise levels.
 

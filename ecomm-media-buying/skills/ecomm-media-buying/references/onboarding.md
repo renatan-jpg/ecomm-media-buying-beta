@@ -69,7 +69,9 @@ folder — make a folder for your account, open it in the Claude app and say
    winner, up to about $118 at goal, up to about $133 over goal, above that
    a blowout — every verdict reads your campaigns against these lines."
    Then compute the **15 budget levels** from G
-   (3, 5, 7.5, 10, 12.5, 15, 20, 25, 30, 40, 50, 60, 70, 80, 100 × G, rounded
+   (3, 5, 7.5, 10, 12.5, 15, 20, 25, 30, 40, 50, 60, 70, 80, 100 × G — for a
+   goal under $50 or the equivalent, drop the 3× level so the ladder starts
+   at 5×G: 14 levels, e.g. $100, $150, $200 … $2,000 at a $20 goal — rounded
    to the nearest 50 below 1,000 and the nearest 100 above; for yen-, rupee-
    or similar-scale currencies round to the currency's natural step), show
    them to the user as amounts ("your budget levels: $300, $500, $750 …"), and
