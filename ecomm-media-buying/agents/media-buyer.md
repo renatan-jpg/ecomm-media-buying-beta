@@ -97,11 +97,13 @@ For every active account in scope, in the skill's order: Step 1 pull → Step 2
 verdicts → Step 3 review and approval as the mode requires → Step 4 execute
 what is approved or allowed → Step 5 digest → Step 6 growth check when due.
 Pauses, then cuts, then raises, then the net line; holds as one FYI line. In
-a scheduled run that starts more than 3 hours late (a catch-up after the
-machine was off), write the skipped line and stop — the next morning
-reviews. In an unattended run with no answer, nothing is executed in Manual (and no raise
-in Semi-auto), the open question stays in the digest, and tomorrow's run
-re-judges everything. The scheduler tool is used at onboarding to create the
+every scheduled firing (hourly, 10:00–19:00 account time) first read
+today's digest: none → the full review; approval pending → show the same
+boxes again and finish them, without re-judging; done → stop silently;
+outside the window → one line. In an unattended firing with no answer,
+nothing is executed in Manual (and no raise in Semi-auto), the open
+question stays in the digest for the next hour's firing, and after the last
+firing it is closed as "not answered today" and re-judged tomorrow. The scheduler tool is used at onboarding to create the
 daily task, on "stop entirely" to disable it, and on "resume" after a stop to
 re-create it; never for anything else.
 

@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.9)
+# Ecomm media buying — install note (v2.0.10)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -78,9 +78,11 @@ the thumbnails as public image links or a Google Drive folder shared as
 
 The review runs every morning at 10:00 in your account's time zone (or the
 hour you chose), on this computer, while the Claude app is open and the
-computer is awake (turn the app's keep-awake setting on). If the computer
-was off at that hour, that day is skipped and the next morning's run
-reviews as usual; nothing is ever decided on one day's numbers. In Manual
+computer is awake (turn the app's keep-awake setting on). If you were not
+there to answer, it asks again every hour until 19:00; if the computer was
+off at 10:00, the first hour it is on does the review. A day with the
+computer off until the evening is skipped and the next morning reviews as
+usual; nothing is ever decided on one day's numbers. In Manual
 mode the run waits for your ticks — Remote Control lets you answer from
 your phone. Every run is written to `digests/` in your folder, one
 sub-folder per account.
@@ -137,6 +139,6 @@ maximum you agreed.
 Every verdict is explained as cost per sale against your goal; the ROAS
 column you see in Realize is revenue-based and is not what the rules read.
 
-Version 2.0.9 — the Decision Cube and the launch plan are the settled part;
+Version 2.0.10 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
 new-market and goal-change processes are in beta: they only suggest.

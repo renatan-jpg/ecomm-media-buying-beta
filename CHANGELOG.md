@@ -1,5 +1,8 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.10 — 2026-10-15
+- The daily task fires every hour from 10:00 to 19:00 account time: the first firing with the machine on does the review, later firings re-ask only what is still pending (no re-judging), and a day with no firing in the window is skipped. Replaces the single 10:00 run and the three-hour catch-up rule.
+
 ## v2.0.9 — 2026-10-15
 - Install note: the access token is stored once with git's credential helper before adding the plugin source (Claude Code never prompts for a password), with a one-line check; the source and the plugin can then be added from inside a Claude session.
 

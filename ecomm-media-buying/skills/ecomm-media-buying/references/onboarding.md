@@ -119,8 +119,9 @@ folder — make a folder for your account, open it in the Claude app and say
    plainly and record it in `scope.md`:
    - the Claude desktop app installed and signed in (the daily run happens on
      this machine, while the app is open and the computer is awake — turn
-     the app's keep-awake setting on; a day the computer was off is
-     skipped, and the next morning's run reviews as usual);
+     the app's keep-awake setting on; the run tries every hour from 10:00
+     to 19:00 account time until the review has run and been answered, and
+     a day with the computer off for that whole window is skipped);
    - Realize signed in through this plugin's connection (`/mcp`), once;
    - auto-update switched on for the plugin's marketplace (plugin menu →
      Marketplaces), so rule updates arrive by themselves;
@@ -140,22 +141,25 @@ folder — make a folder for your account, open it in the Claude app and say
      That is Claude's own permission prompt; it has nothing to do with the
      Manual / Semi-auto mode you chose, and you never need to switch Claude
      to its own 'Auto' permission mode."
-   Then the schedule: confirm the run time (10:00 in the account's time
-   zone, converted to the machine's local time; "10:00 your account's time,
-   or another hour?") and, when the scheduler tool
-   (`create_scheduled_task`) is available, create the task — id
-   `ecomm-media-buying-daily`, cron `0 <converted hour> * * *` in the
-   machine's local time,
-   title "Ecomm media buying — daily review", prompt:
-   > Open the account folder <absolute path>. Use the media-buyer agent (if it
-   > is not available, follow the ecomm-media-buying skill directly). Read
+   Then the schedule: confirm the first run time (10:00 in the account's
+   time zone, converted to the machine's local time; "10:00 your account's
+   time, or another hour?") and say that it retries every hour until 19:00
+   if nobody answered. When the scheduler tool (`create_scheduled_task`) is
+   available, create the task — id `ecomm-media-buying-daily`, cron
+   `0 <converted first hour>-<converted last hour> * * *` in the machine's
+   local time (10:00–19:00 account time; split into two tasks only if the
+   conversion crosses midnight), title "Ecomm media buying — daily review",
+   prompt:
+   > Open the account folder <absolute path> as the media-buyer agent. Read
    > config/scope.md; if status is not active, say so in one line and stop.
-   > For every active account: run the full review, ask for approval as the
-   > account's mode requires, execute what is approved or allowed, write the
-   > digest, then the growth check if due. Report the digest summary.
+   > Decide from today's digest: no digest → run the full review for every
+   > active account, ask for approval as the account's mode requires, execute
+   > what is approved or allowed, write the digest, then the growth check if
+   > due; approval pending → show the pending items again and finish them;
+   > done → stop silently. Outside 10:00–19:00 account time → one line, stop.
    **Then verify:** call `list_scheduled_tasks` and find
    `ecomm-media-buying-daily` in the list. Only then write
-   `schedule: daily 10:00 <tz> — desktop task ecomm-media-buying-daily`. If
+   `schedule: daily 10:00–19:00 hourly <tz> — desktop task ecomm-media-buying-daily`. If
    the scheduler tool is missing, the create call fails, or the task is not
    in the list, write `schedule: NOT CREATED — <reason>` instead, say so in
    one line, and hand the same sentence for their own scheduler plus the
@@ -183,7 +187,7 @@ currency: USD               time_zone: <tz>
 cpa_goal: 100               main_conversion_rule: <id> — <name>
 zone_lines: 66.6667, 90.9091, 117.6471, 133.3333   (G × 2/3, 10/11, 20/17, 4/3, four decimals)
 mode: manual                max_daily_cap: 10000      (mode: manual | semi-auto | auto)
-run_time: daily 10:00 <account time zone>
+run_time: daily from 10:00 <account time zone>, hourly retries until 19:00
 levels: 300, 500, 750, 1000, 1250, 1500, 2000, 2500, 3000, 4000, 5000, 6000, 7000, 8000, 10000
 media_plan: skipped         (or: built 2026-10-02)
 onboarded: 2026-10-02
@@ -203,14 +207,15 @@ network: 7654321 — Acme Network (all advertiser accounts, refreshed each run) 
 network_defaults: goal 100 · mode manual · max 10000   (or: per account; only with a network)
 folder: /Users/<name>/Acme media buying
 status: active                      (active | paused since YYYY-MM-DD | stopped YYYY-MM-DD)
-schedule: daily 10:00 Europe/London — desktop task ecomm-media-buying-daily
+schedule: daily 10:00–19:00 hourly Europe/London — desktop task ecomm-media-buying-daily
 checklist: app ✓ realize-signin ✓ keep-awake ✓ auto-update ✓ remote-control suggested
 realize_plugin: present | disabled | not installed
 ```
 
 The review reads full days only, so the run must sit after midnight in the
-account's time zone; 10:00 is the default, late morning is fine. A run the
-machine missed is not caught up later that day: the skill skips it and the
-next morning's run reviews (SKILL.md, Run types). Step 8 created or handed
-over the schedule. The on-demand phrase *"Review my account"* works any
+account's time zone; 10:00 is the default. The task fires hourly until
+19:00: the first firing that finds the machine on does the review, later
+firings only re-ask what is still pending, and a day with no firing in the
+window is skipped (SKILL.md, Run types). Step 8 created or handed over the
+schedule. The on-demand phrase *"Review my account"* works any
 time.
