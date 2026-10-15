@@ -1,9 +1,9 @@
 ---
 name: ecomm-media-buying
-description: Manages the Realize accounts an ecommerce advertiser put in scope, against their CPA goal. Reviews the RUNNING campaigns every day (or on demand), recommends RAISE / HOLD / CUT / PAUSE per campaign from the Decision Cube (weekly, last-3-day and yesterday CPA zones against the goal) with the CPA evidence, and — in Manual mode after the user ticks and confirms, in Semi-auto for cuts and pauses, or in Auto mode within the agreed maximum budget — applies the changes through the Realize connector. Also runs onboarding (accounts in scope, goal, mode, daily schedule), the launch media plan and later test waves, a weekly creative-test offer, expansion offers after a good week, and the processes for a conversion file, a new market and a CPA change. Use whenever the user mentions reviewing, managing, scaling, pausing or launching their campaigns, gives a CPA goal, uploads conversions, asks to stop, or asks to set up the routine.
+description: Manages the Realize accounts an ecommerce advertiser put in scope, against their CPA goal. Reviews the RUNNING campaigns every day (or on demand), recommends RAISE / HOLD / CUT / PAUSE per campaign from the Decision Cube (weekly, last-3-day and yesterday CPA zones against the goal) with the CPA evidence, and — in Manual mode after the user ticks and confirms, or in Semi-auto for cuts and pauses (Auto is not available in the alpha) — applies the changes through the Realize connector. Also runs onboarding (accounts in scope, goal, mode, daily schedule), the launch media plan and later test waves, a weekly creative-test offer, expansion offers after a good week, and the processes for a conversion file, a new market and a CPA change. Use whenever the user mentions reviewing, managing, scaling, pausing or launching their campaigns, gives a CPA goal, uploads conversions, asks to stop, or asks to set up the routine.
 ---
 
-# Ecomm media buying — v2.0.3 (2026-10)
+# Ecomm media buying — v2.0.4 (2026-10)
 
 Taboola's best-practice playbook for scaled, purchase-focused ecommerce
 advertisers. The decision core is the **Media Buying Decision Cube**: three
@@ -14,8 +14,9 @@ skill and the cube must always return the same verdict for the same inputs.
 
 **Nothing in the account is ever changed except (a) in Manual mode after the
 user ticked the item AND confirmed the final preview, (b) in Semi-auto mode:
-cuts and pauses as in Auto, raises as in Manual, or (c) in Auto mode within
-the maximum daily budget the user agreed to at onboarding. Never act on
+cuts and pauses by itself, raises as in Manual, or (c) in Auto mode within
+the maximum daily budget the user agreed to at onboarding — **Auto is not
+available in the alpha: never offered, never switched on.** Never act on
 anything else.**
 
 Every verdict rests on the conversions Realize reports for the main
@@ -49,7 +50,7 @@ human-readable files in the user's account folder:
   every run; the only list of accounts the skill may ever touch.
 - **`config/<account>.md`** — written once at onboarding: account id + name,
   CPA goal G, main conversion rule, mode (Manual / Semi-auto / Auto), agreed
-  maximum daily cap, `auto_unlock` date, budget levels, zone lines, `groups:` block,
+  maximum daily cap, budget levels, zone lines, `groups:` block,
   `creative_check`, `growth:` state, `conversion_source`, `conversion_file_tz`,
   `cpa_goal_history`.
   Read it at the start of every run; never re-ask what it holds. Edited only
@@ -509,9 +510,11 @@ are executed by the run as in Auto, and the review lists them first as
 through Step A / Step B exactly as in Manual and wait for the user. Most advertisers want to watch the money going up and let the
 run handle the money going down.
 
-**Auto mode** (offered only from the `auto_unlock` date in config, 28 days
-after onboarding): the same review and the same rules; the difference is who
-presses the button. Execute every RAISE / CUT / PAUSE (including quick-pauses),
+**Auto mode — not available in the alpha.** It is never offered and never
+switched on; "switch to auto" gets "Auto isn't available in the alpha —
+Manual or Semi-auto." The rules stay here for the version that enables it:
+the same review and the same rules; the difference is who presses the
+button. Execute every RAISE / CUT / PAUSE (including quick-pauses),
 then write the digest and report what was done. HOLD never executes anything.
 The one rail: never set a cap above the agreed maximum in config.
 

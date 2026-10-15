@@ -1,5 +1,8 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.4 — 2026-10-15
+- Auto mode is not available in the alpha: never offered, never switched on (the four-week unlock is gone). Only Manual and Semi-auto exist for alpha accounts.
+
 ## v2.0.3 — 2026-10-15
 - Daily run at 10:00 in the account's time zone (was 11:00), confirmed at setup. A run the machine missed is skipped, with a one-line note, and the next morning reviews; no same-day catch-up review.
 - Install note and onboarding explain Claude's own permission prompt ("Yes, and don't ask again") in plain words and separate it from the media buyer's Manual / Semi-auto mode; nobody needs Claude's "Auto" permission setting.

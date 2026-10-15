@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.3)
+# Ecomm media buying — install note (v2.0.4)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -43,7 +43,7 @@ asks whether to run on every account under the network or only some (it
 will never touch any other) — your main purchase event, your CPA goal (the
 number you give is the only goal it ever uses), the mode — **Manual** (you tick what runs) or
 **Semi-auto** (cuts and pauses run by themselves, raises wait for your tick);
-Auto becomes available after four weeks — the maximum daily budget it may
+a fully automatic mode is not available in the alpha — the maximum daily budget it may
 ever set, the run time, and whether to build your first test campaigns now.
 It then creates the daily task.
 
@@ -110,6 +110,6 @@ maximum you agreed.
 Every verdict is explained as cost per sale against your goal; the ROAS
 column you see in Realize is revenue-based and is not what the rules read.
 
-Version 2.0.3 — the Decision Cube and the launch plan are the settled part;
+Version 2.0.4 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
 new-market and goal-change processes are in beta: they only suggest.

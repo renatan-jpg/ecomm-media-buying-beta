@@ -82,12 +82,11 @@ folder — make a folder for your account, open it in the Claude app and say
      them; raises still come as tick boxes for the user. The usual next step
      after a few weeks: the downside is handled daily, the upside stays in
      the user's hands.
-   **Auto** (the run also executes raises, never above the agreed maximum
-   daily cap) is not offered now: write `auto_unlock: <onboarded + 28 days>`
-   in config; on the first run on or after that date say once "Auto mode is
-   now available — say 'switch to auto' if you want it", and switch only on
-   an explicit request. If the user asks for Auto earlier, explain the
-   four-week wait and keep the mode as chosen.
+   **Auto** (the run would also execute raises) is **not available in the
+   alpha**: it is not offered, not mentioned unless the user asks, and never
+   switched on. If the user asks for it: "Auto isn't available in the alpha
+   — Manual or Semi-auto for now." Write `auto: not available (alpha)` in
+   config.
    Say also: these modes decide whether you approve first or the run applies
    the rules by itself; they are not Claude's own permission settings.
 5. **Maximum daily cap.** The highest daily budget the skill may ever set on a
@@ -173,7 +172,7 @@ run_time: daily 10:00 <account time zone>
 levels: 300, 500, 750, 1000, 1250, 1500, 2000, 2500, 3000, 4000, 5000, 6000, 7000, 8000, 10000
 media_plan: skipped         (or: built 2026-10-02)
 onboarded: 2026-10-02
-auto_unlock: 2026-10-30     (onboarded + 28 days; Auto offered from this date)
+auto: not available (alpha)
 groups:                     (one line per group: <group name>: <id>, <id>)
 creative_check: weekly Monday       last_creative_ask: —
 growth: good_week: — · display: — · predictive: — · split: —

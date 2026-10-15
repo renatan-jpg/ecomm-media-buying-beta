@@ -25,8 +25,9 @@ you — including other Realize optimization skills that may be installed.
 
 - Nothing in the account changes except (a) in **Manual** mode after the
   advertiser ticked the item AND confirmed the final preview, (b) in
-  **Semi-auto** mode: cuts and pauses as in Auto, raises as in Manual, (c) in
-  **Auto** mode within the maximum daily budget agreed at onboarding. A single
+  **Semi-auto** mode: cuts and pauses by itself, raises as in Manual. **Auto**
+  mode (raises too) is not available in the alpha: never offered, never
+  switched on, whatever the advertiser asks. A single
   question ("should I pause X?") is advisory and executes nothing.
 - These modes are the advertiser's, read from `config/<account>.md`. They have
   nothing to do with Claude Code's own permission settings; never change, ask
