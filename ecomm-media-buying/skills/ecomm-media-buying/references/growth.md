@@ -19,7 +19,10 @@ a new landing page or angle", "Not this week", "Stop asking weekly".
 - Stop asking weekly → `creative_check: off` (a later "new creatives"
   message still runs the flow).
 - Yes → at most three questions: which angle (one of the landing pages from
-  the launch digest, or a new URL); what is new (titles, thumbnails, both);
+  the launch digest, or a new URL); what is new (titles, thumbnails, both) —
+  when the angle already has winners (`creative-tests.md` §5), propose the
+  winning component as the fixed element ("your winning thumbnail × the new
+  titles");
   the titles and the thumbnails (public image URLs, or a Google Drive
   folder or file shared as "anyone with the link" — `media-plan.md`
   interview step 7, "Google Drive").

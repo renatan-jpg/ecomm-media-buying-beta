@@ -84,7 +84,9 @@ folder — make a folder for your account, open it in the Claude app and say
      ticking them."
    (Manual: every run ends with the recommendations as tick boxes and a
    final preview. Semi-auto: the run applies cuts and pauses itself and
-   reports them; raises still come as tick boxes.)
+   reports them; raises still come as tick boxes.) Then one yes/no: "Same
+   for pausing losing ads in your creative tests?" — yes → `creative_mode`
+   = the mode; no → ask which of the two, and write it.
    **Auto** (the run would also execute raises) is **not available in the
    alpha**: it is not offered, not mentioned unless the user asks, and never
    switched on. If the user asks for it: "Auto isn't available in the alpha
@@ -194,6 +196,9 @@ onboarded: 2026-10-02
 auto: not available (alpha)
 groups:                     (one line per group: <group name>: <id>, <id>)
 creative_check: weekly Monday       last_creative_ask: —
+creative_mode: manual               (manual | semi-auto — how losing ads in creative tests are paused)
+creative_tests: —                   (12345678: thumbnail test (<angle>) · 23456789: title test (<angle>))
+winners: —                          (<angle>: titles [..] · thumbnails [..] · campaign built/declined <date>)
 growth: good_week: — · display: — · predictive: — · split: —
 conversion_source: realize    conversion_file_tz: —   (the time zone of the advertiser's file, asked with the first file)
 cpa_goal_history: 100 (2026-10-02)

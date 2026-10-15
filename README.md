@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.10)
+# Ecomm media buying — install note (v2.0.11)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -129,6 +129,19 @@ will ask you to add the campaign to your tracking link first. If you choose
 yesterday is needed before each run; a missing day means that day's review
 waits.
 
+## Creative tests
+
+A title test (one thumbnail, several titles) or a thumbnail test (one
+title, several thumbnails) is read every day at the ad level: an ad is
+losing when it has no sales after 3× your goal spent, costs more than
+twice your goal per sale after 5× spent, has 5 or more sales well over
+goal, or sat two weeks without spending; it is winning with 5 or more sales
+at or under goal. Losing ads are paused (ticked by you, or by the run in
+Semi-auto, your choice at setup); winning titles and thumbnails are kept,
+and once an angle has two winning titles and two winning thumbnails you
+are offered a winners campaign with just those. Tests you already run can
+be included by saying "treat <campaign id> as a title test".
+
 ## Stopping
 
 Say "stop" at any time. You will be asked whether to pause the daily
@@ -139,6 +152,6 @@ maximum you agreed.
 Every verdict is explained as cost per sale against your goal; the ROAS
 column you see in Realize is revenue-based and is not what the rules read.
 
-Version 2.0.10 — the Decision Cube and the launch plan are the settled part;
+Version 2.0.11 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
 new-market and goal-change processes are in beta: they only suggest.

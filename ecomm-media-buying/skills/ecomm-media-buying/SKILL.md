@@ -3,7 +3,7 @@ name: ecomm-media-buying
 description: Manages the Realize accounts an ecommerce advertiser put in scope, against their CPA goal. Reviews the RUNNING campaigns every day (or on demand), recommends RAISE / HOLD / CUT / PAUSE per campaign from the Decision Cube (weekly, last-3-day and yesterday CPA zones against the goal) with the CPA evidence, and — in Manual mode after the user ticks and confirms, or in Semi-auto for cuts and pauses (Auto is not available in the alpha) — applies the changes through the Realize connector. Also runs onboarding (accounts in scope, goal, mode, daily schedule), the launch media plan and later test waves, a weekly creative-test offer, expansion offers after a good week, and the processes for a conversion file, a new market and a CPA change. Use whenever the user mentions reviewing, managing, scaling, pausing or launching their campaigns, gives a CPA goal, uploads conversions, asks to stop, or asks to set up the routine.
 ---
 
-# Ecomm media buying — v2.0.10 (2026-10)
+# Ecomm media buying — v2.0.11 (2026-10)
 
 Taboola's best-practice playbook for scaled, purchase-focused ecommerce
 advertisers. The decision core is the **Media Buying Decision Cube**: three
@@ -62,6 +62,7 @@ whoever gave them the plugin.
 | The user says "skip media plan building" (during onboarding or any time) | note `media_plan: skipped` in config and go to the review — never push the plan again unless asked |
 | The user asks what budget to open a new surface / feature with | `references/opening-budgets.md` |
 | Step 6 of a run (weekly creative ask, winners → publisher split, good-week offers), or the user brings new creatives | `references/growth.md` (beta) |
+| Step 6b of a run — the ads inside creative tests (winning / not determined / losing, pausing losers, the winners campaign), or the user says "treat <id> as a title / thumbnail test" | `references/creative-tests.md` (beta) |
 | The user uploads conversions, changes the CPA goal, instructs an action on a campaign, or asks anything not covered above | `references/client-requests.md` (beta) |
 | Everything else (review, digest, execute) | this file |
 
@@ -492,6 +493,13 @@ HOLDS (a hold is a decision too)
 NO SIGNAL — 2 campaigns below 7× goal ($700) in weekly spend, 1 with fewer than 2 full days (each listed with spent / needed)
 ```
 
+**ADS section** (after the campaign actions, before HOLDS, only when a
+creative test has a losing ad — `references/creative-tests.md` §4): one tick
+box per losing ad, `<campaign id> · <group> — PAUSE AD "<component>"`, with
+spent, sales and cost per sale against the goal in plain words. Ads follow
+the account's `creative_mode`: ticked in Manual, paused by the run in
+Semi-auto.
+
 **Manual mode:** every item is pre-ticked; a ticked HOLD is recorded as agreed
 (nothing is executed for it). Ask: **"Reply `submit` to apply all ticked
 items, `clear all` to untick everything, or `uncheck 2, 5` to drop specific
@@ -613,6 +621,15 @@ left unanswered in an unattended run is written to the digest as open and not
 repeated before its next due date. Nothing in Step 6 changes the account;
 builds happen only after the advertiser agrees to a plan table, exactly as in
 `media-plan.md`.
+
+**Step 6b — ads in creative tests (beta).** Every full run, for every
+campaign recorded or detected as a title or thumbnail test, judge each ad on
+its own numbers since it went live by `references/creative-tests.md`:
+losing ads are paused per `creative_mode` (ticked in Manual, by the run in
+Semi-auto), winning components are recorded per angle, and when an angle
+has at least 2 winning titles and 2 winning thumbnails the winners campaign
+is offered once. Never the last active ad; under 3 active ads → ask whether
+to add variants.
 
 ## Guardrails
 

@@ -1,5 +1,8 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.11 — 2026-10-15
+- Creative tests (beta): daily verdict per ad inside title and thumbnail tests — losing (no sales after 3×G, over 2×G per sale after 5×G, 5+ sales in zone D/E, or starved 14 days), winning (5+ sales in zone A/B; deep 10+ in zone A), otherwise not determined. Losing ads are paused per a new `creative_mode` (Manual tick / Semi-auto by the run); the last active ad is never paused; under 3 active ads the run asks for variants. Tests are recognised from the build or detected from the ads (1 title × N thumbnails / 1 thumbnail × N titles) and confirmed once; "treat <id> as a title test" declares one. Winning components are recorded per angle; with 2+ winning titles and 2+ winning thumbnails a winners campaign is offered (proven anchor, 2.5–8× the goal). The agent may now pause an ad and nothing else on it.
+
 ## v2.0.10 — 2026-10-15
 - The daily task fires every hour from 10:00 to 19:00 account time: the first firing with the machine on does the review, later firings re-ask only what is still pending (no re-judging), and a day with no firing in the window is skipped. Replaces the single 10:00 run and the three-hour catch-up rule.
 
