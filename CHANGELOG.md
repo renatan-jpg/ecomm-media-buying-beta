@@ -1,5 +1,8 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.13 — 2026-10-16
+- Winners campaign made precise: the angle is the campaign group (a title test and a thumbnail test pair up when they share a group; a test in no group is asked its angle once); the offer needs both tests of the group (2+ winning titles from the title test, 2+ winning thumbnails from the thumbnail test); landing page, platforms, geo, tracking and conversion rule are taken from the tests; the opening budget is spelled out ($500 ÷ goal, 2.5–8×, nearest 50 — $150 at $20, $500 at $100, $1,000 at $400) and can be answered with another number; the offer is a yes/no question in every mode, never built by the run on its own, and an unanswered offer stays open and is re-asked (hourly that day, then each full run).
+
 ## v2.0.12 — 2026-10-15
 - Winners campaign opens like any new test campaign (2.5–8× the goal by the goal's size), in its own campaign group per angle ("<angle> winners").
 

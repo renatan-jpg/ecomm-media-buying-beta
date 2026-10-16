@@ -18,6 +18,14 @@ closes. Everything is relative to the account's goal G and its zone lines.
   1 title × 6 thumbnails. Treat it as one?" The user can also declare it:
   "treat 12345678 as a title test". Record every test in config:
   `creative_tests: 12345678: thumbnail test (<angle>) · 23456789: title test (<angle>)`.
+- **The angle is the campaign group.** A title test and a thumbnail test
+  belong to the same angle — and their winners pair up in §5 — when they sit
+  in the same campaign group: for tests the skill built, the group "<angle>
+  creative test" holds both; for a detected or declared test, the group it
+  has in the config `groups:` block. A test in no group is asked once, with
+  the confirmation: "Which landing page or angle is this test for? Its
+  winners pair with the other test of the same angle." Record the answer as
+  the test's angle and add the campaign to that group in `groups:`.
 - A campaign with a single active ad, or a proven-creatives / winners /
   split / Mail / Display / Predictive campaign (by its group), is never a
   test.
@@ -75,21 +83,38 @@ about an ad is advisory and pauses nothing.
   a thumbnail test) is recorded in config under the test's angle:
   `winners: <angle>: titles [..] · thumbnails [..]`. It is the fixed element
   of the next test offered in the weekly creative ask (`growth.md` §1).
-- **Winners campaign.** When one angle has **at least 2 winning titles and
-  at least 2 winning thumbnails**, offer once, with the money:
+- **Winners campaign.** When the tests of one angle (one campaign group)
+  have produced **at least 2 winning titles and at least 2 winning
+  thumbnails** — the titles from its title test, the thumbnails from its
+  thumbnail test; a single test can only ever deliver one side — offer once,
+  with the money, in the review right after the ADS section:
   > "<angle> has 2 winning titles and 3 winning thumbnails. Shall I open a
-  > winners campaign — those titles × those thumbnails, same platforms as the
-  > tests — at $<opening> a day?"
-  Opening budget: exactly as a new test campaign — the standard rule in
-  `opening-budgets.md` (2.5× to 8× the goal by the goal's size: 8× under
-  about $60, 5× at $100, 2.5× at $400, nearest 50). One **new campaign group
-  per angle**, "<angle> winners", never shared with the tests or another
-  angle; names `<angle> winners - <platform>`. Built paused as in `media-plan.md`,
-  with `create_native_item` for every title × thumbnail pair; the test
-  campaigns keep running. Yes → build; no → `winners: … campaign declined
-  <date>`, offered again only when the set of winners grows. One side only
-  (titles but no thumbnails yet, or the reverse) → nothing is offered; the
-  digest says what is still missing.
+  > winners campaign — those 2 titles × those 3 thumbnails (6 ads), on the
+  > landing page the tests use, same platforms as the tests — at $<opening>
+  > a day?"
+  Nothing new is asked for: the landing page is the one the winning ads
+  point to (their URLs from `list_items`; if the two tests point to
+  different pages, ask once which one); platforms, geo, branding, tracking
+  code and conversion rule are the tests' own. **Opening budget: exactly as
+  a new test campaign** — the standard rule in `opening-budgets.md`: $500 ÷
+  G, kept between 2.5× and 8× the goal, rounded to the nearest 50 ($150 at
+  a $20 goal, $400 at $50, $500 at $100 and at $200, $1,000 at $400) — per
+  campaign, one campaign per platform the tests ran on. The budget is
+  proposed, never asked open-ended; an answer with another number ("yes, at
+  $200") is used as given. One **new campaign group per angle**, "<angle>
+  winners", never shared with the tests or another angle; names `<angle>
+  winners - <platform>`. Built paused as in `media-plan.md`, with
+  `create_native_item` for every title × thumbnail pair; the test campaigns
+  keep running; from its first full day the winners campaign is judged by
+  the campaign cube like any other. **The offer is a yes/no question in
+  every mode** — Manual and Semi-auto alike; a campaign is never opened by
+  the run on its own. Yes → build; no → `winners: … campaign declined
+  <date>`, offered again only when the set of winners grows; no answer (an
+  unattended run) → written to the digest as `winners campaign: offer open`,
+  shown again by the day's later firings and by the next full run until
+  answered. One side only (titles but no thumbnails yet, or the reverse) →
+  nothing is offered; the digest says what is still missing ("2 winning
+  thumbnails; title test: 1 winner, 3 not determined yet").
 - The publisher split (`growth.md` §2) and the proven ads for any later
   build (`growth.md` §5) read the same winners.
 
@@ -99,4 +124,5 @@ Config: `creative_mode`, `creative_tests:`, `winners:`. Digest, section
 **Ads in creative tests**: per test, one line per ad — component, spent,
 sales, cost per sale against the goal, status (Losing line n / Winning /
 Not determined) — then what was ticked, paused or declined, and the
-winners-campaign offer and its answer when one was made.
+winners-campaign offer and its answer (built / declined / open) when one
+was made.

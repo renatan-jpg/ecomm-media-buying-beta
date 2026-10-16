@@ -3,7 +3,7 @@ name: ecomm-media-buying
 description: Manages the Realize accounts an ecommerce advertiser put in scope, against their CPA goal. Reviews the RUNNING campaigns every day (or on demand), recommends RAISE / HOLD / CUT / PAUSE per campaign from the Decision Cube (weekly, last-3-day and yesterday CPA zones against the goal) with the CPA evidence, and — in Manual mode after the user ticks and confirms, or in Semi-auto for cuts and pauses (Auto is not available in the alpha) — applies the changes through the Realize connector. Also runs onboarding (accounts in scope, goal, mode, daily schedule), the launch media plan and later test waves, a weekly creative-test offer, expansion offers after a good week, and the processes for a conversion file, a new market and a CPA change. Use whenever the user mentions reviewing, managing, scaling, pausing or launching their campaigns, gives a CPA goal, uploads conversions, asks to stop, or asks to set up the routine.
 ---
 
-# Ecomm media buying — v2.0.12 (2026-10)
+# Ecomm media buying — v2.0.13 (2026-10)
 
 Taboola's best-practice playbook for scaled, purchase-focused ecommerce
 advertisers. The decision core is the **Media Buying Decision Cube**: three
@@ -498,7 +498,10 @@ creative test has a losing ad — `references/creative-tests.md` §4): one tick
 box per losing ad, `<campaign id> · <group> — PAUSE AD "<component>"`, with
 spent, sales and cost per sale against the goal in plain words. Ads follow
 the account's `creative_mode`: ticked in Manual, paused by the run in
-Semi-auto.
+Semi-auto. A winners-campaign offer (`creative-tests.md` §5) comes right
+after the ADS section as one yes/no question with the budget, in every
+mode; unanswered, it is written to the digest as open and counts as
+pending for the day's later firings.
 
 **Manual mode:** every item is pre-ticked; a ticked HOLD is recorded as agreed
 (nothing is executed for it). Ask: **"Reply `submit` to apply all ticked

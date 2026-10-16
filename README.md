@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.12)
+# Ecomm media buying — install note (v2.0.13)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -137,10 +137,17 @@ losing when it has no sales after 3× your goal spent, costs more than
 twice your goal per sale after 5× spent, has 5 or more sales well over
 goal, or sat two weeks without spending; it is winning with 5 or more sales
 at or under goal. Losing ads are paused (ticked by you, or by the run in
-Semi-auto, your choice at setup); winning titles and thumbnails are kept,
-and once an angle has two winning titles and two winning thumbnails you
-are offered a winners campaign with just those. Tests you already run can
-be included by saying "treat <campaign id> as a title test".
+Semi-auto, your choice at setup); winning titles and thumbnails are kept.
+Once the title test and the thumbnail test of one angle (one campaign
+group) have two winning titles and two winning thumbnails between them,
+you are offered a winners campaign: every winning title × every winning
+thumbnail, on the tests' landing page and platforms, in its own group
+"<angle> winners", at the budget a new test would open with (2.5–8× your
+goal by its size — $500 at a $100 goal). It is a yes/no question in every
+mode; you can answer with another budget; nothing is built without your
+yes, and the new campaign is then reviewed daily like any other. Tests you
+already run can be included by saying "treat <campaign id> as a title
+test".
 
 ## Stopping
 
@@ -152,6 +159,6 @@ maximum you agreed.
 Every verdict is explained as cost per sale against your goal; the ROAS
 column you see in Realize is revenue-based and is not what the rules read.
 
-Version 2.0.12 — the Decision Cube and the launch plan are the settled part;
+Version 2.0.13 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
 new-market and goal-change processes are in beta: they only suggest.
