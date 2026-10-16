@@ -1,5 +1,8 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.14 — 2026-10-16
+- Conversion file, per-day override: an attributed file (orders already matched to Realize — attribution date, campaign id, ad id or click id; reference layout `date, campaign_id, campaign_name, item_id, item_name, order_id, purchases, purchase_value_usd, click_id`) counts the way Realize counts, so "for 15 October go by my file, the rest by Realize" now works — `conversion_overrides:` in config, that day's count replaced in every window (yesterday, last 3 / 7 days, since launch, chain days, and per ad in creative tests), CPA = Realize spend ÷ the adjusted count, every card touching the day says "from your file: n sales (Realize m)". A purchase file (order dates) stays whole-source only, and "I can't mix sources" is reserved for it. Install note rewritten around the two kinds of file.
+
 ## v2.0.13 — 2026-10-16
 - Winners campaign made precise: the angle is the campaign group (a title test and a thumbnail test pair up when they share a group; a test in no group is asked its angle once); the offer needs both tests of the group (2+ winning titles from the title test, 2+ winning thumbnails from the thumbnail test); landing page, platforms, geo, tracking and conversion rule are taken from the tests; the opening budget is spelled out ($500 ÷ goal, 2.5–8×, nearest 50 — $150 at $20, $500 at $100, $1,000 at $400) and can be answered with another number; the offer is a yes/no question in every mode, never built by the run on its own, and an unanswered offer stays open and is re-asked (hourly that day, then each full run).
 

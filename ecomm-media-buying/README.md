@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.13)
+# Ecomm media buying — install note (v2.0.14)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -109,25 +109,32 @@ rules from its fifth. Cuts come later, once a campaign has a track record.
 
 ## If you see more sales than Realize does
 
-Realize only reports the purchases its own tracking saw. If your shop
-shows more, send the media buyer your sales export and it will reconcile
-the two and, if you choose, run on your numbers from then on — this is a
-feature of the media buyer, not of Realize. The file needs four things:
+Realize only reports the purchases its own tracking saw. If your numbers
+differ, send the media buyer your file and it will reconcile the two — this
+is a feature of the media buyer, not of Realize. Two kinds of file work:
 
-1. one row per purchase with its date and time (or counts per campaign per
-   day);
-2. the campaign on every row — the Realize campaign id, or the campaign
-   name your tracking link writes into `utm_campaign`;
-3. the time zone the times are in;
-4. the period: through yesterday, every campaign it manages, in one CSV or
-   XLSX.
+- **An attributed file**: your orders already matched to Realize — one row
+  per order with the attribution date, the Realize campaign id and ad id
+  (`item_id`) and, best of all, the Realize click id (for example `date,
+  campaign_id, campaign_name, item_id, item_name, order_id, purchases,
+  purchase_value_usd, click_id`). This counts the way Realize counts, so you can say
+  **"for 15 October go by my file, the rest
+  by Realize"**: that day's count is replaced by yours in every reading
+  (yesterday, last 3 days, last 7 days, since launch), the other days stay
+  Realize's, and every card touching that day says so ("15 Oct from your
+  file: 5 sales, Realize 11"). A campaign with no row in the file that day
+  counts as 0 from your file. You can also make it the whole source.
+- **A purchase file**: one row per order with its date and time (or counts
+  per campaign per day), the campaign id or `utm_campaign` name on every
+  row, and the time zone of the times. It counts on the day of purchase,
+  which is not how Realize counts, so it can only replace Realize entirely
+  ("use my file from now on"), never one day inside a week.
 
-Purchases are counted on the day of purchase in your account's time zone.
-A file with only dates and totals cannot be matched to campaigns, so it
-will ask you to add the campaign to your tracking link first. If you choose
-"use my file from now on", a fresh file covering every day through
-yesterday is needed before each run; a missing day means that day's review
-waits.
+Either file covers every campaign it manages, through yesterday, in one
+CSV or XLSX. A file with only dates and totals cannot be matched to
+campaigns, so you will be asked to add the campaign to your tracking link
+first. In "use my file from now on", a fresh file through yesterday is
+needed before each run; a missing day means that day's review waits.
 
 ## Creative tests
 
@@ -159,6 +166,6 @@ maximum you agreed.
 Every verdict is explained as cost per sale against your goal; the ROAS
 column you see in Realize is revenue-based and is not what the rules read.
 
-Version 2.0.13 — the Decision Cube and the launch plan are the settled part;
+Version 2.0.14 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
 new-market and goal-change processes are in beta: they only suggest.

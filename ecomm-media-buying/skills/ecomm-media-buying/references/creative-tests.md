@@ -39,7 +39,11 @@ shows), **full days only, through yesterday**, on the main conversion rule
 (campaign conversions when the report cannot split by rule, said in the
 digest): spend, conversions, CPA, **since the ad went live** and L7D. A CPA
 of 0 or blank is zero sales, never a winner. CTR and CPC never decide a
-verdict.
+verdict. When config holds `conversion_overrides:` with ad ids for a day,
+each ad's windows are adjusted exactly as the campaign's are
+(`client-requests.md` §1, option 3): the file's count for that ad on that
+day replaces Realize's, an ad with no row that day is 0 from the file, and
+the ad's CPA for the window is its spend ÷ the adjusted count.
 
 ## 3. Verdicts — check Losing first, then Winning, else Not determined
 

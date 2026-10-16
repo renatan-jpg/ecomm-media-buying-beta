@@ -200,7 +200,8 @@ creative_mode: manual               (manual | semi-auto — how losing ads in cr
 creative_tests: —                   (12345678: thumbnail test (<angle>) · 23456789: title test (<angle>))
 winners: —                          (<angle>: titles [..] · thumbnails [..] · campaign built/declined/offer open <date>)
 growth: good_week: — · display: — · predictive: — · split: —
-conversion_source: realize    conversion_file_tz: —   (the time zone of the advertiser's file, asked with the first file)
+conversion_source: realize    conversion_file_tz: —   (the time zone of the advertiser's purchase file, asked with the first file)
+conversion_overrides: —       (per day: <date>: file <name> · <campaign id>: <n> … — client-requests.md §1 option 3)
 cpa_goal_history: 100 (2026-10-02)
 ```
 

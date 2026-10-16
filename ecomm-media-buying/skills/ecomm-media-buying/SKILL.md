@@ -3,7 +3,7 @@ name: ecomm-media-buying
 description: Manages the Realize accounts an ecommerce advertiser put in scope, against their CPA goal. Reviews the RUNNING campaigns every day (or on demand), recommends RAISE / HOLD / CUT / PAUSE per campaign from the Decision Cube (weekly, last-3-day and yesterday CPA zones against the goal) with the CPA evidence, and — in Manual mode after the user ticks and confirms, or in Semi-auto for cuts and pauses (Auto is not available in the alpha) — applies the changes through the Realize connector. Also runs onboarding (accounts in scope, goal, mode, daily schedule), the launch media plan and later test waves, a weekly creative-test offer, expansion offers after a good week, and the processes for a conversion file, a new market and a CPA change. Use whenever the user mentions reviewing, managing, scaling, pausing or launching their campaigns, gives a CPA goal, uploads conversions, asks to stop, or asks to set up the routine.
 ---
 
-# Ecomm media buying — v2.0.13 (2026-10)
+# Ecomm media buying — v2.0.14 (2026-10)
 
 Taboola's best-practice playbook for scaled, purchase-focused ecommerce
 advertisers. The decision core is the **Media Buying Decision Cube**: three
@@ -20,7 +20,9 @@ available in the alpha: never offered, never switched on.** Never act on
 anything else.**
 
 Every verdict rests on the conversions Realize reports for the main
-conversion rule. If that tracking is wrong, the skill will scale and pause
+conversion rule — or, where the advertiser's attributed file
+overrides a day (`client-requests.md` §1, option 3), on that file's count
+for that day. If that tracking is wrong, the skill will scale and pause
 the wrong campaigns with full confidence — see the tracking guardrail.
 
 ## This skill runs only as the media-buyer agent
@@ -83,7 +85,7 @@ human-readable files in the user's account folder:
   CPA goal G, main conversion rule, mode (Manual / Semi-auto / Auto), agreed
   maximum daily cap, budget levels, zone lines, `groups:` block,
   `creative_check`, `growth:` state, `conversion_source`, `conversion_file_tz`,
-  `cpa_goal_history`.
+  `conversion_overrides`, `cpa_goal_history`.
   Read it at the start of every run; never re-ask what it holds. Edited only
   when the user asks for a change, or by the processes in
   `client-requests.md` after the user's explicit yes.
@@ -94,8 +96,8 @@ human-readable files in the user's account folder:
   last cut date, and **which cell code it carried on each of the last three
   runs** — the exit and warning chains (2c) are read from that account's own
   digests, never from another account's.
-- **`conversions/`** — only in file mode (`client-requests.md` §1): the
-  advertiser's conversion files, newest wins per date.
+- **`conversions/`** — the advertiser's conversion files, in file mode and
+  for per-day overrides (`client-requests.md` §1): newest wins per date.
 
 Everything else — current caps, statuses, spend and conversions — is read live
 from Realize each run.
@@ -173,6 +175,13 @@ from Realize each run.
    report can be broken down by conversion rule, restrict to the main rule from
    config; otherwise use the campaign's conversion count and say so in the
    digest header.
+   **Overrides.** When config holds `conversion_overrides:` for a day inside
+   a window, pull Realize's count for that single day with one more call on
+   that date and adjust the window as `client-requests.md` §1 option 3 says
+   (Realize's window count − Realize's count on that day + the file's count;
+   CPA = window spend ÷ the adjusted count — the only CPA the skill ever
+   computes itself). Every card touching that day says "<date> from your
+   file: n sales (Realize m)".
 4. Per campaign: full days since activation; and, from the campaign history
    report where available (otherwise from the previous digests), days since
    the last raise (daily_cap increases only), the number of prior raises, the
