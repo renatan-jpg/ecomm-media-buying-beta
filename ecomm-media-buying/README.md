@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.14)
+# Ecomm media buying — install note (v2.0.15)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -147,12 +147,14 @@ at or under goal. Losing ads are paused (ticked by you, or by the run in
 Semi-auto, your choice at setup); winning titles and thumbnails are kept.
 Once the title test and the thumbnail test of one angle (one campaign
 group) have two winning titles and two winning thumbnails between them,
-you are offered a winners campaign: every winning title × every winning
-thumbnail, on the tests' landing page and platforms, in its own group
-"<angle> winners", at the budget a new test would open with (2.5–8× your
-goal by its size — $500 at a $100 goal). It is a yes/no question in every
-mode; you can answer with another budget; nothing is built without your
-yes, and the new campaign is then reviewed daily like any other. Tests you
+you are offered a winning-ads campaign: every winning title × every
+winning thumbnail, on the tests' landing page and platforms, in the same
+campaign group as the tests (one group = one creative angle), named
+"<angle> - winning ads", at the budget a new test would open with (2.5–8×
+your goal by its size — $500 at a $100 goal). The offer names only the
+winners. It is a yes/no question in Manual and Semi-auto; you can answer
+with another budget; nothing is built without your yes, and the new
+campaign is then reviewed daily like any other. Tests you
 already run can be included by saying "treat <campaign id> as a title
 test".
 
@@ -166,6 +168,6 @@ maximum you agreed.
 Every verdict is explained as cost per sale against your goal; the ROAS
 column you see in Realize is revenue-based and is not what the rules read.
 
-Version 2.0.14 — the Decision Cube and the launch plan are the settled part;
+Version 2.0.15 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
 new-market and goal-change processes are in beta: they only suggest.
