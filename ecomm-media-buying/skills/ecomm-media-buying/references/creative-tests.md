@@ -7,9 +7,9 @@ closes. Everything is relative to the account's goal G and its zone lines.
 
 ## 1. Which campaigns are tests
 
-- **Built by this skill** (launch plan, weekly creative flow): the group
-  name says it — "<angle> creative test", "<angle> title test",
-  "<angle> thumbnail test" — and the type is known from the build.
+- **Built by this skill** (launch plan, weekly creative flow): the campaign
+  name says it — "<angle> - title test", "<angle> - thumbnail test" — the
+  type is known from the build, and its group is the angle.
 - **Any other managed running campaign** is checked once from its active
   ads (`list_items`): two or more active ads that all share **one title and
   differ in thumbnail** → a **thumbnail test**; all share **one thumbnail and
@@ -20,9 +20,12 @@ closes. Everything is relative to the account's goal G and its zone lines.
   `creative_tests: 12345678: thumbnail test (<angle>) · 23456789: title test (<angle>)`.
 - **The angle is the campaign group.** A title test and a thumbnail test
   belong to the same angle — and their winners pair up in §5 — when they sit
-  in the same campaign group: for tests the skill built, the group "<angle>
-  creative test" holds both; for a detected or declared test, the group it
-  has in the config `groups:` block. A test in no group is asked once, with
+  in the same campaign group: for tests the skill built, the group is the
+  angle itself ("LP3 Knee") and holds both tests; for a detected or declared
+  test, the group it has in the config `groups:` block. A config that holds
+  one group per test ("LP3 Knee - title test" and "LP3 Knee - thumbnail
+  test" as two groups) is merged once, with the user's yes (SKILL.md Step 1,
+  `client-requests.md` §4). A test in no group is asked once, with
   the confirmation: "Which landing page or angle is this test for? Its
   winners pair with the other test of the same angle." Record the answer as
   the test's angle and add the campaign to that group in `groups:`.

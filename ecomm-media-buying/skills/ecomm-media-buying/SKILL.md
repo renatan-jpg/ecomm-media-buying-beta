@@ -3,7 +3,7 @@ name: ecomm-media-buying
 description: Manages the Realize accounts an ecommerce advertiser put in scope, against their CPA goal. Reviews the RUNNING campaigns every day (or on demand), recommends RAISE / HOLD / CUT / PAUSE per campaign from the Decision Cube (weekly, last-3-day and yesterday CPA zones against the goal) with the CPA evidence, and — in Manual mode after the user ticks and confirms, or in Semi-auto for cuts and pauses (Auto is not available in the alpha) — applies the changes through the Realize connector. Also runs onboarding (accounts in scope, goal, mode, daily schedule), the launch media plan and later test waves, a weekly creative-test offer, expansion offers after a good week, and the processes for a conversion file, a new market and a CPA change. Use whenever the user mentions reviewing, managing, scaling, pausing or launching their campaigns, gives a CPA goal, uploads conversions, asks to stop, or asks to set up the routine.
 ---
 
-# Ecomm media buying — v2.0.15 (2026-10)
+# Ecomm media buying — v2.0.16 (2026-10)
 
 Taboola's best-practice playbook for scaled, purchase-focused ecommerce
 advertisers. The decision core is the **Media Buying Decision Cube**: three
@@ -144,7 +144,13 @@ from Realize each run.
    `config/<account>.md`. Use its `account_id` string (never a raw number),
    goal G and main conversion rule. If `zone_lines:` is missing (a config
    written before v2.0.1), compute the four lines from `cpa_goal` and write
-   them to the config before judging anything. **G and the main rule are the advertiser's answers from config**:
+   them to the config before judging anything. If the `groups:` block holds
+   **one group per test** — a title test and a thumbnail test of the same
+   angle in two groups (names ending "title test" / "thumbnail test", or
+   two groups sharing a prefix) — offer the merge once, before the review:
+   "LP3 Knee - title test and LP3 Knee - thumbnail test look like one
+   creative angle. Merge them into one group, LP3 Knee?" Yes → regroup as
+   `client-requests.md` §4; no → leave it and do not ask again. **G and the main rule are the advertiser's answers from config**:
    a missing one is asked for and the run waits — it is never estimated
    from the account's results or filled with an example number.
 2. `list_campaigns` — page through ALL pages (page_size 10). With a network
@@ -469,7 +475,7 @@ Sections, most urgent first: **ACTION** (PAUSE → CUT → SCALE HORIZONTALLY �
 RAISE), **HOLDS**, **NO SIGNAL / TOO EARLY**. The ACTION order is global and
 never broken by grouping: every pause before every cut before every raise.
 The campaign's group is shown on the card and in the box label, right after
-the id ("11111111 · LP1 creative test"); HOLDS and the digest list campaigns
+the id ("11111111 · LP1 Comfort"); HOLDS and the digest list campaigns
 under their **group** heading from the config `groups:` block ("Other" for
 campaigns in no group). Every card: line 1 =
 **verdict + magnitude**; line 2 = evidence **L7D / L3D / yesterday CPA with

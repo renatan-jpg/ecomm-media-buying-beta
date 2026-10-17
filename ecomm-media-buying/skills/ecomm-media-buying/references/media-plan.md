@@ -105,16 +105,21 @@ Anchors (amounts at a $100 goal):
 - other surfaces and features: `opening-budgets.md`, same conversion.
 
 **Groups and names.** Every campaign the skill builds belongs to exactly one
-named group; a group is one objective, one KPI, one test family. Group name =
-the most obvious test: `<angle or surface> <test family>` — "LP1 creative
-test", "LP1 publisher split", "Predictive audiences", "Display test", "<GEO>
-launch". Campaign name = `<group key> - <variable>[ - <platform>]`, the
-platform only when the plan splits platforms: "LP1 - title test - Mobile",
-"LP1 - thumbnail test - Desktop", "Yahoo & AOL - LP1 - Desktop", "Non-Yahoo -
-LP1 - Mobile", "Predictive tier 1 - LP1", "Display - LP1". Add the product
-name if the account runs several. After a build, write the group and its
-campaign ids into the config `groups:` block; the review and the digest list
-campaigns under these headings.
+named group. **One group = one creative angle.** The group is named after
+the angle itself — "LP1 Comfort", "LP2 Heel", "LP3 Knee" — and holds that
+angle's **title test, thumbnail test and, later, its winning-ads campaign**
+(`creative-tests.md` §5). Never one group per test: a title test and a
+thumbnail test of the same angle are always in the same group. Other test
+families keep their own groups: "<angle> publisher split", "Predictive
+audiences", "Display test", "<GEO> launch". Campaign name = `<angle> -
+<test>[ - <platform>]`, the platform only when the plan splits platforms:
+"LP1 Comfort - title test - Mobile", "LP1 Comfort - thumbnail test -
+Desktop", "LP1 Comfort - winning ads", "Yahoo & AOL - LP1 Comfort -
+Desktop", "Non-Yahoo - LP1 Comfort - Mobile", "Predictive tier 1 - LP1
+Comfort", "Display - LP1 Comfort". Add the product name if the account runs
+several. After a build, write the group and its campaign ids into the
+config `groups:` block (`LP1 Comfort: 11111111, 22222222`); the review and
+the digest list campaigns under these headings.
 
 ## Build (only after the user agrees to the table)
 

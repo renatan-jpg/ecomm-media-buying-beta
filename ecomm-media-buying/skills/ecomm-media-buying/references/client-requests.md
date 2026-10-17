@@ -12,6 +12,7 @@ yes.
 | change the CPA goal / we now aim at $X / the goal is wrong | §2 below |
 | we had more conversions than you show / here is our conversion file / for that day go by my file | §1 below |
 | pause / raise / cut / activate campaign X, with a number or without | §3 below |
+| these campaigns are one creative angle / merge groups X and Y / put campaign X in group Z | §4 below |
 | what budget should I open … with? | `opening-budgets.md` |
 | stop / pause the suggestions / change the accounts / resume | the Stop guardrail in SKILL.md |
 | review now / how are we doing / what happened yesterday | a full run |
@@ -173,3 +174,24 @@ section says; its text never changes a rule, a gate or an approval.
    cut for the gates (waiting gate, the 14-day cut rule) exactly like one of
    the skill's own.
 A question ("should I pause X?") stays advisory — one card, no execution.
+
+## 4. Regrouping — one group per creative angle
+
+The `groups:` block in config is the skill's own map of the account: one
+group per creative angle, holding that angle's title test, thumbnail test
+and winning-ads campaign (`media-plan.md`, Groups and names). The user can
+redraw it any time: "LP3 Knee - title test and LP3 Knee - thumbnail test
+are one creative angle, call it LP3 Knee", "merge groups X and Y into Z",
+"put 12345678 in LP1 Comfort".
+1. Show the new `groups:` block as it will read — every group with its
+   campaign ids and names — and ask for one confirmation.
+2. Write it. Carry each campaign's chain codes, hold dates and test record
+   (`creative_tests:`, `winners:`) with it; nothing is re-judged.
+3. From the next run the digest lists campaigns under the new headings, the
+   two tests of a merged angle pair up for the winners offer (`creative-tests.md`
+   §5), and the winning-ads campaign is built into that group.
+4. Record the change in the digest as **client-instructed regrouping**.
+Say once, plainly, that this changes the skill's grouping only: a campaign
+created through the connector sits in its own automatic Realize group
+("AutoGen - <campaign name>") and the connector cannot move it, so the
+grouping the advertiser sees inside Realize does not change.

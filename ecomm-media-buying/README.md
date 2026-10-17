@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.15)
+# Ecomm media buying — install note (v2.0.16)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -149,7 +149,10 @@ Once the title test and the thumbnail test of one angle (one campaign
 group) have two winning titles and two winning thumbnails between them,
 you are offered a winning-ads campaign: every winning title × every
 winning thumbnail, on the tests' landing page and platforms, in the same
-campaign group as the tests (one group = one creative angle), named
+campaign group as the tests — one group = one creative angle, holding its
+title test, thumbnail test and winning-ads campaign; if your account was
+set up with a group per test, the media buyer offers to merge them once,
+and you can also say "these two are one creative angle" any time — named
 "<angle> - winning ads", at the budget a new test would open with (2.5–8×
 your goal by its size — $500 at a $100 goal). The offer names only the
 winners. It is a yes/no question in Manual and Semi-auto; you can answer
@@ -168,6 +171,6 @@ maximum you agreed.
 Every verdict is explained as cost per sale against your goal; the ROAS
 column you see in Realize is revenue-based and is not what the rules read.
 
-Version 2.0.15 — the Decision Cube and the launch plan are the settled part;
+Version 2.0.16 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
 new-market and goal-change processes are in beta: they only suggest.

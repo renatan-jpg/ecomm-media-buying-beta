@@ -33,7 +33,8 @@ a new landing page or angle", "Not this week", "Stop asking weekly".
   Mobile+Tablet and Desktop). Platform split, geo, branding, tracking code,
   conversion rule and the CPA goal are reused from config and the launch
   digest — never re-asked. Opening budget: the standard anchor through the
-  2.5–8× rule. Group "<angle> creative test". Built paused; activation only on
+  2.5–8× rule. Group = the angle itself ("LP1 Comfort"), the same group as
+  its launch tests — never a new group per test. Built paused; activation only on
   an explicit yes. Record `last_creative_ask: <date> — yes, <what>`.
 Any day the user brings creatives, run the same flow without waiting for
 Monday.

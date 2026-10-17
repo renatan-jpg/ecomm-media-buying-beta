@@ -1,5 +1,8 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.16 — 2026-10-17
+- One campaign group per creative angle, spelled out everywhere: the group is named after the angle ("LP3 Knee") and holds its title test, thumbnail test and winning-ads campaign; never a group per test. New client request "these campaigns are one creative angle / merge groups X and Y" (§4 regrouping: confirm the new block, carry chains and test records, no re-judging). A config that was set up with a group per test gets a one-time merge offer before the next review. Regrouping changes the plugin's own map only; Realize's automatic per-campaign groups cannot be moved through the connector.
+
 ## v2.0.15 — 2026-10-16
 - Winning-ads campaign: one campaign group = one creative angle, so the new campaign joins the tests' own group as "<angle> - winning ads" (no separate winners group). The offer names only the winning titles and thumbnails; losing ads keep their pause boxes and undetermined ads are never mentioned in chat (the per-ad table lives in the digest file). Manual and Semi-auto ask; Auto, when available, builds and activates it at the opening budget.
 
