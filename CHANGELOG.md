@@ -1,5 +1,8 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.17 — 2026-10-17
+- Publisher split replaced: a campaign with winning ads is offered one Yahoo & AOL whitelist campaign per platform it runs on (same ads, Yahoo and AOL placements only, whitelist opening budget, in the angle's own group, named "<angle> - Yahoo & AOL - <platform>"). The "everything except Yahoo" pair is gone. The offer waits, with a one-line explanation, when the account cannot carry publisher lists yet. Mail still follows a winning Yahoo & AOL campaign after 14 days.
+
 ## v2.0.16 — 2026-10-17
 - One campaign group per creative angle, spelled out everywhere: the group is named after the angle ("LP3 Knee") and holds its title test, thumbnail test and winning-ads campaign; never a group per test. New client request "these campaigns are one creative angle / merge groups X and Y" (§4 regrouping: confirm the new block, carry chains and test records, no re-judging). A config that was set up with a group per test gets a one-time merge offer before the next review. Regrouping changes the plugin's own map only; Realize's automatic per-campaign groups cannot be moved through the connector.
 

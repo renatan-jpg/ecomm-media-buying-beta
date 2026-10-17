@@ -110,12 +110,13 @@ the angle itself — "LP1 Comfort", "LP2 Heel", "LP3 Knee" — and holds that
 angle's **title test, thumbnail test and, later, its winning-ads campaign**
 (`creative-tests.md` §5). Never one group per test: a title test and a
 thumbnail test of the same angle are always in the same group. Other test
-families keep their own groups: "<angle> publisher split", "Predictive
-audiences", "Display test", "<GEO> launch". Campaign name = `<angle> -
+families keep their own groups: "Predictive audiences", "Display test",
+"<GEO> launch"; the angle's Yahoo & AOL and Mail campaigns stay in the
+angle's group. Campaign name = `<angle> -
 <test>[ - <platform>]`, the platform only when the plan splits platforms:
 "LP1 Comfort - title test - Mobile", "LP1 Comfort - thumbnail test -
-Desktop", "LP1 Comfort - winning ads", "Yahoo & AOL - LP1 Comfort -
-Desktop", "Non-Yahoo - LP1 Comfort - Mobile", "Predictive tier 1 - LP1
+Desktop", "LP1 Comfort - winning ads", "LP1 Comfort - Yahoo & AOL -
+Desktop", "LP1 Comfort - Mail - Mobile", "Predictive tier 1 - LP1
 Comfort", "Display - LP1 Comfort". Add the product name if the account runs
 several. After a build, write the group and its campaign ids into the
 config `groups:` block (`LP1 Comfort: 11111111, 22222222`); the review and

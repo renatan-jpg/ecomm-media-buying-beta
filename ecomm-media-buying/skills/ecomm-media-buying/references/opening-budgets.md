@@ -17,7 +17,7 @@ that surface; scaling afterwards follows the normal raise levels.
 | Apple News | 5×G | $500 |
 | Pixel / predictive audiences | 6×G | $600 |
 | Search keyword / domain audiences | 8×G | $800 |
-| Publisher whitelist split (e.g. Yahoo WL) | 7.5×G | $750 |
+| Yahoo & AOL whitelist campaign | 7.5×G | $750 |
 | Display — static | 6×G | $600 |
 | Display — video | 10×G | $1,000 |
 | Retargeting (RMK) | 10×G | $1,000 |

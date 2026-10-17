@@ -127,8 +127,8 @@ about an ad is advisory and pauses nothing.
   opening budget, and the digest reports it under "done today". One side
   only (titles but no thumbnails yet, or the reverse) → nothing is offered
   and nothing is said in chat; the digest file notes what is still missing.
-- The publisher split (`growth.md` §2) and the proven ads for any later
-  build (`growth.md` §5) read the same winners.
+- The Yahoo & AOL campaign (`growth.md` §2) and the proven ads for any
+  later build (`growth.md` §5) read the same winners.
 
 ## 6. What is recorded
 

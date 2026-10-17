@@ -3,7 +3,7 @@ name: ecomm-media-buying
 description: Manages the Realize accounts an ecommerce advertiser put in scope, against their CPA goal. Reviews the RUNNING campaigns every day (or on demand), recommends RAISE / HOLD / CUT / PAUSE per campaign from the Decision Cube (weekly, last-3-day and yesterday CPA zones against the goal) with the CPA evidence, and — in Manual mode after the user ticks and confirms, or in Semi-auto for cuts and pauses (Auto is not available in the alpha) — applies the changes through the Realize connector. Also runs onboarding (accounts in scope, goal, mode, daily schedule), the launch media plan and later test waves, a weekly creative-test offer, expansion offers after a good week, and the processes for a conversion file, a new market and a CPA change. Use whenever the user mentions reviewing, managing, scaling, pausing or launching their campaigns, gives a CPA goal, uploads conversions, asks to stop, or asks to set up the routine.
 ---
 
-# Ecomm media buying — v2.0.16 (2026-10)
+# Ecomm media buying — v2.0.17 (2026-10)
 
 Taboola's best-practice playbook for scaled, purchase-focused ecommerce
 advertisers. The decision core is the **Media Buying Decision Cube**: three
@@ -63,7 +63,7 @@ whoever gave them the plugin.
 | The user wants to launch, plan a first test, build campaigns, or open a new country / market / product | `references/media-plan.md` |
 | The user says "skip media plan building" (during onboarding or any time) | note `media_plan: skipped` in config and go to the review — never push the plan again unless asked |
 | The user asks what budget to open a new surface / feature with | `references/opening-budgets.md` |
-| Step 6 of a run (weekly creative ask, winners → publisher split, good-week offers), or the user brings new creatives | `references/growth.md` (beta) |
+| Step 6 of a run (weekly creative ask, winners → Yahoo & AOL campaign, good-week offers), or the user brings new creatives | `references/growth.md` (beta) |
 | Step 6b of a run — the ads inside creative tests (winning / not determined / losing, pausing losers, the winners campaign), or the user says "treat <id> as a title / thumbnail test" | `references/creative-tests.md` (beta) |
 | The user uploads conversions, changes the CPA goal, instructs an action on a campaign, or asks anything not covered above | `references/client-requests.md` (beta) |
 | Everything else (review, digest, execute) | this file |
@@ -635,8 +635,8 @@ review any time if you want an interim look."
 
 After execution and before the digest is closed, once per run at most, follow
 `references/growth.md`: the weekly creative ask on the first run of the week,
-the publisher split when a creative test has winners, and the display →
-predictive → publisher split offers after the account's good week. A question
+the Yahoo & AOL campaign when a campaign has winning ads, and the display →
+predictive → Yahoo & AOL offers after the account's good week. A question
 left unanswered in an unattended run is written to the digest as open and not
 repeated before its next due date. Nothing in Step 6 changes the account;
 builds happen only after the advertiser agrees to a plan table, exactly as in

@@ -39,28 +39,42 @@ a new landing page or angle", "Not this week", "Stop asking weekly".
 Any day the user brings creatives, run the same flow without waiting for
 Monday.
 
-## 2. A creative test has winners → publisher split (campaign-level)
+## 2. A winning campaign → its Yahoo & AOL campaign (campaign-level)
 
 Checked every run for every managed native campaign that is not already a
-publisher-split, Mail, Predictive or Display campaign (by its group). The
-trigger: **L7D at least 10 conversions, L7D zone A or B, and at least one ad
-with 3 or more conversions at CPA ≤ G over L7D** (ad-level report, §5).
-Offer once per campaign, as one yes/no question with the money:
-> "<campaign> has found winning ads (<n> ads at or under goal). Shall I put
-> them on the publisher split — four campaigns, Yahoo & AOL and everything
-> else, each on desktop and mobile, at $<opening> a day each?"
-Yes → plan table: Yahoo & AOL (desktop), Yahoo & AOL (mobile), Non-Yahoo
-(desktop), Non-Yahoo (mobile); the winning ads (§5) in each; publisher names
-from `search_publishers` for "yahoo" and "aol", shown to the user, as
-`publisher_targeting` INCLUDE on the Yahoo pair and EXCLUDE on the other
-pair; opening budget from the whitelist anchor in `opening-budgets.md`
-through the 2.5–8× rule; group "<angle> publisher split"; built paused as in
-`media-plan.md`. No → `growth: split: declined <campaign id>`; never
-re-offered for that campaign.
-**Mail follows.** When a publisher-split campaign has run 14 days and sits in
-a winning panel (L7D zone A or B), offer once: one Mail-placements campaign
+Yahoo & AOL, Mail, Predictive or Display campaign (by its name and group).
+The trigger: **L7D at least 10 conversions, L7D zone A or B, and at least
+one ad with 3 or more conversions at CPA ≤ G over L7D** (ad-level report,
+§5). Offer once per campaign, as one yes/no question with the money:
+> "<campaign> has found winning ads (<n> ads at or under goal). Shall I add
+> a Yahoo & AOL campaign next to it — the same ads, Yahoo and AOL
+> placements only, <platform of the campaign> — at $<opening> a day?"
+Yes → one campaign per platform the winning campaign runs on (two when it
+runs on desktop and on Mobile+Tablet): the winning ads (§5) in each;
+publisher names from `search_publishers` for "yahoo" and "aol", shown to
+the user, as `publisher_targeting` INCLUDE (the fixed Yahoo & AOL list in
+`references/`, when the plugin ships one, replaces the lookup); opening
+budget from the whitelist anchor in `opening-budgets.md` through the 2.5–8×
+rule; **same campaign group as the winning campaign** (one group = one
+creative angle); name `<angle> - Yahoo & AOL[ - <platform>]`; built paused
+as in `media-plan.md`. The run-of-network campaign keeps running; the Yahoo
+campaign is judged by the campaign cube from its first full day. No →
+`growth: yahoo: declined <campaign id>`; never re-offered for that
+campaign. A campaign that cannot carry a publisher list (the connector
+refuses `publisher_targeting` for the account) is reported once: "your
+account does not allow publisher lists yet — ask your account manager to
+enable them", and the offer waits.
+Why Yahoo only, and why both platforms: run-of-network already buys a
+third of its desktop spend on Yahoo & AOL and almost none of its mobile
+spend, and in the accounts this playbook comes from the Yahoo-only
+campaigns matched run-of-network on cost per sale while every
+"everything except Yahoo" campaign was the weakest class on both platforms.
+There is no non-Yahoo campaign in this playbook.
+**Mail follows.** When a Yahoo & AOL campaign has run 14 days and sits in a
+winning panel (L7D zone A or B), offer once: one Mail-placements campaign
 per platform with the same ads, horizontal images only, no video, opening
-from the In-Mail anchor. Group "<angle> mail".
+from the In-Mail anchor. Group: the angle's group; name `<angle> - Mail[ -
+<platform>]`.
 
 ## 3. The account's good week → display, then predictive (account-level)
 
@@ -99,20 +113,21 @@ anchor, group "Predictive audiences", names "Predictive tier 1 - <angle>".
 When a tier-1 campaign hits the ceiling, SCALE HORIZONTALLY opens the same
 campaign on tier 2, then 3; never mix tiers in one campaign.
 
-**3c. Publisher split**, if §2 has not already offered it for a winning
-campaign.
+**3c. Yahoo & AOL campaign**, if §2 has not already offered it for a
+winning campaign.
 
 ## 4. Timing, in one place
 
 | When | What is offered | Source |
 |---|---|---|
 | First run of each week | new creatives? → creative test | weekly ask |
-| A creative test has winners | publisher split (Yahoo & AOL / Non-Yahoo × desktop / mobile) | campaign trigger |
-| Split running 14 days with a winner | Mail placements | follow-up |
-| The account's first good week | display, then predictive (when eligible), then the split if not yet | account trigger |
+| A campaign has winning ads | its Yahoo & AOL campaign (same ads, Yahoo & AOL only, per platform) | campaign trigger |
+| Yahoo & AOL campaign running 14 days with a winner | Mail placements | follow-up |
+| The account's first good week | display, then predictive (when eligible), then the Yahoo & AOL campaign if not yet | account trigger |
 
-Order and timing are working rules for the alpha; the publisher split mirrors
-how scaled accounts are structured, the rest is not outcome-tested yet.
+Order and timing are working rules for the alpha; the Yahoo & AOL campaign
+mirrors how scaled accounts are structured, the rest is not outcome-tested
+yet.
 
 ## 5. Winning ads (used by every build above)
 
