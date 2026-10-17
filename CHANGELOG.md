@@ -1,5 +1,8 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.18 — 2026-10-17
+- The winners offer is the pair: for each platform the angle's tests ran on, "<angle> - winning ads" (run of network, standard opening budget) and "<angle> - Yahoo & AOL" (same ads, Yahoo and AOL placements only, whitelist opening budget), in the angle's group, one question with one total and one yes — never a pick list. If the account cannot carry publisher lists yet, the run-of-network campaign is built and the Yahoo one is recorded as pending permission; the growth rule offers it as soon as a list is accepted. The growth rule's Yahoo & AOL offer is now the catch-up path for campaigns that have winners but no Yahoo twin, and the expansion path for advertisers who run no A/B tests (winners picked from the running campaign's own ads, confirmed by the advertiser); the weekly creative ask then proposes a proper test built around their best ad.
+
 ## v2.0.17 — 2026-10-17
 - Publisher split replaced: a campaign with winning ads is offered one Yahoo & AOL whitelist campaign per platform it runs on (same ads, Yahoo and AOL placements only, whitelist opening budget, in the angle's own group, named "<angle> - Yahoo & AOL - <platform>"). The "everything except Yahoo" pair is gone. The offer waits, with a one-line explanation, when the account cannot carry publisher lists yet. Mail still follows a winning Yahoo & AOL campaign after 14 days.
 

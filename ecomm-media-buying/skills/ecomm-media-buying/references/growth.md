@@ -37,13 +37,30 @@ a new landing page or angle", "Not this week", "Stop asking weekly".
   its launch tests — never a new group per test. Built paused; activation only on
   an explicit yes. Record `last_creative_ask: <date> — yes, <what>`.
 Any day the user brings creatives, run the same flow without waiting for
-Monday.
+Monday. For an account with **no creative test in its groups** (the
+advertiser runs campaigns with mixed creatives), the weekly ask adds one
+line: "Your best ad is <title / thumbnail> at $<CPA> per sale — want a
+thumbnail test around that title, or a title test around that thumbnail?"
+Yes → the same build, with that component as the fixed element.
 
 ## 2. A winning campaign → its Yahoo & AOL campaign (campaign-level)
 
-Checked every run for every managed native campaign that is not already a
-Yahoo & AOL, Mail, Predictive or Display campaign (by its name and group).
-The trigger: **L7D at least 10 conversions, L7D zone A or B, and at least
+The winners build (`creative-tests.md` §5) creates the run-of-network and
+the Yahoo & AOL campaign together, so this section is the **catch-up path**:
+a campaign with winning ads that has no Yahoo & AOL twin in its group yet —
+an older campaign, a declared test, or a winners build whose Yahoo campaign
+waited for the publisher-list permission. **It is also the whole expansion
+path for an advertiser who runs no A/B tests** and simply runs campaigns
+with their creatives: the winners come out of the running campaign itself
+(§5 — ads with 3 or more sales at or under goal, shown and confirmed),
+which is messier than two winning titles × two winning thumbnails, and the
+offer says so in one clause ("picked from the campaign's own ads, not from
+a test"). The weekly creative ask (§1) then proposes a proper title or
+thumbnail test built around that campaign's best ad, so the advertiser
+grows into the tested path. Checked every run for every
+managed native campaign that is not already a Yahoo & AOL, Mail, Predictive
+or Display campaign (by its name and group) and has no `<angle> - Yahoo &
+AOL` campaign in its group. The trigger: **L7D at least 10 conversions, L7D zone A or B, and at least
 one ad with 3 or more conversions at CPA ≤ G over L7D** (ad-level report,
 §5). Offer once per campaign, as one yes/no question with the money:
 > "<campaign> has found winning ads (<n> ads at or under goal). Shall I add

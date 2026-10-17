@@ -100,26 +100,44 @@ about an ad is advisory and pauses nothing.
   tests (losing ads have their own pause boxes; undetermined ads are not
   mentioned in chat):
   > "<angle> has 2 winning titles and 3 winning thumbnails (5+ sales each,
-  > at or under goal): [list]. Shall I build **<angle> - winning ads** in the
-  > <angle> group — those 2 titles × those 3 thumbnails (6 ads), same landing
-  > page and platforms as the tests — at $<opening> a day?"
+  > at or under goal): [list]. This is what the test was for — shall I build
+  > the two campaigns for it, on <platform(s) of the tests>: **<angle> -
+  > winning ads** (run of network, those 2 titles × those 3 thumbnails, 6
+  > ads) at $<opening> a day, and **<angle> - Yahoo & AOL** (the same 6 ads,
+  > Yahoo and AOL placements only) at $<whitelist opening> a day? Total
+  > $<sum> a day."
+  **The offer is the pair, one question, one yes.** Never a pick list and
+  never one campaign at a time: the client should see that the test was
+  run to expand into these two campaigns together, not choose between
+  them. With tests on both platforms that is four campaigns (the pair on
+  desktop and the pair on Mobile+Tablet), shown as one list with one total.
   Nothing new is asked for: the landing page is the one the winning ads
   point to (their URLs from `list_items`; if the two tests point to
   different pages, ask once which one); platforms, geo, branding, tracking
   code and conversion rule are the tests' own. **Opening budget: exactly as
   a new test campaign** — the standard rule in `opening-budgets.md`: $500 ÷
   G, kept between 2.5× and 8× the goal, rounded to the nearest 50 ($150 at
-  a $20 goal, $400 at $50, $500 at $100 and at $200, $1,000 at $400) — per
-  campaign, one campaign per platform the tests ran on. The budget is
-  proposed, never asked open-ended; an answer with another number ("yes, at
-  $200") is used as given. **One campaign group = one creative angle**, so
-  the winning-ads campaign joins the tests' own group (the one in the
-  config `groups:` block); name `<angle> - winning ads[ - <platform>]`. Built
-  paused as in `media-plan.md`, with `create_native_item` for every title ×
-  thumbnail pair; the test campaigns keep running; from its first full day
-  the winning-ads campaign is judged by the campaign cube like any other.
+  a $20 goal, $400 at $50, $500 at $100 and at $200, $1,000 at $400) — for
+  the run-of-network campaign; the Yahoo & AOL campaign opens on the
+  whitelist anchor in `opening-budgets.md` through the same 2.5–8× rule
+  ($750 at $100). One pair per platform the tests ran on. The budgets are
+  proposed, never asked open-ended; an answer with other numbers ("yes, at
+  $400 and $600") is used as given. **One campaign group = one creative
+  angle**, so both campaigns join the tests' own group (the one in the
+  config `groups:` block); names `<angle> - winning ads[ - <platform>]` and
+  `<angle> - Yahoo & AOL[ - <platform>]`. Built paused as in `media-plan.md`,
+  with `create_native_item` for every title × thumbnail pair in each; the
+  Yahoo & AOL campaign carries `publisher_targeting` INCLUDE with the Yahoo
+  and AOL publishers (`growth.md` §2 says where the list comes from). The
+  test campaigns keep running; from its first full day each new campaign is
+  judged by the campaign cube like any other. **If the account cannot carry
+  a publisher list yet** (the connector refuses `publisher_targeting`),
+  build the run-of-network campaign, say once "the Yahoo & AOL campaign
+  waits until publisher lists are enabled on your account — ask your
+  account manager", record `winners: … yahoo pending permission`, and let
+  `growth.md` §2 offer it as soon as a list is accepted.
   **Manual and Semi-auto: a yes/no question**, never built by the run on
-  its own. Yes → build; no → `winners: … campaign declined <date>`, offered
+  its own. Yes → build both; no → `winners: … campaigns declined <date>`, offered
   again only when the set of winners grows; no answer (an unattended run)
   → written to the digest as `winners campaign: offer open`, shown again by
   the day's later firings and by the next full run until answered. **Auto
