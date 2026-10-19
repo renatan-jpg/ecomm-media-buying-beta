@@ -3,7 +3,7 @@ name: ecomm-media-buying
 description: Manages the Realize accounts an ecommerce advertiser put in scope, against their CPA goal. Reviews the RUNNING campaigns every day (or on demand), recommends RAISE / HOLD / CUT / PAUSE per campaign from the Decision Cube (weekly, last-3-day and yesterday CPA zones against the goal) with the CPA evidence, and — in Manual mode after the user ticks and confirms, or in Semi-auto for cuts and pauses (Auto is not available in the alpha) — applies the changes through the Realize connector. Also runs onboarding (accounts in scope, goal, mode, daily schedule), the launch media plan and later test waves, a weekly creative-test offer, expansion offers after a good week, and the processes for a conversion file, a new market and a CPA change. Use whenever the user mentions reviewing, managing, scaling, pausing or launching their campaigns, gives a CPA goal, uploads conversions, asks to stop, or asks to set up the routine.
 ---
 
-# Ecomm media buying — v2.0.18 (2026-10)
+# Ecomm media buying — v2.0.19 (2026-10)
 
 Taboola's best-practice playbook for scaled, purchase-focused ecommerce
 advertisers. The decision core is the **Media Buying Decision Cube**: three
@@ -48,8 +48,9 @@ in OK or the fix:
 4. Folder: <absolute path> — an account folder, not the plugin's
 5. Scope: <accounts or network> · status <active | paused | stopped> — or
    not set up yet → say "set up"
-6. Daily task: `ecomm-media-buying-daily` at <time> — present in the task
-   list (`list_scheduled_tasks`), or NOT CREATED → <reason>
+6. Daily task: `ecomm-media-buying-daily` <run window>, your time, hourly —
+   present in the task list (`list_scheduled_tasks`), or NOT CREATED →
+   <reason>, or an older task → upgraded now (the agent's step 1c)
 7. Mode: <Manual | Semi-auto> per account
 A plain session cannot print line 1; if the user sees anything other than
 these seven lines, the setup is wrong and they should send the answer to
@@ -104,21 +105,29 @@ from Realize each run.
 
 ## Run types
 
-- **Full run** — the scheduled daily review (from 10:00 in the account's
-  time zone, once yesterday's data is complete), and any time the user says
-  "review my account / campaigns". Every running campaign gets a verdict.
-  **The daily task fires every hour from 10:00 to 19:00 account time** and
-  each firing does one of three things, decided from today's digest:
+- **Full run** — the scheduled daily review (from the hour the user chose,
+  10:00 account time unless they picked another; the review reads full days
+  only, so any hour works), and any time the user says "review my account /
+  campaigns". Every running campaign gets a verdict.
+  **The daily task fires every hour through the run window** — the chosen
+  hour and the nine hours after it, in the user's own time (`run_window` in
+  `scope.md`) — and each firing does one of three things, decided from
+  today's digest:
   1. no digest for today → the full review (this is the day's run, whether
-     it fires at 10:00 or, because the machine was off, at 14:00);
+     it fires at the window's first hour or, because the machine was off,
+     four hours later);
   2. today's digest holds an approval marked "pending" → do not re-pull or
      re-judge; show the same boxes again from the digest ("Still waiting on
      today's review — N items") and, once answered, execute through Step 4
      (which re-verifies the live state) and update the digest;
   3. today's review is done and nothing is pending → exit without a word.
-  A firing outside 10:00–19:00 account time (a catch-up after the machine
-  was off) exits with one line. If no firing could run in the window, the
-  day is skipped: the next day's 10:00 review proceeds and the chains treat
+  A firing outside the run window (a catch-up after the machine was off)
+  exits with one line. The firing's time is the task's `lastRunAt` in
+  `list_scheduled_tasks`, read in the window's time zone; a firing whose
+  time cannot be read, a folder with no `run_window` line, or a firing less
+  than an hour past the window's last hour counts as inside — a review is
+  never skipped on a guess. If no firing could run in the window, the day
+  is skipped: the next day's first firing proceeds and the chains treat
   the gap as one missing run (Guardrails). An approval still pending at the
   last firing is closed as "not answered today" and re-judged tomorrow.
 - **Re-check** — every HOLD is looked at again on the next full run, i.e.
@@ -713,6 +722,13 @@ to add variants.
   "Resume" → `status: active`; after (3) the daily task is re-created through
   the scheduler tool when present, otherwise tell the user how. Log the
   answer in the digest.
+- **Run time.** "Send my review at 14:00", "change the daily time", in any
+  wording → confirm in the user's own time ("14:00 your time, asking again
+  every hour until 23:00 — right?"), then change the daily task's cron
+  through the scheduler tool (`update_scheduled_task`), verify with
+  `list_scheduled_tasks`, and rewrite the `run_window` and `schedule` lines.
+  Without the scheduler tool, say how to change the task in the app.
+  "Resume" after a stop re-creates the task on the recorded window.
 - **Budget allocator.** Never suggest, mention or use Realize's budget
   allocator or group-level budgets; every budget is per campaign.
 - **Beta parts.** `growth.md` and `client-requests.md` only suggest; nothing

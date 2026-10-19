@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.18)
+# Ecomm media buying — install note (v2.0.19)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -76,13 +76,17 @@ the thumbnails as public image links or a Google Drive folder shared as
 
 ## Every day
 
-The review runs every morning at 10:00 in your account's time zone (or the
-hour you chose), on this computer, while the Claude app is open and the
-computer is awake (turn the app's keep-awake setting on). If you were not
-there to answer, it asks again every hour until 19:00; if the computer was
-off at 10:00, the first hour it is on does the review. A day with the
-computer off until the evening is skipped and the next morning reviews as
-usual; nothing is ever decided on one day's numbers. In Manual
+The review runs every day at the hour you chose, in your own time (10:00
+in your account's time zone unless you picked another), on this computer,
+while the Claude app is open and the computer is awake (turn the app's
+keep-awake setting on). If you were not there to answer, it asks again
+every hour for the next nine hours; if the computer was off at your hour,
+the first hour it is on within those nine hours does the review. Each
+day's review opens as its own session, "Ecomm media buying — daily
+review", in the Claude app's sidebar; allow notifications for Claude so the
+app can tell you when it asks you something. To change the time, say
+"send my review at 14:00". A day with the computer off for all nine hours
+is skipped and the next day reviews as usual; nothing is ever decided on one day's numbers. In Manual
 mode the run waits for your ticks — Remote Control lets you answer from
 your phone. Every run is written to `digests/` in your folder, one
 sub-folder per account.
@@ -175,6 +179,6 @@ maximum you agreed.
 Every verdict is explained as cost per sale against your goal; the ROAS
 column you see in Realize is revenue-based and is not what the rules read.
 
-Version 2.0.18 — the Decision Cube and the launch plan are the settled part;
+Version 2.0.19 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
 new-market and goal-change processes are in beta: they only suggest.

@@ -1,5 +1,8 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.19 — 2026-10-19
+- The daily review starts at the hour the user chose, in their own time, and asks again every hour for the next nine hours (the run window, recorded in `scope.md`). Before, the window was fixed at 10:00–19:00 account time, so a chosen hour outside it ended every firing after one line. A firing's time is read from the task's last run; when it cannot be read, the review proceeds. A daily task created by an earlier version is upgraded once, on its own hour, to the hourly window, with one line saying the new times. "Send my review at 14:00" changes the time. Onboarding and the install note say where each day's review appears (its own session in the Claude app's sidebar) and to allow Claude's notifications.
+
 ## v2.0.18 — 2026-10-17
 - The winners offer is the pair: for each platform the angle's tests ran on, "<angle> - winning ads" (run of network, standard opening budget) and "<angle> - Yahoo & AOL" (same ads, Yahoo and AOL placements only, whitelist opening budget), in the angle's group, one question with one total and one yes — never a pick list. If the account cannot carry publisher lists yet, the run-of-network campaign is built and the Yahoo one is recorded as pending permission; the growth rule offers it as soon as a list is accepted. The growth rule's Yahoo & AOL offer is now the catch-up path for campaigns that have winners but no Yahoo twin, and the expansion path for advertisers who run no A/B tests (winners picked from the running campaign's own ads, confirmed by the advertiser); the weekly creative ask then proposes a proper test built around their best ad.
 

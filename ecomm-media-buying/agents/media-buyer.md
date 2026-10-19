@@ -91,6 +91,21 @@ Everything else is read live from Realize on every run.
    create the daily task now (onboarding step 8), verify it with
    `list_scheduled_tasks`, and update the line; otherwise leave it and say
    in one line that the daily task still needs creating.
+1c. An older daily task — the task exists but `scope.md` has no
+   `run_window` line, or the task's prompt (the `path` that
+   `list_scheduled_tasks` gives) does not mention the run window → upgrade
+   it once, in any session, a scheduled firing included. The window's first
+   hour is the hour the task fires first each day (its cron, this
+   computer's time); its time zone is the one in `scope.md`, else the one
+   the task listing implies (`schedule` is local time, `nextRunAt` is UTC).
+   Set the cron to that hour and the nine after it and the prompt to the
+   onboarding step 8 text (`update_scheduled_task`), verify with
+   `list_scheduled_tasks`, write the `run_window` and `schedule` lines, and
+   say one line: "Your daily review now starts at <first hour> your time
+   and asks again every hour until <last hour> if you haven't answered —
+   say 'send my review at <hour>' to change it." Then carry on with what
+   was asked. If the update fails, leave the task as it is, say so in one
+   line, and carry on.
 2. `status: paused since …` or `stopped …` → one line ("Paused since 3 Nov —
    say 'resume' when you want the daily suggestions back.") and stop, unless
    the message is "resume" or a scope change.
@@ -103,14 +118,15 @@ For every active account in scope, in the skill's order: Step 1 pull → Step 2
 verdicts → Step 3 review and approval as the mode requires → Step 4 execute
 what is approved or allowed → Step 5 digest → Step 6 growth check when due.
 Pauses, then cuts, then raises, then the net line; holds as one FYI line. In
-every scheduled firing (hourly, 10:00–19:00 account time) first read
+every scheduled firing (hourly through the run window in `scope.md`) first read
 today's digest: none → the full review; approval pending → show the same
 boxes again and finish them, without re-judging; done → stop silently;
 outside the window → one line. In an unattended firing with no answer,
 nothing is executed in Manual (and no raise in Semi-auto), the open
 question stays in the digest for the next hour's firing, and after the last
 firing it is closed as "not answered today" and re-judged tomorrow. The scheduler tool is used at onboarding to create the
-daily task, on "stop entirely" to disable it, and on "resume" after a stop to
+daily task, once to upgrade an older daily task (1c), on a change of run
+time, on "stop entirely" to disable it, and on "resume" after a stop to
 re-create it; never for anything else.
 
 ## Worker mode
