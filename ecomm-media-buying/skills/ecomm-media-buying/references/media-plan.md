@@ -139,17 +139,54 @@ needs 1 title × 6–8 thumbnails, angle 2"). The connector's schema marks
 user gave none, try an empty description on the first ad; if it is rejected,
 ask for one short line to reuse across that campaign's ads.
 
-Realize groups: a campaign created through the connector lands in its own
-automatic Realize group ("AutoGen - <campaign name>") and that assignment can
-never change; the connector has no way to choose a group. Say this once per
-build: "If you want these campaigns under one Realize group, create the group
-in Realize first and build the campaigns from it; I'll manage them by name
-either way." Never suggest a group budget or Realize's budget allocator;
-budgets stay per campaign.
+Realize groups: the connector can place a new campaign in an existing
+Realize group (`campaign_group_id` on `create_campaign`). Before the build,
+`get_campaign_groups` with `search_text` = the angle's group name; when the
+group exists and its `budget_distribution_method` is CUSTOM, pass its id on
+every campaign of that angle (dates inside the group's; omit the dates to
+take the group's). A group whose distribution is AUTOMATIC owns its
+campaigns' budgets, which this playbook never allows — build outside it
+and say so once. When no group exists, build without `campaign_group_id`:
+the campaign lands in its own automatic Realize group ("AutoGen - <campaign
+name>"), which can never be changed afterwards (the connector attaches only
+campaigns that are in no group yet). Say once per build: "If you want these
+campaigns under one Realize group, create the group in Realize first and
+I'll build into it; I'll manage them by name either way." Never create a
+group with a budget, never suggest a group budget or Realize's budget
+allocator; budgets stay per campaign.
+
+**When `create_campaign` answers 403 ("Requested action is forbidden").**
+The account is reachable but one part of the request is not allowed on it.
+Never resend the same call; strip the gated part and build everything else:
+1. The request carried `publisher_targeting` (a Yahoo & AOL, Mail or any
+   other whitelist campaign) → resend it without `publisher_targeting`,
+   everything else unchanged (group, budget, targeting, `is_active` false),
+   then add its ads with `create_native_item` as for any campaign. The
+   campaign is **built paused, whitelist pending**: record it in config as
+   `yahoo <id> WL pending AM <date>` (or `mail …`), never include it in the
+   activation question below, never activate it — not now, not in a later
+   run, not in Semi-auto — until the user says the list is on it. Tell the
+   user once, with the id: "<campaign name> (<id>) is created and paused,
+   with its ads, but without its Yahoo & AOL placement list: your account
+   can't apply publisher lists yet. Ask your account manager to apply the
+   Yahoo & AOL whitelist to campaign <id>; once they confirm, tell me and
+   I'll activate it." When the user later says the list is applied ("my AM
+   added the whitelist to <id>", any wording), activate it on that message
+   (`update_campaign` is_active true) at its planned daily cap, clear the
+   pending mark, and from its first full day judge it like any campaign.
+2. The request carried `campaign_group_id` and still answers 403 → resend
+   without it: the campaign lands in its AutoGen group; say once "Realize
+   wouldn't let me add campaigns to group <name> from here — they're built
+   in their own groups; I manage them by name either way."
+3. Still 403 → stop, report the error with the campaign name, build
+   nothing further for that row, and continue with the other rows.
+A 401 is reported as is (sign in again); other 4xx are fixed per the error.
 
 Finish with: "N campaigns created, paused, with their ads. Want me to
-activate them now, or after you've reviewed them in Realize?" Activate only
-on an explicit yes (`update_campaign` is_active true). Record the plan in
+activate them now, or after you've reviewed them in Realize?" — naming only
+the campaigns that can be activated; a whitelist-pending campaign is listed
+on its own line as waiting for the account manager. Activate only on an
+explicit yes (`update_campaign` is_active true). Record the plan in
 `digests/<account_id>/YYYY-MM-DD-launch.md`.
 
 ## Waves — a new country, market or product (any time after onboarding)

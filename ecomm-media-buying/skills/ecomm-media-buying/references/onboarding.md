@@ -206,7 +206,7 @@ groups:                     (one line per group: <group name>: <id>, <id>)
 creative_check: weekly Monday       last_creative_ask: —
 creative_mode: manual               (manual | semi-auto — how losing ads in creative tests are paused)
 creative_tests: —                   (12345678: thumbnail test (<angle>) · 23456789: title test (<angle>))
-winners: —                          (<angle>: titles [..] · thumbnails [..] · campaigns <id>, <id> built / declined / offer open / yahoo pending permission <date>)
+winners: —                          (<angle>: titles [..] · thumbnails [..] · campaigns <id>, <id> built / declined / offer open / yahoo <id> WL pending AM <date>)
 growth: good_week: — · display: — · predictive: — · split: —
 conversion_source: realize    conversion_file_tz: —   (the time zone of the advertiser's purchase file, asked with the first file)
 conversion_overrides: —       (per day: <date>: file <name> · <campaign id>: <n> … — client-requests.md §1 option 3)

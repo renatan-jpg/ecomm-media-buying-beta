@@ -131,11 +131,13 @@ about an ad is advisory and pauses nothing.
   and AOL publishers (`growth.md` §2 says where the list comes from). The
   test campaigns keep running; from its first full day each new campaign is
   judged by the campaign cube like any other. **If the account cannot carry
-  a publisher list yet** (the connector refuses `publisher_targeting`),
-  build the run-of-network campaign, say once "the Yahoo & AOL campaign
-  waits until publisher lists are enabled on your account — ask your
-  account manager", record `winners: … yahoo pending permission`, and let
-  `growth.md` §2 offer it as soon as a list is accepted.
+  a publisher list yet** (`create_campaign` answers 403 with
+  `publisher_targeting`), build the run-of-network campaign as planned and
+  the Yahoo & AOL campaign too, without its placement list, paused, with
+  its ads — the 403 ladder in `media-plan.md` — record
+  `winners: … yahoo <id> WL pending AM <date>`, and tell the user once to
+  ask their account manager to apply the Yahoo & AOL whitelist to campaign
+  <id>; it is activated only when the user says the list is on it.
   **Manual and Semi-auto: a yes/no question**, never built by the run on
   its own. Yes → build both; no → `winners: … campaigns declined <date>`, offered
   again only when the set of winners grows; no answer (an unattended run)

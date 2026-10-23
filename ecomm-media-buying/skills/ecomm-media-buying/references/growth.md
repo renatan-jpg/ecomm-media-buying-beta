@@ -77,10 +77,13 @@ creative angle); name `<angle> - Yahoo & AOL[ - <platform>]`; built paused
 as in `media-plan.md`. The run-of-network campaign keeps running; the Yahoo
 campaign is judged by the campaign cube from its first full day. No →
 `growth: yahoo: declined <campaign id>`; never re-offered for that
-campaign. A campaign that cannot carry a publisher list (the connector
-refuses `publisher_targeting` for the account) is reported once: "your
-account does not allow publisher lists yet — ask your account manager to
-enable them", and the offer waits.
+campaign. When the account cannot carry a publisher list (`create_campaign`
+answers 403 with `publisher_targeting`), the Yahoo & AOL campaign is still
+built — without its placement list, paused, with its ads, as the 403 ladder
+in `media-plan.md` says — recorded `growth: yahoo: <id> WL pending AM
+<date>`, and the user is told once to ask their account manager to apply
+the Yahoo & AOL whitelist to campaign <id>; it is activated only when the
+user says the list is on it. The Mail campaign below follows the same rule.
 Why Yahoo only, and why both platforms: run-of-network already buys a
 third of its desktop spend on Yahoo & AOL and almost none of its mobile
 spend, and in the accounts this playbook comes from the Yahoo-only

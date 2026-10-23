@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.19)
+# Ecomm media buying — install note (v2.0.20)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -164,8 +164,10 @@ also say "these two are one creative angle" any time. The offer names only
 the winners, and it is one yes for the pair, not a pick list. You can
 answer with other budgets; nothing is built without your yes, and the new
 campaigns are then reviewed daily like any other. If your account cannot
-carry publisher lists yet, the run-of-network campaign is built and the
-Yahoo & AOL one waits until your account manager enables them. Tests you
+carry publisher lists yet, both campaigns are still built: the Yahoo & AOL
+one is created paused, with its ads but without its placement list, and
+you are asked to have your account manager apply the Yahoo & AOL whitelist
+to it; tell the media buyer once that is done and it is activated. Tests you
 already run can be included by saying "treat <campaign id> as a title
 test".
 
@@ -179,6 +181,6 @@ maximum you agreed.
 Every verdict is explained as cost per sale against your goal; the ROAS
 column you see in Realize is revenue-based and is not what the rules read.
 
-Version 2.0.19 — the Decision Cube and the launch plan are the settled part;
+Version 2.0.20 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
 new-market and goal-change processes are in beta: they only suggest.

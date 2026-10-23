@@ -1,5 +1,9 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.20 — 2026-10-23
+- Campaign groups through the connector: a build looks up the angle's Realize group (`get_campaign_groups`) and creates its campaigns inside it with `campaign_group_id` when the group exists with a custom (per-campaign) budget; a new build without a group still lands in Realize's automatic per-campaign groups, which cannot be joined afterwards. Groups are never created with a budget.
+- 403 on a campaign build no longer stops the build. A whitelist campaign (Yahoo & AOL, Mail) the account cannot carry a publisher list for is created anyway — paused, with its ads, without its placement list — recorded as "WL pending AM", left out of the activation question, and the user is told once to have their account manager apply the whitelist to that campaign id; "my AM added the whitelist to <id>" activates it. A 403 on the group alone falls back to the automatic group with one line; anything else is reported and the other rows go on.
+
 ## v2.0.19 — 2026-10-19
 - The daily review starts at the hour the user chose, in their own time, and asks again every hour for the next nine hours (the run window, recorded in `scope.md`). Before, the window was fixed at 10:00–19:00 account time, so a chosen hour outside it ended every firing after one line. A firing's time is read from the task's last run; when it cannot be read, the review proceeds. A daily task created by an earlier version is upgraded once, on its own hour, to the hourly window, with one line saying the new times. "Send my review at 14:00" changes the time. Onboarding and the install note say where each day's review appears (its own session in the Claude app's sidebar) and to allow Claude's notifications.
 
