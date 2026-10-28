@@ -1,5 +1,8 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.22 — 2026-10-28
+- Winners pair budgets rebalanced: the run-of-network campaign opens on a new 7.5×G winners anchor ($750 at a $100 goal, clamped 2.5–8×) and the Yahoo & AOL campaign on 2.5×G ($250), so three quarters of the pair's money runs of network and one quarter on the whitelist (it was $500 + $750, the whitelist the larger). A run-of-network campaign already lands about a third of desktop spend and an eighth of mobile spend on Yahoo and AOL by itself; the whitelist campaign is the smaller add on both platforms. The same $250 anchor applies to the Yahoo & AOL campaign offered next to a running winning campaign.
+
 ## v2.0.21 — 2026-10-28
 - Renamed from alpha to beta: the source is now `renatan-jpg/ecomm-media-buying-beta` and the plugin installs as `ecomm-media-buying@ecomm-media-buying-beta`; every "not available in the alpha" now reads "in the beta" (new configs record `auto: not available (beta)`). Installs made under the alpha name keep updating as they are. The install note calls the weekly creative offer, expansion offers and client-request processes "still experimental" instead of "in beta", so it does not read as a second beta.
 

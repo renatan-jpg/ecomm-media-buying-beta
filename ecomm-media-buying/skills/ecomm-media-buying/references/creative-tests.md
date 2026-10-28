@@ -114,13 +114,16 @@ about an ad is advisory and pauses nothing.
   Nothing new is asked for: the landing page is the one the winning ads
   point to (their URLs from `list_items`; if the two tests point to
   different pages, ask once which one); platforms, geo, branding, tracking
-  code and conversion rule are the tests' own. **Opening budget: exactly as
-  a new test campaign** — the standard rule in `opening-budgets.md`: $500 ÷
-  G, kept between 2.5× and 8× the goal, rounded to the nearest 50 ($150 at
-  a $20 goal, $400 at $50, $500 at $100 and at $200, $1,000 at $400) — for
-  the run-of-network campaign; the Yahoo & AOL campaign opens on the
-  whitelist anchor in `opening-budgets.md` through the same 2.5–8× rule
-  ($750 at $100). One pair per platform the tests ran on. The budgets are
+  code and conversion rule are the tests' own. **Opening budgets: three quarters
+  run of network, one quarter Yahoo & AOL.** The run-of-network campaign
+  opens on the winners anchor in `opening-budgets.md`: $750 ÷ G, kept
+  between 2.5× and 8× the goal, rounded to the nearest 50 ($150 at a $20
+  goal, $400 at $50, $750 at $100 and at $200, $1,000 at $400). The Yahoo &
+  AOL campaign opens on the whitelist anchor through the same rule: $250 ÷
+  G ($150 at $20, $250 at $50 and at $100, $500 at $200, $1,000 at $400).
+  The run-of-network campaign is never the smaller one: it buys Yahoo and
+  AOL on its own, and the whitelist campaign adds a measured extra on top,
+  not a second engine. One pair per platform the tests ran on. The budgets are
   proposed, never asked open-ended; an answer with other numbers ("yes, at
   $400 and $600") is used as given. **One campaign group = one creative
   angle**, so both campaigns join the tests' own group (the one in the

@@ -72,7 +72,7 @@ publisher names from `search_publishers` for "yahoo" and "aol", shown to
 the user, as `publisher_targeting` INCLUDE (the fixed Yahoo & AOL list in
 `references/`, when the plugin ships one, replaces the lookup); opening
 budget from the whitelist anchor in `opening-budgets.md` through the 2.5–8×
-rule; **same campaign group as the winning campaign** (one group = one
+rule ($250 at a $100 goal, a quarter of what a winners campaign opens at); **same campaign group as the winning campaign** (one group = one
 creative angle); name `<angle> - Yahoo & AOL[ - <platform>]`; built paused
 as in `media-plan.md`. The run-of-network campaign keeps running; the Yahoo
 campaign is judged by the campaign cube from its first full day. No →

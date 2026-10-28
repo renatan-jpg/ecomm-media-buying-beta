@@ -13,11 +13,12 @@ that surface; scaling afterwards follows the normal raise levels.
 |---|---|---|
 | Native — brand-new creative test (standard) | 5×G | $500 |
 | Native — proven creatives, first campaign | 8×G | $800 |
+| Native — winners campaign (run of network, from an angle's tests) | 7.5×G | $750 |
 | Narrow scope (one OS, secondary country, small surface) | 3×G | $300 |
 | Apple News | 5×G | $500 |
 | Pixel / predictive audiences | 6×G | $600 |
 | Search keyword / domain audiences | 8×G | $800 |
-| Yahoo & AOL whitelist campaign | 7.5×G | $750 |
+| Yahoo & AOL whitelist campaign (next to a winners campaign) | 2.5×G | $250 |
 | Display — static | 6×G | $600 |
 | Display — video | 10×G | $1,000 |
 | Retargeting (RMK) | 10×G | $1,000 |
@@ -31,7 +32,13 @@ comes on day 4; the floor is 2.5× because at a high goal the amount at risk
 per day is already large. Above 8×G the verdict comes no sooner (the 2-day
 minimum holds) and the amount at risk only grows.
 
-Notes: new surfaces with proven creatives still open at the surface's number —
+Notes: the winners pair is three quarters run of network and one quarter
+Yahoo & AOL at a $100 goal ($750 + $250). The run-of-network campaign buys
+Yahoo and AOL on its own, so the whitelist campaign is a measured extra,
+never the larger of the two; the 2.5–8× clamp pulls the pair together at
+small goals ($150 + $150 at $20, $400 + $250 at $50) and at large ones
+($750 + $500 at $200, $1,000 + $1,000 at $400). New surfaces with proven
+creatives still open at the surface's number —
 the surface is the unknown. A first-ever probe of a surface the advertiser
 has never used can open one level lower. Creatives for a new *format* (display,
 video, mail) are new creatives by definition — plan the format's own
