@@ -1,7 +1,7 @@
 # Creative tests — daily ad verdicts (beta)
 
 Beta: the verdicts are rules; what is executed follows the account's
-`creative_mode` (Manual / Semi-auto — Auto is not available in the alpha).
+`creative_mode` (Manual / Semi-auto — Auto is not available in the beta).
 Step 6b of every full run, after the campaign verdicts and before the digest
 closes. Everything is relative to the account's goal G and its zone lines.
 
@@ -79,7 +79,7 @@ the winner as the fixed element) or "leave the winners running as they are".
   tick and the final preview, like a campaign action.
 - **`creative_mode: semi-auto`** — losing ads are paused by the run and
   listed first under "done today — ads", with the money they were spending.
-- Auto — not available in the alpha.
+- Auto — not available in the beta.
 Default `creative_mode` = the account's mode, asked once at onboarding
 ("Same for pausing losing ads in your creative tests?"). A single question
 about an ad is advisory and pauses nothing.
@@ -143,7 +143,7 @@ about an ad is advisory and pauses nothing.
   again only when the set of winners grows; no answer (an unattended run)
   → written to the digest as `winners campaign: offer open`, shown again by
   the day's later firings and by the next full run until answered. **Auto
-  (not available in the alpha): the run builds it and activates it** at the
+  (not available in the beta): the run builds it and activates it** at the
   opening budget, and the digest reports it under "done today". One side
   only (titles but no thumbnails yet, or the reverse) → nothing is offered
   and nothing is said in chat; the digest file notes what is still missing.

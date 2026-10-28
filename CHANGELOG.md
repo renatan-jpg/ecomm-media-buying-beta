@@ -1,5 +1,8 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.21 — 2026-10-28
+- Renamed from alpha to beta: the source is now `renatan-jpg/ecomm-media-buying-beta` and the plugin installs as `ecomm-media-buying@ecomm-media-buying-beta`; every "not available in the alpha" now reads "in the beta" (new configs record `auto: not available (beta)`). Installs made under the alpha name keep updating as they are. The install note calls the weekly creative offer, expansion offers and client-request processes "still experimental" instead of "in beta", so it does not read as a second beta.
+
 ## v2.0.20 — 2026-10-23
 - Campaign groups through the connector: a build looks up the angle's Realize group (`get_campaign_groups`) and creates its campaigns inside it with `campaign_group_id` when the group exists with a custom (per-campaign) budget; a new build without a group still lands in Realize's automatic per-campaign groups, which cannot be joined afterwards. Groups are never created with a budget.
 - 403 on a campaign build no longer stops the build. A whitelist campaign (Yahoo & AOL, Mail) the account cannot carry a publisher list for is created anyway — paused, with its ads, without its placement list — recorded as "WL pending AM", left out of the activation question, and the user is told once to have their account manager apply the whitelist to that campaign id; "my AM added the whitelist to <id>" activates it. A 403 on the group alone falls back to the automatic group with one line; anything else is reported and the other rows go on.

@@ -1,5 +1,5 @@
 {
-  "name": "ecomm-media-buying-alpha",
+  "name": "ecomm-media-buying-beta",
   "owner": { "name": "Renata N" },
   "plugins": [
     { "name": "ecomm-media-buying", "source": "./ecomm-media-buying",

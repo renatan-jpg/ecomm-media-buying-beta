@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.20)
+# Ecomm media buying — install note (v2.0.21)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -20,16 +20,16 @@ campaigns. One agent, `media-buyer`, runs it.
    ```
    Check it: this prints one line and no error.
    ```
-   git ls-remote https://github.com/renatan-jpg/ecomm-media-buying-alpha
+   git ls-remote https://github.com/renatan-jpg/ecomm-media-buying-beta
    ```
    Then add the source and install the plugin, either in the same terminal:
    ```
-   claude plugin marketplace add https://github.com/renatan-jpg/ecomm-media-buying-alpha
-   claude plugin install ecomm-media-buying@ecomm-media-buying-alpha
+   claude plugin marketplace add https://github.com/renatan-jpg/ecomm-media-buying-beta
+   claude plugin install ecomm-media-buying@ecomm-media-buying-beta
    ```
    or inside any Claude session, as `/plugin marketplace add` and
    `/plugin install` with the same address and name. Then inside Claude:
-   `/plugin` → Marketplaces → ecomm-media-buying-alpha → Enable auto-update.
+   `/plugin` → Marketplaces → ecomm-media-buying-beta → Enable auto-update.
    New versions of the rules arrive by themselves after that, using the
    same stored token. (Received a zip instead? In a terminal, run
    `claude --plugin-dir /path/to/ecomm-media-buying --agent media-buyer`
@@ -66,7 +66,7 @@ number you give is the only goal it ever uses), the mode — **Manual**: you
 get the recommendations and only what you tick is applied in Realize; or
 **Semi-auto**: it handles the cuts (decreasing a campaign's daily budget)
 and the pauses, and you approve the budget raises by ticking them; a fully
-automatic mode is not available in the alpha — the maximum daily budget it
+automatic mode is not available in the beta — the maximum daily budget it
 may ever set, the run time, and whether to build your first test campaigns
 now. It then creates the daily task.
 
@@ -181,6 +181,6 @@ maximum you agreed.
 Every verdict is explained as cost per sale against your goal; the ROAS
 column you see in Realize is revenue-based and is not what the rules read.
 
-Version 2.0.20 — the Decision Cube and the launch plan are the settled part;
+Version 2.0.21 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
-new-market and goal-change processes are in beta: they only suggest.
+new-market and goal-change processes are still experimental: they only suggest.

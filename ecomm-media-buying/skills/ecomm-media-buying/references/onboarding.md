@@ -88,9 +88,9 @@ folder — make a folder for your account, open it in the Claude app and say
    for pausing losing ads in your creative tests?" — yes → `creative_mode`
    = the mode; no → ask which of the two, and write it.
    **Auto** (the run would also execute raises) is **not available in the
-   alpha**: it is not offered, not mentioned unless the user asks, and never
-   switched on. If the user asks for it: "Auto isn't available in the alpha
-   — Manual or Semi-auto for now." Write `auto: not available (alpha)` in
+   beta**: it is not offered, not mentioned unless the user asks, and never
+   switched on. If the user asks for it: "Auto isn't available in the beta
+   — Manual or Semi-auto for now." Write `auto: not available (beta)` in
    config.
    Say also: these modes decide whether you approve first or the run applies
    the rules by itself; they are not Claude's own permission settings.
@@ -201,7 +201,7 @@ run_time: see run_window in scope.md (one daily window per folder, in the user's
 levels: 300, 500, 750, 1000, 1250, 1500, 2000, 2500, 3000, 4000, 5000, 6000, 7000, 8000, 10000
 media_plan: skipped         (or: built 2026-10-02)
 onboarded: 2026-10-02
-auto: not available (alpha)
+auto: not available (beta)
 groups:                     (one line per group: <group name>: <id>, <id>)
 creative_check: weekly Monday       last_creative_ask: —
 creative_mode: manual               (manual | semi-auto — how losing ads in creative tests are paused)

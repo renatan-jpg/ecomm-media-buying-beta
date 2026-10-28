@@ -145,7 +145,7 @@ winning campaign.
 | Yahoo & AOL campaign running 14 days with a winner | Mail placements | follow-up |
 | The account's first good week | display, then predictive (when eligible), then the Yahoo & AOL campaign if not yet | account trigger |
 
-Order and timing are working rules for the alpha; the Yahoo & AOL campaign
+Order and timing are working rules for the beta; the Yahoo & AOL campaign
 mirrors how scaled accounts are structured, the rest is not outcome-tested
 yet.
 
