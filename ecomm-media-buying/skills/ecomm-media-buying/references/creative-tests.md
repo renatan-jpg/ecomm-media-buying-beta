@@ -55,13 +55,13 @@ only inside the title test, thumbnails only inside the thumbnail test.
 
 | Status | Rule (any line = that status) | At G = $100 | What follows |
 |---|---|---|---|
-| **Losing** | 1. zero sales after spend ≥ 3×G · 2. CPA above 2×G after spend ≥ 5×G · 3. 5 or more sales at a CPA above 20/17 of G (zone D or E) · 4. *starved*: 14 or more full days live and still under 3×G spent | 1. no sales after $300 · 2. over $200 per sale after $500 · 3. 5+ sales at over $117.65 · 4. under $300 spent after two weeks | pause the ad (§4) |
+| **Losing** | 1. zero sales after spend ≥ 3×G · 2. CPA above 2×G after spend ≥ 5×G · 3. 5 or more sales at a CPA above 20/17 of G · 4. *starved*: 14 or more full days live and still under 3×G spent | 1. no sales after $300 · 2. over $200 per sale after $500 · 3. 5+ sales at over $117.65 · 4. under $300 spent after two weeks | pause the ad (§4) |
 | **Winning** | 5 or more sales at a CPA at or under 10/11 of G (zone A or B). *Deep winner:* 10 or more sales at or under 2/3 of G | 5+ sales at ≤ $90.91 · deep: 10+ at ≤ $66.67 | keep; its component is a winner (§5) |
 | **Not determined yet** | fewer than 5 sales and no Losing line hit — or 5 or more sales at goal (CPA between 10/11 and 20/17 of G): a keeper, not a winner | under 5 sales · or 5+ sales at $90.91–117.65 | leave it running, re-read tomorrow; never paused, never copied |
 
 Why 5 sales: below that one extra sale moves an ad's CPA by 20% or more.
-The spend floors are the campaign quick-pause floors, so the advertiser
-learns one set of numbers.
+These floors are the ads' own; a campaign is judged by the quick kill and
+quick-pause in the main rulebook, whose floors are lower.
 
 ## 4. What happens to a losing ad
 

@@ -63,10 +63,10 @@ folder — make a folder for your account, open it in the Claude app and say
    goal is not supported in this version). The goal is the advertiser's
    number: never propose one from the account's results, never start with an
    example. Then compute the **four zone lines** (the exact fractions G ×
-   2/3, 10/11, 20/17, 4/3 — at $100: 66.6667, 90.9091, 117.6471, 133.3333),
+   2/3, 10/11, 1, 5/4 — at $100: 66.6667, 90.9091, 100.0000, 125.0000),
    store them to four decimals as `zone_lines:` and say them in plain words,
    rounded: "about $67 per sale or less is a deep winner, up to about $91 a
-   winner, up to about $118 at goal, up to about $133 over goal, above that
+   winner, up to $100 at goal, up to $125 over goal, above that
    a blowout — every verdict reads your campaigns against these lines."
    Then compute the **15 budget levels** from G
    (3, 5, 7.5, 10, 12.5, 15, 20, 25, 30, 40, 50, 60, 70, 80, 100 × G — for a
@@ -195,7 +195,7 @@ Write `config/<account>.md`:
 account_id: <string>        account_name: <name>
 currency: USD               time_zone: <tz>
 cpa_goal: 100               main_conversion_rule: <id> — <name>
-zone_lines: 66.6667, 90.9091, 117.6471, 133.3333   (G × 2/3, 10/11, 20/17, 4/3, four decimals)
+zone_lines: 66.6667, 90.9091, 100.0000, 125.0000   (G × 2/3, 10/11, 1, 5/4, four decimals)
 mode: manual                max_daily_cap: 10000      (mode: manual | semi-auto | auto)
 run_time: see run_window in scope.md (one daily window per folder, in the user's time)
 levels: 300, 500, 750, 1000, 1250, 1500, 2000, 2500, 3000, 4000, 5000, 6000, 7000, 8000, 10000

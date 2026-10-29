@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.22)
+# Ecomm media buying — install note (v2.0.23)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -86,7 +86,7 @@ day's review opens as its own session, "Ecomm media buying — daily
 review", in the Claude app's sidebar; allow notifications for Claude so the
 app can tell you when it asks you something. To change the time, say
 "send my review at 14:00". A day with the computer off for all nine hours
-is skipped and the next day reviews as usual; nothing is ever decided on one day's numbers. In Manual
+is skipped and the next day reviews as usual; nothing is ever decided on one day's numbers alone. In Manual
 mode the run waits for your ticks — Remote Control lets you answer from
 your phone. Every run is written to `digests/` in your folder, one
 sub-folder per account.
@@ -104,12 +104,34 @@ permission setting.
 
 ## Timing on a new campaign
 
-A new campaign is paused from its first morning if it is clearly failing,
-raised from its second morning only if it is exceptional (at or under
-two-thirds of your goal per sale since launch, and no day over
-ten-elevenths of it), raised on the normal rules from its third, and paused
-on the normal
-rules from its fifth. Cuts come later, once a campaign has a track record.
+At any age, from its first morning, a campaign is paused at once if it runs
+over twice your goal per sale on the week or the last three days after 3×
+your goal spent there, or has no sale in the week on 2× your goal. A new
+campaign is also paused in its first two weeks if it runs over 1.5× your
+goal per sale since launch after 4× spent. It is raised from its second morning only if it is exceptional (at or
+under two-thirds of your goal per sale since launch, and no day over
+ten-elevenths of it), and raised on the normal rules from its third. From
+its second morning on, at any age, a campaign over your goal on the week is
+paused after a bad day (yesterday over twice your goal per sale, no sale on
+2× your goal, at most one sale on 3×, or the last two days together over
+twice your goal); otherwise it is paused on the normal rules from its
+fifth. A campaign that stays over your goal on the week for five mornings
+in a row, without a blowout, is a slow bleed: cut one step if it has a
+track record, and paused if the week is still over goal seven mornings
+later; paused at once if it has none. A campaign at or under your goal on
+the week is paused only after four mornings in a row of readings over goal.
+Cuts come later, once a campaign has a track record.
+
+## How your goal is read
+
+Every reading is placed in one of five bands against your goal: a deep
+winner at or under two-thirds of it, a winner up to ten-elevenths, at goal
+up to the goal itself, over goal up to 1.25×, and a blowout above that
+(at a $100 goal: $66.66, $90.90, $100 and $125). A day in the over-goal
+band is tolerated while the week is at goal or slightly over; it takes a
+blowout reading to start a warning. Large campaigns that sit a little over
+goal, and at-goal weeks with one sharp day, get a "worth a look" line in
+the review but no action.
 
 ## If you see more sales than Realize does
 
@@ -181,6 +203,6 @@ maximum you agreed.
 Every verdict is explained as cost per sale against your goal; the ROAS
 column you see in Realize is revenue-based and is not what the rules read.
 
-Version 2.0.22 — the Decision Cube and the launch plan are the settled part;
+Version 2.0.23 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
 new-market and goal-change processes are still experimental: they only suggest.

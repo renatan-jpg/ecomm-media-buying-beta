@@ -3,7 +3,7 @@ name: ecomm-media-buying
 description: Manages the Realize accounts an ecommerce advertiser put in scope, against their CPA goal. Reviews the RUNNING campaigns every day (or on demand), recommends RAISE / HOLD / CUT / PAUSE per campaign from the Decision Cube (weekly, last-3-day and yesterday CPA zones against the goal) with the CPA evidence, and — in Manual mode after the user ticks and confirms, or in Semi-auto for cuts and pauses (Auto is not available in the beta) — applies the changes through the Realize connector. Also runs onboarding (accounts in scope, goal, mode, daily schedule), the launch media plan and later test waves, a weekly creative-test offer, expansion offers after a good week, and the processes for a conversion file, a new market and a CPA change. Use whenever the user mentions reviewing, managing, scaling, pausing or launching their campaigns, gives a CPA goal, uploads conversions, asks to stop, or asks to set up the routine.
 ---
 
-# Ecomm media buying — v2.0.22 (2026-10)
+# Ecomm media buying — v2.0.23 (2026-10)
 
 Taboola's best-practice playbook for scaled, purchase-focused ecommerce
 advertisers. The decision core is the **Media Buying Decision Cube**: three
@@ -152,8 +152,15 @@ from Realize each run.
    (or is asked steps 3–5 when that line says `per account`). Then
    `config/<account>.md`. Use its `account_id` string (never a raw number),
    goal G and main conversion rule. If `zone_lines:` is missing (a config
-   written before v2.0.1), compute the four lines from `cpa_goal` and write
-   them to the config before judging anything. If the `groups:` block holds
+   written before v2.0.1), or its third line is still 20/17 of the goal
+   (a config written before v2.0.23 — 117.6471 at $100), compute the four
+   lines from `cpa_goal` and write them to the config before judging
+   anything; after a v2.0.23 update, re-derive the last three runs' cell
+   codes from the CPAs stored in those digests at the new lines, write them
+   under "codes re-derived at the v2.0.23 zone lines" (chains continue from
+   them; nothing is reset) and say once at the top of the digest: "Zone
+   lines updated: at goal now ends at your goal ($G), blowout starts at
+   1.25× ($<1.25×G>)." If the `groups:` block holds
    **one group per test** — a title test and a thumbnail test of the same
    angle in two groups (names ending "title test" / "thumbnail test", or
    two groups sharing a prefix) — offer the merge once, before the review:
@@ -216,18 +223,22 @@ the skill speaks only in CPA against the goal. Each window's CPA maps to a
 |---|---|---|---|
 | **A** | ≤ 2/3 (66.7%) | deep winner | ≤ $66.66 |
 | **B** | 2/3 – 10/11 (66.7–90.9%) | winner | $66.67–90.90 |
-| **C** | 10/11 – 20/17 (90.9–117.6%) | at goal | $90.91–117.64 |
-| **D** | 20/17 – 4/3 (117.6–133.3%) | over goal | $117.65–133.33 |
-| **E** | > 4/3 (133.3%) | blowout | ≥ $133.34 |
+| **C** | 10/11 – 1 (90.9–100%) | at goal | $90.91–100.00 |
+| **D** | 1 – 5/4 (100–125%) | over goal | $100.01–125.00 |
+| **E** | > 5/4 (125%) | blowout | ≥ $125.01 |
 
-The four zone lines are the exact fractions G × 2/3, 10/11, 20/17 and 4/3,
+The four zone lines are the exact fractions G × 2/3, 10/11, 1 and 5/4,
 computed once at onboarding and stored in config to four decimals as
-`zone_lines:` (at $100: 66.6667, 90.9091, 117.6471, 133.3333), so every
+`zone_lines:` (at $100: 66.6667, 90.9091, 100.0000, 125.0000), so every
 advertiser has their own cube in their own currency. A CPA at or under a
-line is in the better zone; the lines almost never fall on a cent, so at
-$100 the cent values read $66.66 A · $66.67 B · $90.90 B · $90.91 C ·
-$117.64 C · $117.65 D · $133.33 D · $133.34 E. The fractions decide, never
-a rounded figure. **A day with zero conversions on real spend (spend ≥ 2×G) is zone E.** A
+line is in the better zone, so at $100 the cent values read $66.66 A ·
+$66.67 B · $90.90 B · $90.91 C · $100.00 C · $100.01 D · $125.00 D ·
+$125.01 E. The fractions decide, never a rounded figure. "At goal" means
+at or under the goal: any CPA above G is over goal, the same line the
+exceptional exit and the slow bleed use. Blowout starts at 1.25× because
+that is where a scaled buyer's pauses step up; a day between the goal and
+1.25× is tolerated while the week is at goal or slightly over (panels C and
+D below). **A day with zero conversions on real spend (spend ≥ 2×G) is zone E.** A
 window with zero conversions on thin spend (< 2×G) has no zone; the campaign
 gets HOLD with the note "thin day — no reading" and is re-checked tomorrow.
 On cards, show a CPA to the cent whenever it is within 1% of a zone line
@@ -249,16 +260,40 @@ approximation — say which was used.
 
 1. **TOO EARLY** — launched today (`start_date` = today, or activated today
    per the history report) → no verdict; give it a learning day.
-2. **QUICK-PAUSE** — first 14 days from activation (not the build date),
+2. **QUICK KILL** — any age, from the morning after the campaign's 1st
+   full day. **PAUSE** if any of:
+   - L7D CPA (since launch when younger than 7 days) above 2× the goal
+     ($200 at $100) with at least 3×G spent in that window;
+   - L3D CPA (since launch when younger than 3 days) above 2× the goal
+     with at least 3×G spent in those days;
+   - zero conversions in L7D (since launch when younger) on spend ≥ 2×G.
+   At these levels almost no campaign comes back, so there is no chain,
+   no bad-day test and no wait. It pauses with or without a track record —
+   never a cut. The card names the line: "PAUSE (quick kill) · L7D $262
+   per sale on $1,310 spent, over $200".
+3. **QUICK-PAUSE** — first 14 days from activation (not the build date),
    judged on the campaign's numbers **since launch, through yesterday**
-   (Lifetime window). **PAUSE** if any of:
-   - zero conversions after spend ≥ 3×G;
-   - lifetime CPA above 10/3 of the goal (3.33× — $333.33 at $100) after
-     spend ≥ 5×G;
-   - lifetime CPA above 2× the goal after spend ≥ 10×G.
-   Each is one question, asked on the morning after that spend level is
-   crossed. A young campaign that trips none of these goes on to the grid.
-3. **EXCEPTIONAL START** — the one exception to the entry rule below. On
+   (Lifetime window). **PAUSE** if the lifetime CPA is above 1.5× the goal
+   ($150 at $100) after spend ≥ 4×G. Asked every morning from the one
+   after that spend level is crossed, through day 14. A young campaign
+   that trips neither rule 2 nor this one goes on to rule 4.
+4. **EXCEPTIONAL EXIT** — the mirror of the exceptional start, at any age,
+   from the morning after the campaign's **2nd full day**. **PAUSE** when
+   the week is over goal AND yesterday was a bad day:
+   - *week over goal:* L7D CPA above G (since launch when younger than 7
+     days), or zero conversions in that window;
+   - *bad day*, any of: yesterday's CPA above 2× the goal; zero
+     conversions yesterday on spend ≥ 2×G; at most one conversion
+     yesterday on spend ≥ 3×G; Day −1 and Day −2 together at a CPA above
+     2× the goal, or with zero conversions on spend ≥ 2×G.
+   Each bad-day line carries its own spend floor, so the 7×G floor of
+   rule 6 and the chains do not apply. It pauses with or without a track
+   record — never a cut. It never touches a campaign at or under G on the
+   week, and it reads no account or network total: whether the account is
+   profitable that week does not change it. The card names the line that
+   fired, in amounts: "PAUSE (exceptional exit) · L7D $131 over the $100
+   goal · yesterday $236 per sale, over $200".
+5. **EXCEPTIONAL START** — the one exception to the entry rule below. On
    the morning after the campaign's **2nd full day**, if since launch it has
    spent **≥ 5×G**, runs at a since-launch **CPA at or under two-thirds of
    G** (zone A) and **each of the two days on its own is in zone A or B**
@@ -269,14 +304,14 @@ approximation — say which was used.
    morning after the 3rd full day (holds, watches and exit signals are
    recorded from day 2 as usual — a zone-B campaign on day 2 waits one more
    day). A strong first day carrying a weak second day does not qualify.
-4. **NO SIGNAL** — fewer than **2 full days** since activation, or spend in
+6. **NO SIGNAL** — fewer than **2 full days** since activation, or spend in
    the reading window (L7D, or since launch when younger than 7 days) below
    **7×G** → no verdict; one strong or weak day must not fill all three
    readings, and thin spend makes the zones meaningless. With an opening
    budget of 2.5–8×G (see `opening-budgets.md`) a new campaign gets its first
    cube verdict on the morning of day 3 — day 4 when the opening is below
    3.5×G, because 7×G then takes three days — or its first raise a day
-   earlier through rule 3 (which needs 5×G in two days, so in practice an
+   earlier through rule 5 (which needs 5×G in two days, so in practice an
    opening of 3×G or more). When no live campaign passes this floor, say it
    with the amount, never as a multiple alone: "None of the live campaigns
    meets the minimum for a check — at least 7× your goal ($<7×G>) spent in
@@ -291,19 +326,25 @@ approximation — say which was used.
 
 | Morning after | What can happen | Condition |
 |---|---|---|
-| Day 1 | PAUSE (quick-pause) | no sales after $300, or over $333.33 per sale after $500 |
+| Day 1 | PAUSE (quick kill) | no sales after $200, or over $200 per sale after $300 |
+| Day 1 | PAUSE (quick-pause) | over $150 per sale after $400 |
 | Day 2 | RAISE (exceptional start) | $500+ spent, at or under $66.66 per sale since launch and no day over $90.90 |
-| Day 2 | PAUSE (quick-pause) | over $333.33 per sale after $500, over $200 after $1,000 |
+| Day 2 | PAUSE (quick kill / quick-pause) | no sales after $200, over $200 per sale since launch after $300, or over $150 after $400 |
+| Day 2 onward | PAUSE (exceptional exit) | over $100 per sale on the week (since launch while younger) and a bad day: yesterday over $200 per sale, no sale on $200+, at most one sale on $300+, or the last two days together over $200 per sale |
 | Day 2 | first grid reading | hold / watch / exit signal recorded, no raise |
 | Day 3 | RAISE (grid) | raise cell and every raise gate passes |
 | Day 4 | 2nd raise after an exceptional start | still at or under $66.66 per sale (2-day wait) |
 | Day 5 | PAUSE (exit chain) | exit signal on days 2 and 5, watch or exit on days 3–4 |
 | Day 5 / Day 7 | 2nd raise at $66.67–76.92 / $76.93–90.90 per sale | 3-day / 5-day wait |
-| ~Day 9 | earliest CUT | track record first (cap ≥10×G after two raises), then four watch/exit runs |
-| Through day 14 | quick-pause keeps watching | over $200 per sale after $1,000 since launch |
+| ~Day 7 | CUT or PAUSE (slow bleed) | over $100 per sale on the week on five runs in a row from the first grid reading; a cut only with a track record |
+| ~Day 9 | earliest CUT (warning chain) | track record first (cap ≥10×G after two raises), then four watch/exit runs |
+| Through day 14 | quick-pause keeps watching | over $150 per sale after $400 since launch |
+| Any day | quick kill keeps watching | over $200 per sale on the week or the last 3 days after $300 spent there, or no sale in the week on $200 |
 
-Nothing in the first two weeks is decided on one day's numbers except the
-quick-pause, which only reads since-launch totals.
+Outside the quick kill and the quick-pause, which read since-launch totals
+and act from day 1, nothing in the first two weeks is decided on one day's
+numbers alone: the exceptional exit needs the week over goal as well as a
+bad day.
 
 ### 2b. The grid
 
@@ -332,27 +373,27 @@ Panel **B** (L7D zone B — CPA between 2/3 and 10/11 of the goal)
 | **D** | H | H | H | W | W |
 | **E** | H | H | W | W | X |
 
-Panel **C** (L7D zone C — at goal, between 10/11 and 20/17)
+Panel **C** (L7D zone C — at goal, between 10/11 of the goal and the goal)
 
 | L3D ↓ / Yesterday → | A | B | C | D | E |
 |---|---|---|---|---|---|
 | **A** | H | H | H | H | H |
 | **B** | H | H | H | H | H |
 | **C** | H | H | H | H | H |
-| **D** | H | H | H | W | X |
-| **E** | H | H | W | X | X |
+| **D** | H | H | H | H | W |
+| **E** | H | H | H | W | X |
 
-Panel **D** (L7D zone D — CPA between 20/17 and 4/3 of the goal)
+Panel **D** (L7D zone D — CPA between the goal and 1.25× the goal)
 
 | L3D ↓ / Yesterday → | A | B | C | D | E |
 |---|---|---|---|---|---|
 | **A** | H | H | H | H | H |
-| **B** | H | H | H | H | W |
-| **C** | H | H | W | X | X |
-| **D** | H | W | X | X | X |
-| **E** | W | X | X | X | X |
+| **B** | H | H | H | H | H |
+| **C** | H | H | H | H | W |
+| **D** | H | H | H | H | X |
+| **E** | H | W | X | X | X |
 
-Panel **E** (L7D zone E — CPA above 4/3 of the goal)
+Panel **E** (L7D zone E — CPA above 1.25× the goal)
 
 | L3D ↓ / Yesterday → | A | B | C | D | E |
 |---|---|---|---|---|---|
@@ -361,6 +402,13 @@ Panel **E** (L7D zone E — CPA above 4/3 of the goal)
 | **C** | H | W | X | X | X |
 | **D** | W | X | X | X | X |
 | **E** | X | X | X | X | X |
+
+**Tolerance in panels C and D.** While the week is at goal or slightly
+over, a 3-day or a yesterday between the goal and 1.25× (zone D) is held: it
+never starts or extends a chain on its own. A warning or an exit signal
+there always needs a blowout reading (zone E) on the 3-day or on
+yesterday; the cells say which. A week that stays over goal without a blowout
+is the slow bleed's job (2c), not the grid's.
 
 Invariants: raise cells exist only in panels A and B, and only where L3D and
 yesterday are both A or B. No raise cell exists in panels C, D and E. If one
@@ -409,8 +457,27 @@ the chains below are read from the last three digests.
     cut table below). In panel E there is no cut: the exit chain
     pauses it. A cut is never repeated within 14 days; if the exit chain
     confirms after a cut, the campaign is paused.
-  - The exit chain is checked first. Both chains need four consecutive daily
-    runs, so a single bad day never pauses or cuts anything.
+  - **Slow-bleed chain** — the week over goal (L7D CPA above G, zone D or
+    E) today AND on each of the four previous runs (five in a row), read
+    from the L7D CPAs stored in the digests. It applies only when no other
+    rule acted today and the campaign has reached the grid (7×G floor).
+    With a **track record** and no cut in the last 14 days → **CUT** one
+    size (cut table below); then, if the week is still over goal on the 7th
+    run after that cut → **PAUSE**. Without a track record → **PAUSE**.
+    The card names it apart from the core rules, because it is a slower
+    call on a campaign that is losing a little every day rather than
+    blowing out: "CUT daily cap $2,000 → $1,250 (slow bleed · week over the
+    $100 goal for 5 runs: $112, $108, $115, $109, $111)" — "slightly over
+    goal every day for a week, never a blowout; pauses if the week is still
+    over goal 7 runs after this cut." A week back at or under G resets the
+    count.
+  - The exit chain is checked first, then the warning chain, then the slow
+    bleed. The exit and warning chains need four consecutive daily runs,
+    so in the grid a single bad day never pauses or cuts anything. Before
+    the grid (2a), the quick kill acts on readings far over goal and the
+    exceptional exit on a bad day, but only when the week is already over
+    goal; the slow bleed acts on a week that stays over goal for five
+    runs.
 
 ### 2d. Budget levels and magnitudes (account currency)
 
@@ -463,7 +530,8 @@ not sit on a level.
   Above the top level: cap × 0.75 (−25%, the top row's step), rounded to
   the nearest 500. There is no
   deeper "slash" and no second cut within 14 days: a campaign that keeps
-  failing after its cut is paused by the exit chain. Cuts exist only for
+  failing after its cut is paused by the exit chain, or by the slow bleed
+  when its week is still over goal 7 runs after a slow-bleed cut. Cuts exist only for
   campaigns with a track record, i.e. caps of 10×G and up; below that a
   losing campaign is paused, never cut.
 - **Currencies:** the multiples are currency-free; onboarding computes the
@@ -499,16 +567,16 @@ ACTION
       L7D $148 (E) · L3D $140 (E) · yesterday $165 (E) → cell X · lifetime $128 · goal $100
       Over goal on every reading for four runs in a row; no track record, so no cut.
 3. ☑ 34567890 — CUT daily cap $3,000 → $2,000 (−33%) (warning chain: W, W, X, W)
-      L7D $131 (D) · L3D $125 (D) · yesterday $128 (D) → cell W · lifetime $96 · goal $100
+      L7D $118 (D) · L3D $97 (C) · yesterday $131 (E) → cell W · lifetime $96 · goal $100
       Four warning runs in a row on a campaign with a track record; pauses if an exit chain confirms.
-4. ☑ 56789012 — PAUSE (quick-pause · day 3)
+4. ☑ 56789012 — PAUSE (quick kill · day 3)
       Since launch: $1,050 spent (10.5× goal), 4 conversions → lifetime $263 (2.6× goal) · goal $100
-      More than twice the goal per sale after 10× goal spent, in its first 14 days.
+      More than twice the goal per sale after more than 3× the goal spent.
    Net today: stops $2,800/day (2 pauses $1,800 + 1 cut $1,000), adds $1,000/day (1 raise) → daily budget −$1,800.
 
 HOLDS (a hold is a decision too)
 5. ☑ 45678901 — HOLD · cell H · on hold since Tue 22 Sep
-      L7D $109 (C) · L3D $106 (C) · yesterday $99 (C) → cell H · lifetime $104 · goal $100
+      L7D $97 (C) · L3D $99 (C) · yesterday $94 (C) → cell H · lifetime $98 · goal $100
       At goal on every layer — nothing to do until a layer moves.
 6. ☑ 67890123 — HOLD · exit signal (day 1 of chain)
       L7D $135 (E) · L3D $160 (E) · yesterday $180 (E) → cell X · lifetime $97 · goal $100
@@ -516,6 +584,18 @@ HOLDS (a hold is a decision too)
 
 NO SIGNAL — 2 campaigns below 7× goal ($700) in weekly spend, 1 with fewer than 2 full days (each listed with spent / needed)
 ```
+
+**Heads-up lines — no action, never a box.** Two notes are added to a HOLD
+card (and to the digest) so whoever runs the account can take a look; the
+rules do not act on them and they never feed a chain:
+- **Worth a look** — the week is over goal (L7D above G) on a daily budget
+  of at least 10×G and no rule acted today: "Worth a look: week $108 over
+  the $100 goal on a $2,500 budget — the rules hold it today."
+- **At goal, sharp day** — the week is at 0.98–1.09× the goal and yesterday
+  is at or above 1.3× the goal: "Heads-up: yesterday $135, the week $103 —
+  no action while the week is near goal." Large accounts often pause these
+  by hand; the next week of such campaigns runs no worse than average, so
+  the rules hold.
 
 **ADS section** (after the campaign actions, before HOLDS, only when a
 creative test has a losing ad — `references/creative-tests.md` §4): one tick
@@ -583,7 +663,8 @@ final preview of the ticked items (Step 4) and ask for one confirmation.
 HOLDs are not boxes. Right under the boxes, one FYI line: **"Campaigns
 77777777, 99999999 — nothing to decide today, I'll check them again
 tomorrow."** (and the same for NO SIGNAL / TOO EARLY: "Campaigns … — too
-little data yet, checking again tomorrow."). They are recorded as agreed
+little data yet, checking again tomorrow."). Heads-up lines follow as one
+FYI line each, in plain words, with no box. They are recorded as agreed
 unless the user objects. The text reply (`submit` / `clear all` / `uncheck 2,
 5`) remains available for users who prefer typing.
 
@@ -631,8 +712,9 @@ skipped.
 Save `digests/<account_id>/YYYY-MM-DD.md` (one per account; append a `-2`, `-3` suffix if a digest for that
 date already exists — never overwrite): the header, every card with its
 evidence line and cell, what was ticked / executed / declined / failed, the
-holds with their since dates, **every campaign's cell code** (tomorrow's run
-reads that account's last three digests to build the chains), the date of every raise
+holds with their since dates, **every campaign's cell code** and **L7D
+CPA** (tomorrow's run reads that account's last digests to build the chains
+and the slow-bleed count), the heads-up lines, the date of every raise
 and every cut, the scope status line, the conversion source in use, the
 **Growth** section (what was offered or asked and the answer, or "open"), and
 a **Client requests** log line for anything handled through

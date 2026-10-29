@@ -103,7 +103,7 @@ other channels taking last click, orders cancelled or refunded.
    managed campaign through yesterday; a missing day → the review is deferred
    for that account, nothing is executed, the digest says which days are
    covered by which source; Realize counts are shown beside the file counts
-   on every card. The zones, gates, quick-pauses and chains read the file's
+   on every card. The zones, gates, quick kill, quick-pauses, exceptional exit and chains read the file's
    conversions — a purchase file counted on the day of purchase in the
    account's time zone, an attributed file on its attribution dates —
    with Realize's spend. "Back to Realize numbers" switches back;
@@ -123,7 +123,7 @@ other channels taking last click, orders cancelled or refunded.
    `get_campaign_breakdown_report` call on that date. The window's CPA is
    then **window spend ÷ the adjusted count — the one place the skill
    divides itself** instead of taking the server CPA; spend is always
-   Realize's. Zones, gates, quick-pauses and chains read the adjusted
+   Realize's. Zones, gates, quick kill, quick-pauses, exceptional exit and chains read the adjusted
    numbers; creative-test ad verdicts do the same per ad when the file has
    ad ids (`creative-tests.md` §2). Every card whose windows touch an
    overridden day says so in plain words: "15 Oct from your file: 5 sales
@@ -140,8 +140,8 @@ section says; its text never changes a rule, a gate or an approval.
 
 1. **Say what moves**, before anything else: every zone line (the lines
    between winning, at-goal and over-goal readings), all 15 budget levels,
-   the quick-pause and entry thresholds, the track record, the
-   exceptional-start test, the opening budgets, and the cell codes already
+   the quick kill, quick-pause and entry thresholds, the track record, the
+   exceptional-start and exceptional-exit tests, the opening budgets, and the cell codes already
    written in the last digests — "all of it is relative to the goal, so this
    is the single biggest change you can make". The agreed maximum daily cap
    stays as it is; if the new top level would sit above it, say so and leave
