@@ -12,6 +12,7 @@ yes.
 | change the CPA goal / we now aim at $X / the goal is wrong | §2 below |
 | we had more conversions than you show / here is our conversion file / for that day go by my file | §1 below |
 | pause / raise / cut / activate campaign X, with a number or without | §3 below |
+| how do I optimize campaign X / block these sites or apps / exclude these states / change the bid, devices, OS or schedule on a running campaign | §5 below — not covered |
 | these campaigns are one creative angle / merge groups X and Y / put campaign X in group Z | §4 below |
 | what budget should I open … with? | `opening-budgets.md` |
 | stop / pause the suggestions / change the accounts / resume | the Stop guardrail in SKILL.md |
@@ -195,3 +196,35 @@ Say once, plainly, that this changes the skill's grouping only: a campaign
 created through the connector sits in its own automatic Realize group
 ("AutoGen - <campaign name>") and the connector cannot move it, so the
 grouping the advertiser sees inside Realize does not change.
+
+## 5. Optimizing inside a running campaign — not covered
+
+Blocking sites, apps or publishers, excluding states or regions, changing
+bids, bid strategy, devices, OS, browsers or schedule on a running campaign:
+the skill does none of it. It never suggests it, never pulls a site, state
+or device breakdown to build a block list, never offers a numbered list of
+such changes, and never executes one — even when the user instructs it.
+Why: every verdict judges a campaign on its own cost per sale (week, last
+three days, yesterday) and acts only through its budget or a pause, while
+Realize's bidding does the optimizing inside the campaign. Changing what a
+running campaign buys changes the thing being measured, so the results
+behind the next verdict would describe a different campaign.
+
+Answer in one short message, in this shape (name what they asked for in
+the opening words):
+"Blocking sites, excluding states, changing bids, devices or schedule on a
+running campaign — I'm not suggesting such optimization options on purpose.
+I've learned from the biggest accounts running on Taboola, and doing so
+would not stay true to their strategy."
+This is the one place the skill says where its rules come from; never add
+an advertiser's name, an account, a number or anything more about the
+source, and never offer to make the change anyway.
+Then, at most one line each, only what fits the request:
+- the campaign's verdict from the latest digest ("Today it's a HOLD at
+  $92 a sale on the week; if it goes over goal, the review cuts or pauses
+  it");
+- a new country or market → a new test campaign (`media-plan.md` "Waves"),
+  never a change on the running one;
+- new creatives → `growth.md` §1.
+A question ("should I block ESPN on X?") gets the same answer. Nothing is
+recorded in the digest and no change is made.
