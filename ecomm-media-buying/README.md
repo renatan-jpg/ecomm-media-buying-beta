@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.24)
+# Ecomm media buying — install note (v2.0.25)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -132,6 +132,13 @@ band is tolerated while the week is at goal or slightly over; it takes a
 blowout reading to start a warning. Large campaigns that sit a little over
 goal, and at-goal weeks with one sharp day, get a "worth a look" line in
 the review but no action.
+
+Raises follow the trend. A campaign whose last three days and yesterday are
+both deep winners, under a winning week, is raised one budget level a day
+for as long as that lasts. A flat or slipping winner is raised once, and
+again only a week later, or sooner if it turns deep. Nothing is raised when
+any reading is over ten-elevenths of your goal, and a raise is always one
+level, never a bigger jump.
 
 ## If you see more sales than Realize does
 

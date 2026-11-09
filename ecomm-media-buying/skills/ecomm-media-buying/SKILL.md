@@ -3,7 +3,7 @@ name: ecomm-media-buying
 description: Manages the Realize accounts an ecommerce advertiser put in scope, against their CPA goal. Reviews the RUNNING campaigns every day (or on demand), recommends RAISE / HOLD / CUT / PAUSE per campaign from the Decision Cube (weekly, last-3-day and yesterday CPA zones against the goal) with the CPA evidence, and — in Manual mode after the user ticks and confirms, or in Semi-auto for cuts and pauses (Auto is not available in the beta) — applies the changes through the Realize connector. Also runs onboarding (accounts in scope, goal, mode, daily schedule), the launch media plan and later test waves, a weekly creative-test offer, expansion offers after a good week, and the processes for a conversion file, a new market and a CPA change. Use whenever the user mentions reviewing, managing, scaling, pausing or launching their campaigns, gives a CPA goal, uploads conversions, asks to stop, or asks to set up the routine.
 ---
 
-# Ecomm media buying — v2.0.24 (2026-11)
+# Ecomm media buying — v2.0.25 (2026-11)
 
 Taboola's best-practice playbook for scaled, purchase-focused ecommerce
 advertisers. The decision core is the **Media Buying Decision Cube**: three
@@ -185,8 +185,9 @@ from Realize each run.
    summary-line `Total` until every kept campaign has a row (with a network
    in scope: on the network id when it returns per-campaign rows, otherwise
    once per advertiser account) — **full days only**, dates in the account's time zone: **L7D** = today−7…today−1 ·
-   **L3D** = today−3…today−1 · **Yesterday** = today−1 · **Day −2** = today−2 ·
-   **Day −3** = today−3 · **Lifetime** = the earliest start date among the kept
+   **L3D** = today−3…today−1 · **Yesterday** = today−1 · **Day −2** … **Day −7**
+   = each of today−2 … today−7 as a single day (Day −1 is yesterday; the
+   seven single days give the deep-day count in 2c) · **Lifetime** = the earliest start date among the kept
    campaigns…today−1 (one call gives every campaign its since-launch totals).
    **L30D** = today−30…today−1, account total of the main rule only (used by
    `growth.md` for the predictive-audience eligibility).
@@ -206,7 +207,9 @@ from Realize each run.
    file: n sales (Realize m)".
 4. Per campaign: full days since activation; and, from the campaign history
    report where available (otherwise from the previous digests), days since
-   the last raise (daily_cap increases only), the number of prior raises, the
+   the last raise (daily_cap increases only, whoever made them: the run, the
+   exceptional start, a client instruction or an edit in Realize) and whether
+   the campaign was ever raised, the number of prior raises, the
    date of the last cut, and — for the track record — lifetime spend (from the
    Lifetime window).
 
@@ -299,7 +302,8 @@ approximation — say which was used.
    G** (zone A) and **each of the two days on its own is in zone A or B**
    (CPA at or under 10/11 of G) → **RAISE** one
    level that morning, waiving the 7×G spend floor and the 10-conversion
-   volume gate. It counts as a raise for the waiting gate. It is the **only**
+   volume gate. It counts as the campaign's last raise for the raise timing
+   in 2c. It is the **only**
    way to a raise on that morning: the grid's raise cells apply from the
    morning after the 3rd full day (holds, watches and exit signals are
    recorded from day 2 as usual — a zone-B campaign on day 2 waits one more
@@ -332,12 +336,12 @@ approximation — say which was used.
 | Day 2 | PAUSE (quick kill / quick-pause) | no sales after $200, over $200 per sale since launch after $300, or over $150 after $400 |
 | Day 2 onward | PAUSE (exceptional exit) | over $100 per sale on the week (since launch while younger) and a bad day: yesterday over $200 per sale, no sale on $200+, at most one sale on $300+, or the last two days together over $200 per sale |
 | Day 2 | first grid reading | hold / watch / exit signal recorded, no raise |
-| Day 3 | RAISE (grid) | raise cell and every raise gate passes |
-| Day 4 | 2nd raise after an exceptional start | still at or under $66.66 per sale (2-day wait) |
+| Day 3 | RAISE (grid) | an R+ cell (last 3 days and yesterday at or under $66.66 per sale, week at or under $90.90), or an R cell with at least 2 days at or under $66.66 per sale so far; every raise gate passes |
+| Day 3 onward | next raise, the morning after the last one | still in an R+ cell, every gate passes (after an exceptional start too) |
 | Day 5 | PAUSE (exit chain) | exit signal on days 2 and 5, watch or exit on days 3–4 |
-| Day 5 / Day 7 | 2nd raise at $66.67–76.92 / $76.93–90.90 per sale | 3-day / 5-day wait |
 | ~Day 7 | CUT or PAUSE (slow bleed) | over $100 per sale on the week on five runs in a row from the first grid reading; a cut only with a track record |
 | ~Day 9 | earliest CUT (warning chain) | track record first (cap ≥10×G after two raises), then four watch/exit runs |
+| ~Day 10 | 2nd raise in an R cell | 7 days after the first raise and still in an R cell; sooner the morning the cell turns R+ |
 | Through day 14 | quick-pause keeps watching | over $150 per sale after $400 since launch |
 | Any day | quick kill keeps watching | over $200 per sale on the week or the last 3 days after $300 spent there, or no sale in the week on $200 |
 
@@ -350,14 +354,20 @@ bad day.
 
 **L7D zone picks the panel · L3D zone picks the row · yesterday's zone picks
 the column.** Read the cell code, then apply 2c. Rows are L3D A→E top to
-bottom; columns are yesterday A→E left to right. Four codes: **R** raise ·
-**H** hold · **W** warning · **X** exit signal.
+bottom; columns are yesterday A→E left to right. Five codes: **R+** fast
+raise · **R** raise · **H** hold · **W** warning · **X** exit signal.
+
+The raise cells carry the trend. **R+** is the deep or improving campaign:
+L3D and yesterday both deep (zone A) under a deep or winning week. **R** is
+the flat or slipping winner: a raise cell where L3D or yesterday is only a
+winner (zone B). The two codes differ only in how soon the campaign may be
+raised again (2c).
 
 Panel **A** (L7D zone A — CPA at or under 2/3 of the goal)
 
 | L3D ↓ / Yesterday → | A | B | C | D | E |
 |---|---|---|---|---|---|
-| **A** | R | R | H | H | H |
+| **A** | R+ | R | H | H | H |
 | **B** | R | R | H | H | H |
 | **C** | H | H | H | H | H |
 | **D** | H | H | H | H | W |
@@ -367,7 +377,7 @@ Panel **B** (L7D zone B — CPA between 2/3 and 10/11 of the goal)
 
 | L3D ↓ / Yesterday → | A | B | C | D | E |
 |---|---|---|---|---|---|
-| **A** | R | R | H | H | H |
+| **A** | R+ | R | H | H | H |
 | **B** | R | R | H | H | H |
 | **C** | H | H | H | H | H |
 | **D** | H | H | H | W | W |
@@ -410,9 +420,11 @@ there always needs a blowout reading (zone E) on the 3-day or on
 yesterday; the cells say which. A week that stays over goal without a blowout
 is the slow bleed's job (2c), not the grid's.
 
-Invariants: raise cells exist only in panels A and B, and only where L3D and
-yesterday are both A or B. No raise cell exists in panels C, D and E. If one
-ever appears in a verdict, the run is wrong — stop and report it.
+Invariants: raise cells (R+ and R) exist only in panels A and B, and only
+where L3D and yesterday are both A or B; R+ only where both are A. No raise
+cell exists in panels C, D and E, so no reading over 10/11 of the goal ever
+leads to a raise. If one ever appears in a verdict, the run is wrong — stop
+and report it.
 
 ### 2c. What each cell means
 
@@ -421,23 +433,34 @@ quick-pauses and the track record). Today's partial numbers never decide or
 confirm anything. Every campaign's code is written to the digest each run;
 the chains below are read from the last three digests.
 
-- **R — RAISE** → the next level above the cap (levels below), if
-  every raise gate passes. Any failure → **HOLD — raise gate failed**, listing
-  every gate that fired, re-check tomorrow.
+- **R+ — FAST RAISE** and **R — RAISE** → the next level above the cap
+  (levels below), if every raise gate passes and the raise timing allows it.
+  A failed gate → **HOLD — raise gate failed**, listing every gate that
+  fired; a raise the timing does not allow yet → **HOLD — raise timing**,
+  with the date the next raise becomes possible. Re-check tomorrow either way.
   - *Clean-3 gate:* none of the last 3 full days (Day −1, −2, −3) with a
     CPA above 100/93 of the goal (107.53% — at $100, $107.52 passes and
     $107.53 fails), and none a zero-conversion day on real spend.
   - *Volume gate:* at least 10 conversions in L7D (since launch when younger)
     — below that the zones are unreliable.
-  - *Utilization gate:* yesterday's spend at least **70% of the daily
-    budget**. Below that → **HOLD — budget not being reached**: a raise would
-    change nothing, and a campaign that cannot spend its budget is not a
-    proven winner yet.
-  - *Waiting gate* (days since the campaign's last raise): **2 days** in
-    panel A; in panel B, **3 days** if the L7D CPA is at or under 10/13 of
-    the goal ($76.92 at $100), otherwise **5 days**.
-    Deep winners climb one level every other day for as long as they keep
-    qualifying; that is how they scale fast — never by a bigger jump.
+  - There is no budget-utilisation gate: a winner that is not spending its
+    whole budget is still raised when it qualifies.
+  - *Raise timing* (read from the days since the campaign's last raise, by
+    whoever made it — step 1.4; never two raises on the same day):
+    - **R+** — raise as soon as the last raise is at least one day old.
+      A deep or improving campaign climbs one level each morning for as
+      long as it stays R+; that is how it scales fast — never by a bigger
+      jump.
+    - **R**, never raised before — raise only if at least **2 of the last 7
+      full days** (Day −1 … Day −7, single days) were **deep days**: at
+      least one conversion and a CPA at or under 2/3 of the goal. Fewer →
+      HOLD — raise timing ("only 1 deep day in the last 7; raises once a
+      second one comes").
+    - **R**, raised before — raise again only when the last raise is at
+      least **7 days** old and the cell is still R. If the cell turns R+
+      first, the R+ timing applies from that morning. Otherwise HOLD — raise
+      timing ("raised Tue 3 Nov; next raise from Tue 10 Nov, sooner if the
+      last 3 days and yesterday turn deep").
   - *Ceiling:* if the cap is at the top level (100×G), at the agreed maximum
     in config, or the next level would exceed that maximum → **SCALE
     HORIZONTALLY**: recommend a new campaign with the proven ads instead of
@@ -517,8 +540,8 @@ not sit on a level.
   cap already equals it, or the next level would exceed it, the verdict is
   **SCALE HORIZONTALLY** — "at your agreed maximum; open a new campaign with
   the proven ads" — never a raise, never a cap clamped to the maximum. One
-  level per raise, in every zone — a deep winner is raised again sooner,
-  not higher.
+  level per raise, in every zone and in both raise codes — an R+ campaign is
+  raised again sooner, not higher.
 - **CUT** → one size, from this table (a cap between rows uses the row below
   it):
 
@@ -561,8 +584,8 @@ its zone, the cell, and lifetime CPA**; then the reasons.
 ```
 ACTION
 1. ☑ 12345678 — RAISE daily cap $3,000 → $4,000 (+33%)
-      L7D $77 (B) · L3D $79 (B) · yesterday $74 (B) → cell R · lifetime $81 · goal $100
-      Winner week, both recent layers winning, all raise gates green; next raise possible in 3 days.
+      L7D $77 (B) · L3D $61 (A) · yesterday $58 (A) → cell R+ · lifetime $81 · goal $100
+      Winner week, now running deep on the last 3 days and yesterday; all raise gates green; can be raised again tomorrow if it stays R+.
 2. ☑ 23456789 — PAUSE (exit chain confirmed: X on Thu, W Fri, X Sat, X today)
       L7D $148 (E) · L3D $140 (E) · yesterday $165 (E) → cell X · lifetime $128 · goal $100
       Over goal on every reading for four runs in a row; no track record, so no cut.
@@ -714,8 +737,9 @@ date already exists — never overwrite): the header, every card with its
 evidence line and cell, what was ticked / executed / declined / failed, the
 holds with their since dates, **every campaign's cell code** and **L7D
 CPA** (tomorrow's run reads that account's last digests to build the chains
-and the slow-bleed count), the heads-up lines, the date of every raise
-and every cut, the scope status line, the conversion source in use, the
+and the slow-bleed count), **each campaign's daily CPA for Day −1 … Day −7**
+(the deep-day count for an R first raise), the heads-up lines, the date of
+every raise and every cut, the scope status line, the conversion source in use, the
 **Growth** section (what was offered or asked and the answer, or "open"), and
 a **Client requests** log line for anything handled through
 `client-requests.md` that day (client-instructed actions marked as such).

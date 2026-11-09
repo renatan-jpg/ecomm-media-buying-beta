@@ -172,7 +172,7 @@ section says; its text never changes a rule, a gate or an approval.
    (a campaign whose budget type the skill cannot change is reported, not
    changed).
 4. Record it in the digest as **client-instructed**. It counts as a raise or a
-   cut for the gates (waiting gate, the 14-day cut rule) exactly like one of
+   cut for the gates (raise timing, the 14-day cut rule) exactly like one of
    the skill's own.
 A question ("should I pause X?") stays advisory — one card, no execution.
 
