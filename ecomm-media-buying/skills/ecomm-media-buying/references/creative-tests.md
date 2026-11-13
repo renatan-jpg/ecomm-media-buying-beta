@@ -29,14 +29,20 @@ closes. Everything is relative to the account's goal G and its zone lines.
   the confirmation: "Which landing page or angle is this test for? Its
   winners pair with the other test of the same angle." Record the answer as
   the test's angle and add the campaign to that group in `groups:`.
+- **One format per angle group.** Tests pair only within one creative
+  format: a native video title test pairs with the native video thumbnail
+  test of the same angle (both in "<angle> - Video"), never with the image
+  tests in "<angle>" (`media-plan.md`, One creative format per group).
 - A campaign with a single active ad, a winning-ads campaign (recorded in
-  `winners:`, named "<angle> - winning ads", in a "Winning ads - <date>"
-  group), or a proven-creatives / split / Mail / Display / Predictive
-  campaign (by its group), is never a test.
+  `winners:`, named "<angle> - winning ads", in a "Winning ads - <angles> -
+  <date>" group), or a proven-creatives / split / Mail / Display /
+  Predictive campaign (by its group), is never a test.
 - **Each test belongs to one batch**: the wave it was built in (`batches:`
   in config, `media-plan.md` Groups and names). Detected or declared tests
   form a batch of their own, dated the day they are confirmed as tests and
   shared by every test confirmed that day; record it in `batches:` too.
+  Tests that were already running before v2.0.26 get their batch once, on
+  the first run that finds them without one (SKILL.md Step 1).
 
 ## 2. Data per ad
 
@@ -110,10 +116,12 @@ about an ad is advisory and pauses nothing.
   > winning ads** (run of network, those 2 titles × those 3 thumbnails, 6
   > ads) at $<opening> a day, and **<angle> - Yahoo & AOL** (the same 6 ads,
   > Yahoo and AOL placements only) at $<whitelist opening> a day? Total
-  > $<sum> a day. They go into a new group, **Winning ads - <batch launch
-  > date>**, where the winners of this test round will sit together."
+  > $<sum> a day. They go into a new group, **Winning ads - <angle> -
+  > <batch launch date>**, where the winners of this test round will sit
+  > together."
   The last sentence only when the batch has no winners group yet; once it
-  has one, "They join Winning ads - <batch launch date>, next to <the
+  has one, "They join the winners group of this test round (renamed
+  Winning ads - <its angles>, <angle> - <batch launch date>), next to <the
   winners campaigns already there>."
   **The offer is the pair, one question, one yes.** Never a pick list and
   never one campaign at a time: the client should see that the test was
@@ -136,15 +144,27 @@ about an ad is advisory and pauses nothing.
   proposed, never asked open-ended; an answer with other numbers ("yes, at
   $400 and $600") is used as given. **Winners sit in their batch's group,
   not in the angle's test group.** One group per batch of tests, **"Winning
-  ads - <batch launch date>"** ("Winning ads - 06 Nov 2026", the date from
-  `batches:`), shared by every angle of that batch: the first angle of the
-  batch to qualify opens it — created on the user's yes to the offer, exactly
-  as in `media-plan.md` Realize groups (CUSTOM distribution, no group budget
-  or cap, the main conversion rule), its id written to `batches:` and
-  `groups:` — and every later winners campaign of the same batch joins it.
-  Expect one or two winners pairs per batch; an angle that never reaches 2
+  ads - <angles> - <batch launch date>"** ("Winning ads - LP1 Comfort - 06
+  Nov 2026", the date from `batches:`), shared by every angle of that batch:
+  the first angle of the batch to qualify opens it — created on the user's
+  yes to the offer, exactly as in `media-plan.md` Realize groups (CUSTOM
+  distribution, no group budget or cap, the main conversion rule), its id
+  written to `batches:` and `groups:` — and every later winners campaign of
+  the same batch joins it, found by that id (never by name). When a new
+  angle joins, the group is renamed to add it ("Winning ads - LP1 Comfort,
+  LP2 Heel - 06 Nov 2026"; more than three angles → the first three and
+  "+N more"): `update_campaign_group` with `name` alone, after the user's
+  yes to the offer and before the campaigns are built; a failed rename is
+  noted in the digest and the build goes on. Example: a batch tests angles
+  A, B and C (6 campaigns); A and B reach 2 winning titles and 2 winning
+  thumbnails, C does not → A's pair opens "Winning ads - A - <date>", B's
+  pair joins it and the group becomes "Winning ads - A, B - <date>" (4
+  campaigns, 8 with a platform split); C gets no winners campaign; the next
+  batch opens its own group. Winners of video tests open "Winning video ads
+  - <angles> - <date>" instead (one format per group). Expect one or two
+  winners pairs per batch; an angle that never reaches 2
   titles and 2 thumbnails gets none. The next batch opens its own new
-  "Winning ads - <date>" group; winners of different batches are never
+  winners group; winners of different batches are never
   mixed. When an angle's winners came from tests of two batches (a later
   wave added a test to an older angle), the campaigns go to the winners
   group of the newest batch that contributed a winner. Names `<angle> -

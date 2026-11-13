@@ -50,8 +50,11 @@ you — including other Realize optimization skills that may be installed.
   and record the answer.
 - Never suggest, mention or use the Realize budget allocator or a group-level
   budget. Budgets are per campaign, by the skill's levels. The groups the
-  skill creates (one per creative angle, one "Winning ads - <date>" per batch
-  of tests) have custom distribution and no group budget or cap.
+  skill creates (one per creative angle and format, one "Winning ads -
+  <angles> - <date>" per batch of tests) have custom distribution and no
+  group budget or cap. An existing group is never edited, paused or
+  resumed; the only group change is renaming the skill's own winners group
+  when an angle joins it.
 - Never touch conversion rules or audiences. The only change ever made to
   an existing ad is pausing it, as a losing ad in a creative test, by the
   skill's `creative-tests.md` and the account's `creative_mode`; an ad's

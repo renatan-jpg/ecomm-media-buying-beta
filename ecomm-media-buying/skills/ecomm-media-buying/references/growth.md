@@ -34,11 +34,14 @@ a new landing page or angle", "Not this week", "Stop asking weekly".
   conversion rule and the CPA goal are reused from config and the launch
   digest — never re-asked. Opening budget: the standard anchor through the
   2.5–8× rule. Group = the angle itself ("LP1 Comfort"), the same Realize
-  group as its launch tests (reused by its id in `groups:`); a brand-new
-  angle gets its own new group, created as in `media-plan.md` Realize
-  groups — never a new group per test. The tests of one weekly ask are a
-  new batch (`batches:`, dated the build day), so their winners open their
-  own "Winning ads - <date>" group (`creative-tests.md` §5). Built paused;
+  group as its launch tests (found by its id in `groups:` and reused only
+  when it still passes the reuse checks in `media-plan.md` Realize groups);
+  a brand-new angle, or new creatives in another format (native video,
+  display), gets its own new group, created as in `media-plan.md` Realize
+  groups — one format per group, never a new group per test. The tests of
+  one weekly ask are a new batch (`batches:`, dated the build day), so
+  their winners open their own "Winning ads - <angles> - <date>" group
+  (`creative-tests.md` §5). Built paused;
   activation only on an explicit yes. Record `last_creative_ask: <date> —
   yes, <what>`.
 Any day the user brings creatives, run the same flow without waiting for
@@ -78,10 +81,12 @@ the user, as `publisher_targeting` INCLUDE (the fixed Yahoo & AOL list in
 `references/`, when the plugin ships one, replaces the lookup); opening
 budget from the whitelist anchor in `opening-budgets.md` through the 2.5–8×
 rule ($250 at a $100 goal, a quarter of what a winners campaign opens at); **same campaign group as the winning campaign** — for a
-winning-ads campaign that is its batch's "Winning ads - <date>" group, never
-the angle's test group; for any other campaign, the group it sits in
-(`campaign_group_id` from `get_campaign` when that group has CUSTOM
-distribution, else built without it); name `<angle> - Yahoo & AOL[ - <platform>]`; built paused
+winning-ads campaign that is its batch's "Winning ads - <angles> - <date>"
+group (by its id in `batches:`), never the angle's test group; for any
+other campaign, the group it sits in (`campaign_group_id` from
+`get_campaign`) when that group passes the reuse checks in `media-plan.md`
+Realize groups, else a new group "<angle> - Yahoo & AOL" created there;
+name `<angle> - Yahoo & AOL[ - <platform>]`; built paused
 as in `media-plan.md`. The run-of-network campaign keeps running; the Yahoo
 campaign is judged by the campaign cube from its first full day. No →
 `growth: yahoo: declined <campaign id>`; never re-offered for that
@@ -102,7 +107,8 @@ There is no non-Yahoo campaign in this playbook.
 winning panel (L7D zone A or B), offer once: one Mail-placements campaign
 per platform with the same ads, horizontal images only, no video, opening
 from the In-Mail anchor. Group: the Yahoo & AOL campaign's own group (for
-a winners campaign, its batch's "Winning ads - <date>" group); name
+a winners campaign, its batch's "Winning ads - <angles> - <date>" group);
+name
 `<angle> - Mail[ - <platform>]`.
 
 ## 3. The account's good week → display, then predictive (account-level)
@@ -120,8 +126,12 @@ to state: JPG / PNG / GIF up to 2 MB, MP4 5–60 seconds up to 200 MB, HTML5 as
 one zip up to 2 MB with index.html at the root; every file at a public https
 URL. Plan: one campaign per winning angle (the angles with winning ads, §5),
 opening from the display anchors (static or video) in `opening-budgets.md`,
-group "Display test", names "Display - <angle>". Build: `create_campaign`
-exactly as in `media-plan.md`, then one `create_display_item` per asset with
+one group per angle, **"<angle> - Display"** — display never shares a group
+with native campaigns (`media-plan.md`, One creative format per group) —
+names "Display - <angle>". Build: the groups first, created as in
+`media-plan.md` Realize groups, then `create_campaign` exactly as in
+`media-plan.md` with that group's `campaign_group_id`, then one
+`create_display_item` per asset with
 `asset_url` (never send dimensions with an asset URL). If Realize rejects the
 display campaign or an item, stop, say so, and hand a build sheet (campaign
 settings and the asset list) for the user to create it in Realize; the daily
@@ -138,9 +148,13 @@ takes up to 48 hours to populate; tell me when it shows Ready, or I'll see it
 on a later run." Re-check every run. Found → plan: one campaign per winning
 angle, `lookalike_audience_targeting` with the audience's `rule_id` and
 `similarity_level` 1 (tier 1), the winning ads, opening from the predictive
-anchor, group "Predictive audiences", names "Predictive tier 1 - <angle>".
+anchor, one group per angle, **"<angle> - Predictive"**, names "Predictive
+tier 1 - <angle>". Build: the groups first, created as in `media-plan.md`
+Realize groups, then the campaigns with their group's `campaign_group_id`,
+built paused as in `media-plan.md`.
 When a tier-1 campaign hits the ceiling, SCALE HORIZONTALLY opens the same
-campaign on tier 2, then 3; never mix tiers in one campaign.
+campaign on tier 2, then 3, in the same "<angle> - Predictive" group; never
+mix tiers in one campaign.
 
 **3c. Yahoo & AOL campaign**, if §2 has not already offered it for a
 winning campaign.

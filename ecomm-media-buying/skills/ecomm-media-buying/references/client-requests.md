@@ -180,7 +180,8 @@ A question ("should I pause X?") stays advisory — one card, no execution.
 
 The `groups:` block in config is the skill's own map of the account: one
 group per creative angle, holding that angle's title test and thumbnail
-test, and one "Winning ads - <date>" group per batch of tests, holding that
+test (one group per creative format), and one "Winning ads - <angles> -
+<date>" group per batch of tests, holding that
 batch's winning-ads campaigns (`media-plan.md`, Groups and names). The user can
 redraw it any time: "LP3 Knee - title test and LP3 Knee - thumbnail test
 are one creative angle, call it LP3 Knee", "merge groups X and Y into Z",
@@ -192,11 +193,12 @@ are one creative angle, call it LP3 Knee", "merge groups X and Y into Z",
 3. From the next run the digest lists campaigns under the new headings, the
    two tests of a merged angle pair up for the winners offer (`creative-tests.md`
    §5), and its winning-ads campaign is built into the batch's "Winning ads
-   - <date>" group.
+   - <angles> - <date>" group.
 4. Record the change in the digest as **client-instructed regrouping**.
 Say once, plainly, what moves in Realize and what does not. **New builds
 get real Realize groups**: the skill creates one group per creative angle
-and one "Winning ads - <date>" group per batch, with no group budget, and
+and format and one "Winning ads - <angles> - <date>" group per batch, with
+no group budget, and
 builds every new campaign into its group (`media-plan.md`, Realize groups);
 a new campaign for a redrawn angle goes into that angle's Realize group,
 created if it does not exist yet. **Campaigns already running stay where

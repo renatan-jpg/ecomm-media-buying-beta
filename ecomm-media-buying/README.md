@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.26)
+# Ecomm media buying — install note (v2.0.27)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -176,13 +176,19 @@ angle of a plan you approve gets its own group, named after the angle
 ("LP1 Comfort"), holding ideally two campaigns: a title test (one
 thumbnail, several titles) and a thumbnail test (one title, several
 thumbnails); with a Mobile / Desktop split, both platforms stay in the
-angle's group. Winning ads get one group per round of tests (below). Every
+angle's group. Each creative format gets its own group: native video goes
+in "LP1 Comfort - Video" and display in "LP1 Comfort - Display", never
+together with the image ads. Winning ads get one group per round of tests
+(below). Every
 group uses your main conversion rule, keeps the budgets per campaign
 (custom distribution) and has no group budget or group cap — the media
 buyer never sets one. If Realize does not let it create groups on your
 account, each campaign is built in its own automatic Realize group instead,
-and you are told once. A campaign stays in the group it was created in, so
-campaigns that already run are not moved.
+and you are told once. An existing group of yours is used only when it is
+running, has no group budget or cap of its own and holds only that angle;
+otherwise a new group is created next to it, and your group is left as it
+is. A campaign stays in the group it was created in, so campaigns that
+already run are not moved.
 
 ## Creative tests
 
@@ -201,9 +207,10 @@ thumbnail ($750 a day at a $100 goal, 2.5–8× your goal by its size); and
 "<angle> - Yahoo & AOL", the same ads on Yahoo and AOL placements only
 ($250 a day at a $100 goal). One pair for each platform the tests ran on,
 on the tests' landing page. They go into one group for that round of
-tests, "Winning ads - <launch date of the round>" (for example "Winning
-ads - 06 Nov 2026"): the first angle to qualify opens it, the other angles
-of the same round join it, and the next round of tests gets its own new
+tests, named after its winning angles and the round's launch date (for
+example "Winning ads - LP1 Comfort, LP2 Heel - 06 Nov 2026"): the first
+angle to qualify opens it, the other angles of the same round join it (and
+are added to its name), and the next round of tests gets its own new
 one. If your account was set up with a group per test, the media buyer
 offers to merge them once, and you can also say "these two are one
 creative angle" any time. The offer names only
@@ -237,6 +244,6 @@ maximum you agreed.
 Every verdict is explained as cost per sale against your goal; the ROAS
 column you see in Realize is revenue-based and is not what the rules read.
 
-Version 2.0.26 — the Decision Cube and the launch plan are the settled part;
+Version 2.0.27 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
 new-market and goal-change processes are still experimental: they only suggest.

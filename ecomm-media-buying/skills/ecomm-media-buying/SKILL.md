@@ -3,7 +3,7 @@ name: ecomm-media-buying
 description: Manages the Realize accounts an ecommerce advertiser put in scope, against their CPA goal. Reviews the RUNNING campaigns every day (or on demand), recommends RAISE / HOLD / CUT / PAUSE per campaign from the Decision Cube (weekly, last-3-day and yesterday CPA zones against the goal) with the CPA evidence, and — in Manual mode after the user ticks and confirms, or in Semi-auto for cuts and pauses (Auto is not available in the beta) — applies the changes through the Realize connector. Also runs onboarding (accounts in scope, goal, mode, daily schedule), the launch media plan and later test waves, a weekly creative-test offer, expansion offers after a good week, and the processes for a conversion file, a new market and a CPA change. Use whenever the user mentions reviewing, managing, scaling, pausing or launching their campaigns, gives a CPA goal, uploads conversions, asks to stop, or asks to set up the routine.
 ---
 
-# Ecomm media buying — v2.0.26 (2026-11)
+# Ecomm media buying — v2.0.27 (2026-11)
 
 Taboola's best-practice playbook for scaled, purchase-focused ecommerce
 advertisers. The decision core is the **Media Buying Decision Cube**: three
@@ -167,7 +167,26 @@ from Realize each run.
    two groups sharing a prefix) — offer the merge once, before the review:
    "LP3 Knee - title test and LP3 Knee - thumbnail test look like one
    creative angle. Merge them into one group, LP3 Knee?" Yes → regroup as
-   `client-requests.md` §4; no → leave it and do not ask again. **G and the main rule are the advertiser's answers from config**:
+   `client-requests.md` §4; no → leave it and do not ask again.
+   **Groups and batches from before v2.0.26** — a config with no
+   `batches:` or `group_build:` line, or `groups:` lines without `[group …]`:
+   once, right after step 2's listing and before judging anything, fill
+   them in from the campaigns' own `campaign_group_id` (in the
+   `list_campaigns` results; `get_campaign_groups` with that id for its name
+   and settings). Write `[group <id>]` on a `groups:` line only when that
+   Realize group holds campaigns of that one angle alone and passes the
+   reuse checks in `media-plan.md` Realize groups; otherwise write
+   `[group — in <Realize group name> <id>, not reused]` (an automatic
+   "AutoGen" group, a catch-all group of several angles, a group with a cap
+   or budget, a paused one), so the next build for that angle creates its
+   own group and the running campaigns stay where they are. Give every
+   confirmed test in `creative_tests:` without a batch one, dated the
+   earliest start date of its angle's tests; angles with the same date
+   share the batch. Write `group_build: ok`. Say it once at the top of the
+   digest in one line: "Campaign groups: from now on I create one Realize
+   group per creative angle for new campaigns; your running campaigns stay
+   in their current groups." Nothing in Realize is changed by this step.
+   **G and the main rule are the advertiser's answers from config**:
    a missing one is asked for and the run waits — it is never estimated
    from the account's results or filled with an example number.
 2. `list_campaigns` — page through ALL pages (page_size 10). With a network
@@ -764,7 +783,7 @@ its own numbers since it went live by `references/creative-tests.md`:
 losing ads are paused per `creative_mode` (ticked in Manual, by the run in
 Semi-auto), winning components are recorded per angle, and when an angle
 has at least 2 winning titles and 2 winning thumbnails the winners campaign
-is offered once, built into its batch's "Winning ads - <date>" group. Never the last active ad; under 3 active ads → ask whether
+is offered once, built into its batch's "Winning ads - <angles> - <date>" group. Never the last active ad; under 3 active ads → ask whether
 to add variants.
 
 ## Guardrails
@@ -843,8 +862,10 @@ to add variants.
   "Resume" after a stop re-creates the task on the recorded window.
 - **Budget allocator.** Never suggest, mention or use Realize's budget
   allocator or group-level budgets; every budget is per campaign. The
-  groups the skill creates (one per creative angle, one "Winning ads -
-  <date>" per batch of tests — `media-plan.md`, Realize groups) have CUSTOM
-  distribution and no group budget or cap.
+  groups the skill creates (one per creative angle and format, one
+  "Winning ads - <angles> - <date>" per batch of tests — `media-plan.md`,
+  Realize groups) have CUSTOM distribution and no group budget or cap. An
+  existing group is reused only when it passes the reuse checks there, and
+  is never edited, paused or resumed.
 - **Beta parts.** `growth.md` and `client-requests.md` only suggest; nothing
   is built or changed without the user's explicit yes.

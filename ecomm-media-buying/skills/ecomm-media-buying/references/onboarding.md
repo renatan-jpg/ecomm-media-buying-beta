@@ -202,8 +202,8 @@ levels: 300, 500, 750, 1000, 1250, 1500, 2000, 2500, 3000, 4000, 5000, 6000, 700
 media_plan: skipped         (or: built 2026-10-02)
 onboarded: 2026-10-02
 auto: not available (beta)
-groups:                     (one line per group: <group name> [group <Realize group id> | group —]: <id>, <id>)
-batches:                    (one line per batch of tests: <launch date>: angles <group>, <group> · winners "Winning ads - <date>" [group <id>]: <id>, <id> — or winners: none yet)
+groups:                     (one line per group: <group name> [group <Realize group id> | group — | group — in <Realize group name> <id>, not reused]: <id>, <id> — one creative format per group: "LP1 Comfort", "LP1 Comfort - Video", "LP1 Comfort - Display")
+batches:                    (one line per batch of tests: <launch date>: angles <group>, <group> · winners "Winning ads - <angles> - <date>" [group <id>]: <id>, <id> — or winners: none yet)
 group_build: ok             (or: unavailable (<error> <date>) — campaigns then land in Realize's automatic per-campaign groups)
 creative_check: weekly Monday       last_creative_ask: —
 creative_mode: manual               (manual | semi-auto — how losing ads in creative tests are paused)
