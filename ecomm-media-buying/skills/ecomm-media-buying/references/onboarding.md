@@ -205,6 +205,7 @@ auto: not available (beta)
 groups:                     (one line per group: <group name> [group <Realize group id> | group — | group — in <Realize group name> <id>, not reused]: <id>, <id> — one creative format per group: "LP1 Comfort", "LP1 Comfort - Video", "LP1 Comfort - Display")
 batches:                    (one line per batch of tests: <launch date>: angles <group>, <group> · winners "Winning ads - <angles> - <date>" [group <id>]: <id>, <id> — or winners: none yet)
 group_build: ok             (or: unavailable (<error> <date>) — campaigns then land in Realize's automatic per-campaign groups)
+allocator: —                (one line per group found on Realize's budget allocator: <group name> <id> — offered <date> | switched back <date> | kept <date>)
 creative_check: weekly Monday       last_creative_ask: —
 creative_mode: manual               (manual | semi-auto — how losing ads in creative tests are paused)
 creative_tests: —                   (12345678: thumbnail test (<angle>) · 23456789: title test (<angle>))

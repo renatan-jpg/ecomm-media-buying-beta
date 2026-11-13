@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.27)
+# Ecomm media buying — install note (v2.0.28)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -184,7 +184,18 @@ group uses your main conversion rule, keeps the budgets per campaign
 (custom distribution) and has no group budget or group cap — the media
 buyer never sets one. If Realize does not let it create groups on your
 account, each campaign is built in its own automatic Realize group instead,
-and you are told once. An existing group of yours is used only when it is
+and you are told once.
+
+From 16 November 2026 Realize turns its budget allocator on by default for
+campaign groups. The media buyer keeps every budget per campaign: it
+creates its groups with per-campaign budgets and checks that they stayed
+that way. If one of your groups is on the budget allocator, its campaigns
+are still reviewed and can still be paused, but the media buyer does not
+raise or cut them, and it asks you once whether to switch that group back
+to a daily budget per campaign, listing each campaign's budget. Nothing is
+switched without your yes.
+
+An existing group of yours is used only when it is
 running, has no group budget or cap of its own and holds only that angle;
 otherwise a new group is created next to it, and your group is left as it
 is. A campaign stays in the group it was created in, so campaigns that
@@ -244,6 +255,6 @@ maximum you agreed.
 Every verdict is explained as cost per sale against your goal; the ROAS
 column you see in Realize is revenue-based and is not what the rules read.
 
-Version 2.0.27 — the Decision Cube and the launch plan are the settled part;
+Version 2.0.28 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
 new-market and goal-change processes are still experimental: they only suggest.

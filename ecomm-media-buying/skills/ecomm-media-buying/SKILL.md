@@ -3,7 +3,7 @@ name: ecomm-media-buying
 description: Manages the Realize accounts an ecommerce advertiser put in scope, against their CPA goal. Reviews the RUNNING campaigns every day (or on demand), recommends RAISE / HOLD / CUT / PAUSE per campaign from the Decision Cube (weekly, last-3-day and yesterday CPA zones against the goal) with the CPA evidence, and — in Manual mode after the user ticks and confirms, or in Semi-auto for cuts and pauses (Auto is not available in the beta) — applies the changes through the Realize connector. Also runs onboarding (accounts in scope, goal, mode, daily schedule), the launch media plan and later test waves, a weekly creative-test offer, expansion offers after a good week, and the processes for a conversion file, a new market and a CPA change. Use whenever the user mentions reviewing, managing, scaling, pausing or launching their campaigns, gives a CPA goal, uploads conversions, asks to stop, or asks to set up the routine.
 ---
 
-# Ecomm media buying — v2.0.27 (2026-11)
+# Ecomm media buying — v2.0.28 (2026-11)
 
 Taboola's best-practice playbook for scaled, purchase-focused ecommerce
 advertisers. The decision core is the **Media Buying Decision Cube**: three
@@ -197,7 +197,12 @@ from Realize each run.
    terminated, pending, frozen, expired). Count the skipped ones. Per kept
    campaign record `id`, `name`, `advertiser_id` (its OWNING account — needed
    for any read/write on it), `daily_cap`, `daily_ad_delivery_model`,
-   `start_date`. **Scope:** manage only campaigns whose marketing objective
+   `start_date`, `campaign_group_id`. Read each distinct group once
+   (`get_campaign_groups` with its id) and record its
+   `budget_distribution_method`: a campaign in an AUTOMATIC group has its
+   budget set by Realize's budget allocator, not by its own daily cap — see
+   the Budget allocator guardrail for how it is shown and what can be done.
+   **Scope:** manage only campaigns whose marketing objective
    is ONLINE_PURCHASES and whose conversion rules include the main rule from
    config; list every other running campaign under "out of scope" in the
    digest and never judge it against G.
@@ -736,7 +741,10 @@ For each action, in order:
    field). If the campaign paces differently, do NOT change its pacing model —
    tell the user "this campaign's budget type can't be changed by the skill;
    edit it in Realize" and skip it. Never name pacing or delivery models to
-   the user; they are internal settings.
+   the user; they are internal settings. Budget changes also need the
+   campaign's group to be CUSTOM: re-read the group (`get_campaign_groups`
+   with the campaign's `campaign_group_id`); AUTOMATIC → skip the raise or
+   cut with the Budget allocator line (guardrail). Pauses are unaffected.
 3. Manual mode (and raises in Semi-auto): show the final preview — one line
    per action, exact old → new — and ask for one explicit confirmation of the
    batch. Auto mode, and cuts/pauses in Semi-auto: proceed.
@@ -860,12 +868,38 @@ to add variants.
   `list_scheduled_tasks`, and rewrite the `run_window` and `schedule` lines.
   Without the scheduler tool, say how to change the task in the app.
   "Resume" after a stop re-creates the task on the recorded window.
-- **Budget allocator.** Never suggest, mention or use Realize's budget
-  allocator or group-level budgets; every budget is per campaign. The
+- **Budget allocator.** Never suggest or use Realize's budget allocator or
+  group-level budgets, and mention the allocator only to say that a group
+  is on it (below); every budget is per campaign. The
   groups the skill creates (one per creative angle and format, one
   "Winning ads - <angles> - <date>" per batch of tests — `media-plan.md`,
   Realize groups) have CUSTOM distribution and no group budget or cap. An
   existing group is reused only when it passes the reuse checks there, and
-  is never edited, paused or resumed.
+  is never edited, paused or resumed except as listed there.
+  **From 16 Nov 2026 Realize turns the budget allocator on by default for
+  campaign groups.** The skill always sends CUSTOM when it creates a group
+  and checks the result (`media-plan.md`, Realize groups, steps 3–4, and
+  the automatic-group check). A managed campaign found in an AUTOMATIC
+  group (Step 2) is still judged every day and can still be paused, but its
+  RAISE and CUT are never executed: the card shows the verdict with "budget
+  set by Realize's budget allocator in group <name> — not changed", it is
+  never ticked, and in Semi-auto it is not applied. The first run that
+  finds such a group offers, once per group, in one question: "Group
+  <name> is on Realize's budget allocator, so Realize moves money between
+  its campaigns and I can't raise or cut them one by one. Switch it back to
+  a daily budget per campaign? Each campaign gets back its own daily
+  budget: <campaign — $amount, one per line>." The amount is the
+  campaign's last daily cap in the digests, or its current `daily_cap` when
+  none is on record, never above the agreed maximum; a campaign with
+  neither is asked for. Yes → `update_campaign_group` with
+  `budget_distribution_method` CUSTOM, `spending_limit_model` NONE,
+  `daily_ad_delivery_model` STRICT and `daily_cap` 0, then `update_campaign`
+  with each campaign's `daily_cap` as listed, then re-read the group and
+  the campaigns and report what holds; a failure is reported with the
+  error and "you can switch it in Realize: the group's budget → per
+  campaign". No → record it and do not ask again unless the user raises
+  it. Never switched without that explicit yes, in any mode. Record in
+  config `allocator: <group name> <id> — switched back <date> | kept <date>
+  | offered <date>`.
 - **Beta parts.** `growth.md` and `client-requests.md` only suggest; nothing
   is built or changed without the user's explicit yes.

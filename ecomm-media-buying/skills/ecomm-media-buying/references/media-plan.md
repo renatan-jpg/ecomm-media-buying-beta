@@ -209,15 +209,35 @@ angle and format (and one per other named group the plan uses). For each:
    end date, start date left to the default (today). If the answer says
    the objective or KPI cannot be set on this account (read-only), resend
    once without `marketing_objective` and `kpi`, everything else unchanged.
+   **Always send `budget_distribution_method` CUSTOM explicitly** — from
+   16 Nov 2026 Realize turns its budget allocator on by default for campaign
+   groups, so a group created without it gets AUTOMATIC distribution.
+   **Check the answer:** the created group (and any note the tool returns
+   about changes it made) must read `budget_distribution_method` CUSTOM with
+   no group budget and no cap. If it reads AUTOMATIC, the group is still
+   empty and the skill's own: `update_campaign_group` once with
+   `budget_distribution_method` CUSTOM, `spending_limit_model` NONE,
+   `daily_ad_delivery_model` STRICT and `daily_cap` 0, then re-read it with
+   `get_campaign_groups`. Still not CUSTOM → do not build into it: set it
+   `is_active` false, and go to "When a group cannot be created" below.
 4. Pass the group's id as `campaign_group_id` on every `create_campaign` of
-   that group (omit the campaign dates to take the group's).
+   that group (omit the campaign dates to take the group's), always with
+   the campaign's own `spending_limit_model` NONE, `daily_ad_delivery_model`
+   STRICT and `daily_cap` (a campaign sent into a group without them takes
+   the group's budget). After each campaign is created, check that it
+   kept its own `daily_cap`; a campaign that came back without it is
+   treated like a campaign in an allocator group (below).
 5. Write the group id into `groups:` next to its campaign ids.
 No question is asked for the groups: the user's yes to the plan table
 covers them. Never create a group with a budget or a daily cap, never set
 AUTOMATIC distribution, never suggest a group budget or Realize's budget
-allocator; budgets stay per campaign. Renaming a winners group when a new
-angle joins (`creative-tests.md` §5) is the only change ever made to an
-existing group: `update_campaign_group` with `name` alone.
+allocator; budgets stay per campaign. The changes ever made to an existing
+group are: renaming a winners group when a new angle joins
+(`creative-tests.md` §5), `update_campaign_group` with `name` alone;
+switching a group the skill has just created back to CUSTOM (step 3) or
+the automatic group of a campaign it has just created (below); and
+switching a group from the budget allocator back to per-campaign budgets
+on the user's explicit yes (SKILL.md, Budget allocator).
 **When a group cannot be created** (`create_campaign_group` still fails
 after step 3's retry, answers 403 or any other error, or a reused group
 refuses the campaign — 403 ladder step 2): build that group's campaigns
@@ -230,6 +250,16 @@ sits in its own automatic group; I keep them grouped by angle on my side
 either way." Record `group_build: unavailable (<error> <date>)` in config and
 `[group —]` on those groups; the next build tries again once and, on the
 same error, builds without groups and says the line again.
+**Check each automatic group too.** After such a campaign is created, read
+its `campaign_group_id` (`get_campaign`) and that group: if it came with
+the budget allocator (AUTOMATIC), switch it once, before any activation, as
+in step 3 (`update_campaign_group` with CUSTOM, NONE, STRICT, `daily_cap`
+0), then `update_campaign` the campaign's `daily_cap` back to its planned
+amount. If either call fails, the campaign stays paused, is left out of
+the activation question, and the user is told once, with its id: "Realize
+put <campaign name> (<id>) under its budget allocator and wouldn't let me
+switch it back to its own daily budget; it stays paused. In Realize, set
+its group's budget to per-campaign, then tell me and I'll activate it."
 
 **When `create_campaign` answers 403 ("Requested action is forbidden").**
 The account is reachable but one part of the request is not allowed on it.
