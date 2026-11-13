@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.25)
+# Ecomm media buying — install note (v2.0.26)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -169,6 +169,21 @@ campaigns, so you will be asked to add the campaign to your tracking link
 first. In "use my file from now on", a fresh file through yesterday is
 needed before each run; a missing day means that day's review waits.
 
+## Campaign groups
+
+The media buyer creates the Realize campaign groups itself. Each creative
+angle of a plan you approve gets its own group, named after the angle
+("LP1 Comfort"), holding ideally two campaigns: a title test (one
+thumbnail, several titles) and a thumbnail test (one title, several
+thumbnails); with a Mobile / Desktop split, both platforms stay in the
+angle's group. Winning ads get one group per round of tests (below). Every
+group uses your main conversion rule, keeps the budgets per campaign
+(custom distribution) and has no group budget or group cap — the media
+buyer never sets one. If Realize does not let it create groups on your
+account, each campaign is built in its own automatic Realize group instead,
+and you are told once. A campaign stays in the group it was created in, so
+campaigns that already run are not moved.
+
 ## Creative tests
 
 A title test (one thumbnail, several titles) or a thumbnail test (one
@@ -182,14 +197,16 @@ Once the title test and the thumbnail test of one angle (one campaign
 group) have two winning titles and two winning thumbnails between them,
 you are offered the two campaigns the test was run for, together: "<angle>
 - winning ads", run of network, every winning title × every winning
-thumbnail, at the budget a new test would open with (2.5–8× your goal by
-its size — $500 at a $100 goal); and "<angle> - Yahoo & AOL", the same ads
-on Yahoo and AOL placements only, at $750 at a $100 goal. One pair for each
-platform the tests ran on, on the tests' landing page, in the same campaign
-group as the tests — one group = one creative angle, holding its title
-test, thumbnail test and these two; if your account was set up with a
-group per test, the media buyer offers to merge them once, and you can
-also say "these two are one creative angle" any time. The offer names only
+thumbnail ($750 a day at a $100 goal, 2.5–8× your goal by its size); and
+"<angle> - Yahoo & AOL", the same ads on Yahoo and AOL placements only
+($250 a day at a $100 goal). One pair for each platform the tests ran on,
+on the tests' landing page. They go into one group for that round of
+tests, "Winning ads - <launch date of the round>" (for example "Winning
+ads - 06 Nov 2026"): the first angle to qualify opens it, the other angles
+of the same round join it, and the next round of tests gets its own new
+one. If your account was set up with a group per test, the media buyer
+offers to merge them once, and you can also say "these two are one
+creative angle" any time. The offer names only
 the winners, and it is one yes for the pair, not a pick list. You can
 answer with other budgets; nothing is built without your yes, and the new
 campaigns are then reviewed daily like any other. If your account cannot
@@ -220,6 +237,6 @@ maximum you agreed.
 Every verdict is explained as cost per sale against your goal; the ROAS
 column you see in Realize is revenue-based and is not what the rules read.
 
-Version 2.0.24 — the Decision Cube and the launch plan are the settled part;
+Version 2.0.26 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
 new-market and goal-change processes are still experimental: they only suggest.

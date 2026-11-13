@@ -3,7 +3,7 @@ name: ecomm-media-buying
 description: Manages the Realize accounts an ecommerce advertiser put in scope, against their CPA goal. Reviews the RUNNING campaigns every day (or on demand), recommends RAISE / HOLD / CUT / PAUSE per campaign from the Decision Cube (weekly, last-3-day and yesterday CPA zones against the goal) with the CPA evidence, and — in Manual mode after the user ticks and confirms, or in Semi-auto for cuts and pauses (Auto is not available in the beta) — applies the changes through the Realize connector. Also runs onboarding (accounts in scope, goal, mode, daily schedule), the launch media plan and later test waves, a weekly creative-test offer, expansion offers after a good week, and the processes for a conversion file, a new market and a CPA change. Use whenever the user mentions reviewing, managing, scaling, pausing or launching their campaigns, gives a CPA goal, uploads conversions, asks to stop, or asks to set up the routine.
 ---
 
-# Ecomm media buying — v2.0.25 (2026-11)
+# Ecomm media buying — v2.0.26 (2026-11)
 
 Taboola's best-practice playbook for scaled, purchase-focused ecommerce
 advertisers. The decision core is the **Media Buying Decision Cube**: three
@@ -84,7 +84,8 @@ human-readable files in the user's account folder:
   every run; the only list of accounts the skill may ever touch.
 - **`config/<account>.md`** — written once at onboarding: account id + name,
   CPA goal G, main conversion rule, mode (Manual / Semi-auto / Auto), agreed
-  maximum daily cap, budget levels, zone lines, `groups:` block,
+  maximum daily cap, budget levels, zone lines, `groups:` block (with each
+  Realize group id), `batches:` block, `group_build`,
   `creative_check`, `growth:` state, `conversion_source`, `conversion_file_tz`,
   `conversion_overrides`, `cpa_goal_history`.
   Read it at the start of every run; never re-ask what it holds. Edited only
@@ -763,7 +764,7 @@ its own numbers since it went live by `references/creative-tests.md`:
 losing ads are paused per `creative_mode` (ticked in Manual, by the run in
 Semi-auto), winning components are recorded per angle, and when an angle
 has at least 2 winning titles and 2 winning thumbnails the winners campaign
-is offered once. Never the last active ad; under 3 active ads → ask whether
+is offered once, built into its batch's "Winning ads - <date>" group. Never the last active ad; under 3 active ads → ask whether
 to add variants.
 
 ## Guardrails
@@ -841,6 +842,9 @@ to add variants.
   Without the scheduler tool, say how to change the task in the app.
   "Resume" after a stop re-creates the task on the recorded window.
 - **Budget allocator.** Never suggest, mention or use Realize's budget
-  allocator or group-level budgets; every budget is per campaign.
+  allocator or group-level budgets; every budget is per campaign. The
+  groups the skill creates (one per creative angle, one "Winning ads -
+  <date>" per batch of tests — `media-plan.md`, Realize groups) have CUSTOM
+  distribution and no group budget or cap.
 - **Beta parts.** `growth.md` and `client-requests.md` only suggest; nothing
   is built or changed without the user's explicit yes.

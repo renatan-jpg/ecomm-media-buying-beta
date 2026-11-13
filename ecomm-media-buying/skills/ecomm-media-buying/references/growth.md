@@ -33,9 +33,14 @@ a new landing page or angle", "Not this week", "Stop asking weekly".
   Mobile+Tablet and Desktop). Platform split, geo, branding, tracking code,
   conversion rule and the CPA goal are reused from config and the launch
   digest — never re-asked. Opening budget: the standard anchor through the
-  2.5–8× rule. Group = the angle itself ("LP1 Comfort"), the same group as
-  its launch tests — never a new group per test. Built paused; activation only on
-  an explicit yes. Record `last_creative_ask: <date> — yes, <what>`.
+  2.5–8× rule. Group = the angle itself ("LP1 Comfort"), the same Realize
+  group as its launch tests (reused by its id in `groups:`); a brand-new
+  angle gets its own new group, created as in `media-plan.md` Realize
+  groups — never a new group per test. The tests of one weekly ask are a
+  new batch (`batches:`, dated the build day), so their winners open their
+  own "Winning ads - <date>" group (`creative-tests.md` §5). Built paused;
+  activation only on an explicit yes. Record `last_creative_ask: <date> —
+  yes, <what>`.
 Any day the user brings creatives, run the same flow without waiting for
 Monday. For an account with **no creative test in its groups** (the
 advertiser runs campaigns with mixed creatives), the weekly ask adds one
@@ -72,8 +77,11 @@ publisher names from `search_publishers` for "yahoo" and "aol", shown to
 the user, as `publisher_targeting` INCLUDE (the fixed Yahoo & AOL list in
 `references/`, when the plugin ships one, replaces the lookup); opening
 budget from the whitelist anchor in `opening-budgets.md` through the 2.5–8×
-rule ($250 at a $100 goal, a quarter of what a winners campaign opens at); **same campaign group as the winning campaign** (one group = one
-creative angle); name `<angle> - Yahoo & AOL[ - <platform>]`; built paused
+rule ($250 at a $100 goal, a quarter of what a winners campaign opens at); **same campaign group as the winning campaign** — for a
+winning-ads campaign that is its batch's "Winning ads - <date>" group, never
+the angle's test group; for any other campaign, the group it sits in
+(`campaign_group_id` from `get_campaign` when that group has CUSTOM
+distribution, else built without it); name `<angle> - Yahoo & AOL[ - <platform>]`; built paused
 as in `media-plan.md`. The run-of-network campaign keeps running; the Yahoo
 campaign is judged by the campaign cube from its first full day. No →
 `growth: yahoo: declined <campaign id>`; never re-offered for that
@@ -93,8 +101,9 @@ There is no non-Yahoo campaign in this playbook.
 **Mail follows.** When a Yahoo & AOL campaign has run 14 days and sits in a
 winning panel (L7D zone A or B), offer once: one Mail-placements campaign
 per platform with the same ads, horizontal images only, no video, opening
-from the In-Mail anchor. Group: the angle's group; name `<angle> - Mail[ -
-<platform>]`.
+from the In-Mail anchor. Group: the Yahoo & AOL campaign's own group (for
+a winners campaign, its batch's "Winning ads - <date>" group); name
+`<angle> - Mail[ - <platform>]`.
 
 ## 3. The account's good week → display, then predictive (account-level)
 

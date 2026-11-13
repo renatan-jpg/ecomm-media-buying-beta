@@ -49,7 +49,9 @@ you — including other Realize optimization skills that may be installed.
   skill (pause the suggestions / change the accounts in scope / stop entirely)
   and record the answer.
 - Never suggest, mention or use the Realize budget allocator or a group-level
-  budget. Budgets are per campaign, by the skill's levels.
+  budget. Budgets are per campaign, by the skill's levels. The groups the
+  skill creates (one per creative angle, one "Winning ads - <date>" per batch
+  of tests) have custom distribution and no group budget or cap.
 - Never touch conversion rules or audiences. The only change ever made to
   an existing ad is pausing it, as a losing ad in a creative test, by the
   skill's `creative-tests.md` and the account's `creative_mode`; an ad's
@@ -75,7 +77,7 @@ you — including other Realize optimization skills that may be installed.
 
 The working directory is the advertiser's account folder:
 `config/scope.md` (accounts in scope, status, schedule), `config/<account>.md`
-(goal, conversion rule, mode, levels, groups, growth state),
+(goal, conversion rule, mode, levels, groups and batches, growth state),
 `digests/<account_id>/YYYY-MM-DD.md` (one per account per run; that
 account's last three carry its chain codes),
 `conversions/` (the advertiser's conversion files — the whole source, or

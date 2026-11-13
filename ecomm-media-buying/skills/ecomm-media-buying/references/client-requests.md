@@ -179,8 +179,9 @@ A question ("should I pause X?") stays advisory — one card, no execution.
 ## 4. Regrouping — one group per creative angle
 
 The `groups:` block in config is the skill's own map of the account: one
-group per creative angle, holding that angle's title test, thumbnail test
-and winning-ads campaign (`media-plan.md`, Groups and names). The user can
+group per creative angle, holding that angle's title test and thumbnail
+test, and one "Winning ads - <date>" group per batch of tests, holding that
+batch's winning-ads campaigns (`media-plan.md`, Groups and names). The user can
 redraw it any time: "LP3 Knee - title test and LP3 Knee - thumbnail test
 are one creative angle, call it LP3 Knee", "merge groups X and Y into Z",
 "put 12345678 in LP1 Comfort".
@@ -190,12 +191,19 @@ are one creative angle, call it LP3 Knee", "merge groups X and Y into Z",
    (`creative_tests:`, `winners:`) with it; nothing is re-judged.
 3. From the next run the digest lists campaigns under the new headings, the
    two tests of a merged angle pair up for the winners offer (`creative-tests.md`
-   §5), and the winning-ads campaign is built into that group.
+   §5), and its winning-ads campaign is built into the batch's "Winning ads
+   - <date>" group.
 4. Record the change in the digest as **client-instructed regrouping**.
-Say once, plainly, that this changes the skill's grouping only: a campaign
-created through the connector sits in its own automatic Realize group
-("AutoGen - <campaign name>") and the connector cannot move it, so the
-grouping the advertiser sees inside Realize does not change.
+Say once, plainly, what moves in Realize and what does not. **New builds
+get real Realize groups**: the skill creates one group per creative angle
+and one "Winning ads - <date>" group per batch, with no group budget, and
+builds every new campaign into its group (`media-plan.md`, Realize groups);
+a new campaign for a redrawn angle goes into that angle's Realize group,
+created if it does not exist yet. **Campaigns already running stay where
+they are in Realize**: a campaign sits in exactly one Realize group from
+the day it is created, and the connector cannot move it, so for existing
+campaigns the regrouping changes the skill's map, the review and the
+digest, not the grouping the advertiser sees inside Realize.
 
 ## 5. Optimizing inside a running campaign — not covered
 

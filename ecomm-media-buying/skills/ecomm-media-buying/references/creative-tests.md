@@ -30,8 +30,13 @@ closes. Everything is relative to the account's goal G and its zone lines.
   winners pair with the other test of the same angle." Record the answer as
   the test's angle and add the campaign to that group in `groups:`.
 - A campaign with a single active ad, a winning-ads campaign (recorded in
-  `winners:`, named "<angle> - winning ads"), or a proven-creatives / split
-  / Mail / Display / Predictive campaign (by its group), is never a test.
+  `winners:`, named "<angle> - winning ads", in a "Winning ads - <date>"
+  group), or a proven-creatives / split / Mail / Display / Predictive
+  campaign (by its group), is never a test.
+- **Each test belongs to one batch**: the wave it was built in (`batches:`
+  in config, `media-plan.md` Groups and names). Detected or declared tests
+  form a batch of their own, dated the day they are confirmed as tests and
+  shared by every test confirmed that day; record it in `batches:` too.
 
 ## 2. Data per ad
 
@@ -105,7 +110,11 @@ about an ad is advisory and pauses nothing.
   > winning ads** (run of network, those 2 titles × those 3 thumbnails, 6
   > ads) at $<opening> a day, and **<angle> - Yahoo & AOL** (the same 6 ads,
   > Yahoo and AOL placements only) at $<whitelist opening> a day? Total
-  > $<sum> a day."
+  > $<sum> a day. They go into a new group, **Winning ads - <batch launch
+  > date>**, where the winners of this test round will sit together."
+  The last sentence only when the batch has no winners group yet; once it
+  has one, "They join Winning ads - <batch launch date>, next to <the
+  winners campaigns already there>."
   **The offer is the pair, one question, one yes.** Never a pick list and
   never one campaign at a time: the client should see that the test was
   run to expand into these two campaigns together, not choose between
@@ -125,10 +134,24 @@ about an ad is advisory and pauses nothing.
   AOL on its own, and the whitelist campaign adds a measured extra on top,
   not a second engine. One pair per platform the tests ran on. The budgets are
   proposed, never asked open-ended; an answer with other numbers ("yes, at
-  $400 and $600") is used as given. **One campaign group = one creative
-  angle**, so both campaigns join the tests' own group (the one in the
-  config `groups:` block); names `<angle> - winning ads[ - <platform>]` and
-  `<angle> - Yahoo & AOL[ - <platform>]`. Built paused as in `media-plan.md`,
+  $400 and $600") is used as given. **Winners sit in their batch's group,
+  not in the angle's test group.** One group per batch of tests, **"Winning
+  ads - <batch launch date>"** ("Winning ads - 06 Nov 2026", the date from
+  `batches:`), shared by every angle of that batch: the first angle of the
+  batch to qualify opens it — created on the user's yes to the offer, exactly
+  as in `media-plan.md` Realize groups (CUSTOM distribution, no group budget
+  or cap, the main conversion rule), its id written to `batches:` and
+  `groups:` — and every later winners campaign of the same batch joins it.
+  Expect one or two winners pairs per batch; an angle that never reaches 2
+  titles and 2 thumbnails gets none. The next batch opens its own new
+  "Winning ads - <date>" group; winners of different batches are never
+  mixed. When an angle's winners came from tests of two batches (a later
+  wave added a test to an older angle), the campaigns go to the winners
+  group of the newest batch that contributed a winner. Names `<angle> -
+  winning ads[ - <platform>]` and `<angle> - Yahoo & AOL[ - <platform>]`,
+  both in the winners group, with `campaign_group_id` on `create_campaign`;
+  when the group cannot be created, both are built without it (`media-plan.md`,
+  When a group cannot be created). Built paused as in `media-plan.md`,
   with `create_native_item` for every title × thumbnail pair in each; the
   Yahoo & AOL campaign carries `publisher_targeting` INCLUDE with the Yahoo
   and AOL publishers (`growth.md` §2 says where the list comes from). The
@@ -156,7 +179,8 @@ about an ad is advisory and pauses nothing.
 ## 6. What is recorded
 
 Config: `creative_mode`, `creative_tests:`, `winners:` (with the
-winning-ads campaign id once built). **Digest file**, section **Ads in
+winning-ads campaign id once built), and in `batches:` each batch's winners
+group id with its campaign ids. **Digest file**, section **Ads in
 creative tests**: per test, one line per ad — component, spent, sales,
 cost per sale against the goal, status (Losing line n / Winning / Not
 determined) — then what was ticked, paused or declined, and the

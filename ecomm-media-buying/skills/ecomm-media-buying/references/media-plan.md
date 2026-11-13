@@ -105,22 +105,39 @@ Anchors (amounts at a $100 goal):
 - other surfaces and features: `opening-budgets.md`, same conversion.
 
 **Groups and names.** Every campaign the skill builds belongs to exactly one
-named group. **One group = one creative angle.** The group is named after
+named group, and the skill **creates that group in Realize** (Build, Realize
+groups below). **One group = one creative angle.** The group is named after
 the angle itself — "LP1 Comfort", "LP2 Heel", "LP3 Knee" — and holds that
-angle's **title test, thumbnail test and, later, its winning-ads campaign**
-(`creative-tests.md` §5). Never one group per test: a title test and a
-thumbnail test of the same angle are always in the same group. Other test
+angle's **title test** (1 thumbnail × the titles) and **thumbnail test**
+(1 title × the thumbnails): ideally two campaigns per angle, four when the
+plan splits Mobile+Tablet and Desktop — the platform split stays inside the
+angle's group. Never one group per test: a title test and a thumbnail test
+of the same angle are always in the same group.
+
+**Batches and their winners group.** A **batch** is one wave of creative
+tests launched together — this launch plan, or a later test wave
+(`growth.md` §1, the waves below) — usually several angles. The winning-ads
+campaigns that come out of a batch's tests do **not** go into the angles'
+groups: they share one group per batch, **"Winning ads - <batch launch
+date>"** ("Winning ads - 06 Nov 2026"), opened when the first angle of the
+batch qualifies (`creative-tests.md` §5). Later winners of the same batch
+join it; the next batch gets its own new "Winning ads - <date>" group;
+winners from different batches are never mixed. A winners campaign's Yahoo
+& AOL and Mail follow-ups sit in that winners group with it. Other test
 families keep their own groups: "Predictive audiences", "Display test",
-"<GEO> launch"; the angle's Yahoo & AOL and Mail campaigns stay in the
-angle's group. Campaign name = `<angle> -
-<test>[ - <platform>]`, the platform only when the plan splits platforms:
-"LP1 Comfort - title test - Mobile", "LP1 Comfort - thumbnail test -
-Desktop", "LP1 Comfort - winning ads", "LP1 Comfort - Yahoo & AOL -
-Desktop", "LP1 Comfort - Mail - Mobile", "Predictive tier 1 - LP1
-Comfort", "Display - LP1 Comfort". Add the product name if the account runs
-several. After a build, write the group and its campaign ids into the
-config `groups:` block (`LP1 Comfort: 11111111, 22222222`); the review and
-the digest list campaigns under these headings.
+"<GEO> launch".
+
+Campaign name = `<angle> - <test>[ - <platform>]`, the platform only when
+the plan splits platforms: "LP1 Comfort - title test - Mobile", "LP1
+Comfort - thumbnail test - Desktop", "LP1 Comfort - winning ads", "LP1
+Comfort - Yahoo & AOL - Desktop", "LP1 Comfort - Mail - Mobile",
+"Predictive tier 1 - LP1 Comfort", "Display - LP1 Comfort". Add the product
+name if the account runs several. After a build, write each group with its
+Realize group id and its campaign ids into the config `groups:` block
+(`LP1 Comfort [group 123456]: 11111111, 22222222`; `[group —]` when the
+group could not be created), and the batch into `batches:` (launch date,
+its angle groups, its winners group once opened — `onboarding.md`, config);
+the review and the digest list campaigns under these headings.
 
 ## Build (only after the user agrees to the table)
 
@@ -139,21 +156,41 @@ needs 1 title × 6–8 thumbnails, angle 2"). The connector's schema marks
 user gave none, try an empty description on the first ad; if it is rejected,
 ask for one short line to reuse across that campaign's ads.
 
-Realize groups: the connector can place a new campaign in an existing
-Realize group (`campaign_group_id` on `create_campaign`). Before the build,
-`get_campaign_groups` with `search_text` = the angle's group name; when the
-group exists and its `budget_distribution_method` is CUSTOM, pass its id on
-every campaign of that angle (dates inside the group's; omit the dates to
-take the group's). A group whose distribution is AUTOMATIC owns its
-campaigns' budgets, which this playbook never allows — build outside it
-and say so once. When no group exists, build without `campaign_group_id`:
-the campaign lands in its own automatic Realize group ("AutoGen - <campaign
-name>"), which can never be changed afterwards (the connector attaches only
-campaigns that are in no group yet). Say once per build: "If you want these
-campaigns under one Realize group, create the group in Realize first and
-I'll build into it; I'll manage them by name either way." Never create a
-group with a budget, never suggest a group budget or Realize's budget
+**Realize groups — created by the build, before its campaigns.** The plan
+table's Group column is built as real Realize groups: one per creative
+angle (and one per other named group the plan uses). For each:
+1. `get_campaign_groups` with `search_text` = the group name. A group with
+   **exactly** that name and `budget_distribution_method` CUSTOM → reuse
+   its id; never create a duplicate.
+2. Otherwise `create_campaign_group`: `name` = the group name;
+   `marketing_objective` ONLINE_PURCHASES with `kpi` CPA;
+   `budget_distribution_method` CUSTOM (each campaign keeps its own daily
+   budget); `spending_limit_model` NONE with `daily_ad_delivery_model`
+   STRICT and `daily_cap` 0 — no group budget and no group cap;
+   `conversion_rules` = `{rules: [{id: <main rule id from config>}]}`; no
+   end date, start date left to the default (today). A group with that
+   exact name whose distribution is AUTOMATIC owns its campaigns' budgets,
+   which this playbook never allows: never build into it — create the new
+   group under the name with the batch date added ("LP1 Comfort - 06 Nov
+   2026").
+3. Pass the group's id as `campaign_group_id` on every `create_campaign` of
+   that group (omit the campaign dates to take the group's).
+4. Write the group id into `groups:` next to its campaign ids.
+No question is asked for the groups: the user's yes to the plan table
+covers them. Never create a group with a budget or a daily cap, never set
+AUTOMATIC distribution, never suggest a group budget or Realize's budget
 allocator; budgets stay per campaign.
+**When a group cannot be created** (`create_campaign_group` answers 403 or
+any other error, or a reused group refuses the campaign — 403 ladder step
+2): build that group's campaigns without `campaign_group_id`. Each then
+lands in its own automatic Realize group ("AutoGen - <campaign name>"),
+which can never be changed afterwards (the connector attaches only
+campaigns that are in no group yet). Say once per build: "Realize wouldn't
+let me create campaign groups on this account from here, so each campaign
+sits in its own automatic group; I keep them grouped by angle on my side
+either way." Record `group_build: unavailable (<error> <date>)` in config and
+`[group —]` on those groups; the next build tries again once and, on the
+same error, builds without groups and says the line again.
 
 **When `create_campaign` answers 403 ("Requested action is forbidden").**
 The account is reachable but one part of the request is not allowed on it.
@@ -177,7 +214,8 @@ Never resend the same call; strip the gated part and build everything else:
 2. The request carried `campaign_group_id` and still answers 403 → resend
    without it: the campaign lands in its AutoGen group; say once "Realize
    wouldn't let me add campaigns to group <name> from here — they're built
-   in their own groups; I manage them by name either way."
+   in their own groups; I keep them grouped by angle on my side either
+   way", and mark that group `[group —]` in config.
 3. Still 403 → stop, report the error with the campaign name, build
    nothing further for that row, and continue with the other rows.
 A 401 is reported as is (sign in again); other 4xx are fixed per the error.
@@ -187,7 +225,8 @@ activate them now, or after you've reviewed them in Realize?" — naming only
 the campaigns that can be activated; a whitelist-pending campaign is listed
 on its own line as waiting for the account manager. Activate only on an
 explicit yes (`update_campaign` is_active true). Record the plan in
-`digests/<account_id>/YYYY-MM-DD-launch.md`.
+`digests/<account_id>/YYYY-MM-DD-launch.md`, and the batch in config
+`batches:` with the build date as its launch date.
 
 ## Waves — a new country, market or product (any time after onboarding)
 
@@ -200,8 +239,10 @@ angle with the proven ads, picked as in `growth.md` §5); platform split
 CPA goal applies — a different goal per market is not supported in this
 version: say so plainly and keep the account goal. Show the scenario table
 with its total, get the user's yes, build paused in group "<GEO> launch" or
-"<product> launch" with names `<GEO> - <angle> - <platform> - <test>`, offer
-activation exactly as above, record the plan in
-`digests/<account_id>/YYYY-MM-DD-launch-<key>.md`. Opening budgets: the standard anchor;
+"<product> launch" (created as in Realize groups above) with names
+`<GEO> - <angle> - <platform> - <test>`, offer activation exactly as above,
+record the plan in `digests/<account_id>/YYYY-MM-DD-launch-<key>.md` and
+the wave as a new batch in `batches:` (its winners get their own "Winning
+ads - <date>" group). Opening budgets: the standard anchor;
 proven creatives on a new market still open at the standard number, because
 the market is the unknown.
