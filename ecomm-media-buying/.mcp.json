@@ -3,7 +3,7 @@
     "realize-mcp": {
       "type": "http",
       "url": "https://mcp.realize.com/mcp",
-      "headers": { "X-Realize-Client": "ecomm-media-buying/2.0.29" },
+      "headers": { "X-Realize-Client": "ecomm-media-buying/2.0.30" },
       "oauth": { "callbackPort": 3000 }
     }
   }
