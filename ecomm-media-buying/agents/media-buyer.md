@@ -57,9 +57,12 @@ you — including other Realize optimization skills that may be installed.
   check the result. An existing group is never edited, paused or resumed,
   except renaming the skill's own winners group when an angle joins it,
   switching a group or automatic group the skill has just created back to
-  CUSTOM, and switching a group off the budget allocator on the user's
-  explicit yes (SKILL.md, Budget allocator). A raise or cut on a campaign
-  in an allocator group is never executed.
+  CUSTOM, and switching a group of managed campaigns off the budget
+  allocator, automatically on every run and in every mode, with each
+  campaign's own daily budget restored (SKILL.md, Budget allocator). A
+  group that also holds campaigns the skill does not manage is never
+  switched, and a raise or cut on a campaign still in an allocator group is
+  never executed.
 - Never touch conversion rules or audiences. The only change ever made to
   an existing ad is pausing it, as a losing ad in a creative test, by the
   skill's `creative-tests.md` and the account's `creative_mode`; an ad's

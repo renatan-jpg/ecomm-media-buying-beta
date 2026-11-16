@@ -236,8 +236,9 @@ group are: renaming a winners group when a new angle joins
 (`creative-tests.md` §5), `update_campaign_group` with `name` alone;
 switching a group the skill has just created back to CUSTOM (step 3) or
 the automatic group of a campaign it has just created (below); and
-switching a group from the budget allocator back to per-campaign budgets
-on the user's explicit yes (SKILL.md, Budget allocator).
+switching a group that holds managed campaigns from the budget allocator
+back to per-campaign budgets, automatically on every run (SKILL.md,
+Budget allocator).
 **When a group cannot be created** (`create_campaign_group` still fails
 after step 3's retry, answers 403 or any other error, or a reused group
 refuses the campaign — 403 ladder step 2): build that group's campaigns

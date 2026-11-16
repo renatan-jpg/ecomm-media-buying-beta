@@ -1,4 +1,4 @@
-# Ecomm media buying — install note (v2.0.28)
+# Ecomm media buying — install note (v2.0.29)
 
 This plugin gives you a media buyer for your Realize account: every day it
 reviews your running campaigns against your CPA goal, recommends raise /
@@ -189,11 +189,15 @@ and you are told once.
 From 16 November 2026 Realize turns its budget allocator on by default for
 campaign groups. The media buyer keeps every budget per campaign: it
 creates its groups with per-campaign budgets and checks that they stayed
-that way. If one of your groups is on the budget allocator, its campaigns
-are still reviewed and can still be paused, but the media buyer does not
-raise or cut them, and it asks you once whether to switch that group back
-to a daily budget per campaign, listing each campaign's budget. Nothing is
-switched without your yes.
+that way. If a group holding your managed campaigns is on the budget
+allocator, the media buyer switches it back to a daily budget per campaign
+on its next run, without asking, gives each campaign back its own daily
+budget (its last budget, never above your agreed maximum) and tells you
+what it set. It does this again if Realize switches the group back later.
+The one exception is a group that also holds campaigns the media buyer
+does not manage: it leaves that group as it is, does not raise or cut its
+campaigns, and asks you to set the group to per-campaign budgets in
+Realize.
 
 An existing group of yours is used only when it is
 running, has no group budget or cap of its own and holds only that angle;
@@ -255,6 +259,6 @@ maximum you agreed.
 Every verdict is explained as cost per sale against your goal; the ROAS
 column you see in Realize is revenue-based and is not what the rules read.
 
-Version 2.0.28 — the Decision Cube and the launch plan are the settled part;
+Version 2.0.29 — the Decision Cube and the launch plan are the settled part;
 the weekly creative offer, the expansion offers and the conversion-file,
 new-market and goal-change processes are still experimental: they only suggest.

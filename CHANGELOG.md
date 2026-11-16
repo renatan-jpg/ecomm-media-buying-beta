@@ -1,5 +1,9 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.29 — 2026-11-16
+- Groups on Realize's budget allocator are switched back to per-campaign budgets automatically: every run, before judging, a group holding managed campaigns that is on the allocator (AUTOMATIC) is set to CUSTOM with no group budget or cap, and each of its campaigns gets its own daily budget back — its last cap in the digests, else its current cap, else yesterday's spend rounded up to the next budget level, never above the agreed maximum. This happens in every mode, Manual included (the one budget change made without a tick), is reported at the top of the digest and in chat, and is repeated if Realize switches the group back later. It replaces v2.0.28's one-time offer.
+- Exception: a group that also holds campaigns the skill does not manage is not switched (the switch would set budgets on campaigns outside its remit); its managed campaigns' raises and cuts are held and the user is asked to set the group to per-campaign budgets in Realize. The `allocator:` config line now records `switched back <date>` or `not switched (<reason>) <date>`.
+
 ## v2.0.28 — 2026-11-13
 - Budgets stay per campaign when Realize makes its budget allocator the default for campaign groups (from 16 Nov 2026). Every group the skill creates is sent with CUSTOM distribution explicitly and checked on the answer; a group that still comes back AUTOMATIC is switched to CUSTOM once while it is empty, and otherwise set inactive and not used. Every campaign built into a group carries its own budget fields and is checked to have kept its daily cap.
 - The automatic per-campaign group ("AutoGen") a campaign lands in when no group can be used is checked too: if Realize put it on the allocator, it is switched back and the campaign's daily cap restored before activation; if that fails, the campaign stays paused and the user is told how to fix it in Realize.

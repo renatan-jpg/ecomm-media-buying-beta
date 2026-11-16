@@ -3,7 +3,7 @@ name: ecomm-media-buying
 description: Manages the Realize accounts an ecommerce advertiser put in scope, against their CPA goal. Reviews the RUNNING campaigns every day (or on demand), recommends RAISE / HOLD / CUT / PAUSE per campaign from the Decision Cube (weekly, last-3-day and yesterday CPA zones against the goal) with the CPA evidence, and — in Manual mode after the user ticks and confirms, or in Semi-auto for cuts and pauses (Auto is not available in the beta) — applies the changes through the Realize connector. Also runs onboarding (accounts in scope, goal, mode, daily schedule), the launch media plan and later test waves, a weekly creative-test offer, expansion offers after a good week, and the processes for a conversion file, a new market and a CPA change. Use whenever the user mentions reviewing, managing, scaling, pausing or launching their campaigns, gives a CPA goal, uploads conversions, asks to stop, or asks to set up the routine.
 ---
 
-# Ecomm media buying — v2.0.28 (2026-11)
+# Ecomm media buying — v2.0.29 (2026-11)
 
 Taboola's best-practice playbook for scaled, purchase-focused ecommerce
 advertisers. The decision core is the **Media Buying Decision Cube**: three
@@ -200,8 +200,10 @@ from Realize each run.
    `start_date`, `campaign_group_id`. Read each distinct group once
    (`get_campaign_groups` with its id) and record its
    `budget_distribution_method`: a campaign in an AUTOMATIC group has its
-   budget set by Realize's budget allocator, not by its own daily cap — see
-   the Budget allocator guardrail for how it is shown and what can be done.
+   budget set by Realize's budget allocator, not by its own daily cap: the
+   group is switched back to per-campaign budgets now, before judging (the
+   Budget allocator guardrail), or, where that is not allowed, its raises
+   and cuts are held.
    **Scope:** manage only campaigns whose marketing objective
    is ONLINE_PURCHASES and whose conversion rules include the main rule from
    config; list every other running campaign under "out of scope" in the
@@ -743,8 +745,9 @@ For each action, in order:
    edit it in Realize" and skip it. Never name pacing or delivery models to
    the user; they are internal settings. Budget changes also need the
    campaign's group to be CUSTOM: re-read the group (`get_campaign_groups`
-   with the campaign's `campaign_group_id`); AUTOMATIC → skip the raise or
-   cut with the Budget allocator line (guardrail). Pauses are unaffected.
+   with the campaign's `campaign_group_id`); still AUTOMATIC (the group was
+   not or could not be switched back) → skip the raise or cut with the
+   Budget allocator line (guardrail). Pauses are unaffected.
 3. Manual mode (and raises in Semi-auto): show the final preview — one line
    per action, exact old → new — and ask for one explicit confirmation of the
    batch. Auto mode, and cuts/pauses in Semi-auto: proceed.
@@ -879,27 +882,37 @@ to add variants.
   **From 16 Nov 2026 Realize turns the budget allocator on by default for
   campaign groups.** The skill always sends CUSTOM when it creates a group
   and checks the result (`media-plan.md`, Realize groups, steps 3–4, and
-  the automatic-group check). A managed campaign found in an AUTOMATIC
-  group (Step 2) is still judged every day and can still be paused, but its
-  RAISE and CUT are never executed: the card shows the verdict with "budget
-  set by Realize's budget allocator in group <name> — not changed", it is
-  never ticked, and in Semi-auto it is not applied. The first run that
-  finds such a group offers, once per group, in one question: "Group
-  <name> is on Realize's budget allocator, so Realize moves money between
-  its campaigns and I can't raise or cut them one by one. Switch it back to
-  a daily budget per campaign? Each campaign gets back its own daily
-  budget: <campaign — $amount, one per line>." The amount is the
-  campaign's last daily cap in the digests, or its current `daily_cap` when
-  none is on record, never above the agreed maximum; a campaign with
-  neither is asked for. Yes → `update_campaign_group` with
-  `budget_distribution_method` CUSTOM, `spending_limit_model` NONE,
-  `daily_ad_delivery_model` STRICT and `daily_cap` 0, then `update_campaign`
-  with each campaign's `daily_cap` as listed, then re-read the group and
-  the campaigns and report what holds; a failure is reported with the
-  error and "you can switch it in Realize: the group's budget → per
-  campaign". No → record it and do not ask again unless the user raises
-  it. Never switched without that explicit yes, in any mode. Record in
-  config `allocator: <group name> <id> — switched back <date> | kept <date>
-  | offered <date>`.
+  the automatic-group check). **A group holding managed campaigns is always
+  switched back to per-campaign budgets, automatically, in every mode**
+  (Manual included — the one budget change made without a tick): every
+  run, right after Step 2 finds a managed campaign in an AUTOMATIC group
+  and before anything is judged —
+  1. Each campaign of the group gets its own daily budget back: its last
+     daily cap in the digests; none on record → its current `daily_cap`;
+     neither → yesterday's spend rounded up to the next budget level (at
+     least the first level). Never above the agreed maximum.
+  2. `update_campaign_group` with `budget_distribution_method` CUSTOM,
+     `spending_limit_model` NONE, `daily_ad_delivery_model` STRICT and
+     `daily_cap` 0; then `update_campaign` with each campaign's
+     `daily_ad_delivery_model` STRICT and `daily_cap` from 1; then re-read
+     the group and the campaigns.
+  3. Report it at the top of the digest and in chat, one line per group:
+     "Group <name> was on Realize's budget allocator; I switched it back to
+     a daily budget per campaign: <campaign — $amount, …>." The day's
+     verdicts then read those budgets. If Realize puts the group back on
+     the allocator later, the next run switches it again and says so.
+  Exception: a group that also holds campaigns the skill does not manage
+  (out of scope, another account, not running) is **not** switched,
+  because the switch would set budgets on campaigns outside the skill's
+  remit. Its managed campaigns are still judged and can still be paused,
+  but their RAISE and CUT are never executed (the card shows the verdict
+  with "budget set by Realize's budget allocator in group <name> — not
+  changed", never ticked, not applied in Semi-auto), and the user is told
+  once: "Group <name> is on Realize's budget allocator and also holds
+  campaigns I don't manage, so I left it as it is; in Realize, set its
+  budget to per campaign and I'll manage the budgets again." A failed
+  switch is handled the same way, with the error. Record in config
+  `allocator: <group name> <id> — switched back <date> | not switched
+  (<reason>) <date>`.
 - **Beta parts.** `growth.md` and `client-requests.md` only suggest; nothing
   is built or changed without the user's explicit yes.
