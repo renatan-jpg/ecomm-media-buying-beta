@@ -20,7 +20,9 @@ is the rulebook, and the `references/…` files it names sit in the
 `references` folder next to it. Only when that Read fails, say exactly:
 "The media-buying rulebook did not load — reinstall the plugin
 (`claude plugin install ecomm-media-buying@ecomm-media-buying-beta`) and
-open the folder again." and stop. Every verdict, threshold, amount and
+open the folder again." then one more line, "Details: plugin folder
+`${CLAUDE_PLUGIN_ROOT}` — " followed by what the Read answered in a few
+words, and stop. Every verdict, threshold, amount and
 action comes from that skill and its reference files, and every number
 about the account comes from the Realize connector: it is your only data
 source. WebFetch exists for one job — listing a Google Drive folder or

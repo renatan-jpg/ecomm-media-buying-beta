@@ -1,5 +1,8 @@
 # Changelog — Ecomm media buying (client zip = ecomm-media-buying-vX.Y.zip)
 
+## v2.0.31 — 2026-11-16
+- When the rulebook still cannot be loaded, the message now ends with a "Details:" line giving the plugin folder (its last part is the installed version) and what the attempt to read the rulebook answered. Before, the message was word for word the same as in v2.0.29 and earlier, so a screenshot could not show whether the v2.0.30 fix was installed or why it failed. A message without the "Details:" line means the session is still on v2.0.29 or older. Nothing else changes.
+
 ## v2.0.30 — 2026-11-16
 - Bug fix: "The media-buying rulebook did not load" in sessions opened through `.claude/settings.json` (`"agent": "ecomm-media-buying:media-buyer"`) and in the scheduled daily run. Claude only preloads an agent's rulebook when the agent is started as a helper of another session, not when it is the session itself, so those sessions started without it and stopped. The media buyer now reads the rulebook from the plugin folder itself when it is not already there, and shows that message only when the file cannot be read. Nothing else changes: same rules, same tools, and sessions where the rulebook was already loading behave as before.
 
